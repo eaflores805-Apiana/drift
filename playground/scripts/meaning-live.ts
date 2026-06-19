@@ -1,10 +1,39 @@
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { loadSimulated } from "../src/data/adapters/simulatedAdapter";
 import type { IngestedItem } from "../src/data/schemas";
 import { DiskMeaningCache } from "../src/meaning/diskCache";
 import { meaningFor } from "../src/meaning/meaningPass";
 import { RealMeaningClient } from "../src/meaning/realClient";
+
+/**
+ * Minimal `.env` loader (no dependency). Reads `playground/.env` if present,
+ * sets process.env from KEY=VALUE lines, preserves values already set in the
+ * shell so prefix-style invocation (`ENABLE_LIVE_MEANING=true npm run …`)
+ * still wins. Lines starting with `#` and blank lines are ignored. Values
+ * may be surrounded by matching quotes.
+ */
+function loadDotenv(path: string): void {
+  if (!existsSync(path)) return;
+  const content = readFileSync(path, "utf-8");
+  for (const rawLine of content.split(/\r?\n/)) {
+    const line = rawLine.trim();
+    if (!line || line.startsWith("#")) continue;
+    const eq = line.indexOf("=");
+    if (eq < 0) continue;
+    const key = line.slice(0, eq).trim();
+    let val = line.slice(eq + 1).trim();
+    if (
+      (val.startsWith('"') && val.endsWith('"')) ||
+      (val.startsWith("'") && val.endsWith("'"))
+    ) {
+      val = val.slice(1, -1);
+    }
+    if (process.env[key] === undefined) {
+      process.env[key] = val;
+    }
+  }
+}
 
 /**
  * CLI runner for live meaning-pass calls.
@@ -42,7 +71,8 @@ function parseArgs(argv: string[]): Args {
 }
 
 function loadMeaningPrompt(): { text: string; version: string } {
-  const path = resolve("playground/meaning-pass-v1.md");
+  // CWD when invoked via `npm run meaning:live` is the `playground/` directory.
+  const path = resolve("meaning-pass-v1.md");
   const file = readFileSync(path, "utf-8");
   const promptMatch = file.match(/=== PROMPT START ===\n([\s\S]*?)\n=== PROMPT END ===/);
   if (!promptMatch) {
@@ -56,6 +86,11 @@ function loadMeaningPrompt(): { text: string; version: string } {
 }
 
 async function main(): Promise<void> {
+  // Load .env from playground/.env if present. Shell-set values take
+  // precedence so users can override per-invocation.
+  // CWD is `playground/` when invoked via `npm run meaning:live`.
+  loadDotenv(resolve(".env"));
+
   const args = parseArgs(process.argv.slice(2));
 
   // Set the CLI sentinel BEFORE constructing RealMeaningClient. The
@@ -84,8 +119,8 @@ async function main(): Promise<void> {
   }
 
   const { text: promptText, version: promptVersion } = loadMeaningPrompt();
+  // Resolved relative to playground/ (the npm script's cwd).
   const cacheDir = resolve(
-    "playground",
     args.cacheDir ?? process.env.MEANING_CACHE_DIR ?? ".meaning-cache"
   );
   const callCap = parseInt(process.env.MEANING_CALL_CAP ?? "50", 10);
