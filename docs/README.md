@@ -32,7 +32,7 @@ If you read these in order you should walk away knowing what Drift is, where we 
 ## The bench (`playground/`)
 
 - `../playground/README.md` — technical entry point for the bench
-- `../playground/ARCHITECTURE.md` — **binding** architecture rule: modular pipeline, stable `IngestedItem` + `Decision` contracts, test-mode/real-mode parity, "model calls are services, not source of truth"
+- `../playground/ARCHITECTURE.md` — **approved principles** (modular pipeline, `IngestedItem` + `Decision` contracts, test-mode/real-mode parity, "model calls are services, not source of truth"). The specifics — exact schemas, module layout, libraries — are CS's to propose and the team's to approve, per the roles-and-authority memo.
 - `../playground/BUILD.md` — build sequence + verification checks (Steps 1–6, with done-when criteria and the four checks we never skip)
 - `../playground/data/listener.json` — Listener Fixture 001 (Alex Rivera, Ventura, CA)
 - `../playground/data/seed-items.json` — the simulated item corpus
