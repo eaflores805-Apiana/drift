@@ -32,10 +32,12 @@ If you read these in order you should walk away knowing what Drift is, where we 
 ## The bench (`playground/`)
 
 - `../playground/README.md` — technical entry point for the bench
+- `../playground/ARCHITECTURE.md` — **binding** architecture rule: modular pipeline, stable `IngestedItem` + `Decision` contracts, test-mode/real-mode parity, "model calls are services, not source of truth"
 - `../playground/BUILD.md` — build sequence + verification checks (Steps 1–6, with done-when criteria and the four checks we never skip)
 - `../playground/data/listener.json` — Listener Fixture 001 (Alex Rivera, Ventura, CA)
 - `../playground/data/seed-items.json` — the simulated item corpus
-- `../playground/data/gold-labels.json` — the gold-label eval set (seed; grows as the team labels)
+- `../playground/data/gold-labels.json` — the gold-label eval set (seeds; grows as the team labels)
+- `../playground/data/corpus-coverage-pack.json` — safety sentinels + time-decay cases for Phase B exit; **not for bench construction**, integrated before claiming the brain works
 
 ## Prototypes + examples (live outside `docs/`)
 
