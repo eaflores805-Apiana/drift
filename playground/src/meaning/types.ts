@@ -55,12 +55,15 @@ export type ModelDerived = z.infer<typeof ModelDerivedSchema>;
 
 /**
  * MeaningClient — the abstract surface both `MockMeaningClient` (Step 3A)
- * and `RealMeaningClient` (Step 3B, gated) implement. The cache is keyed
- * by `{ item_id, client.prompt_version }`, so bumping `prompt_version`
- * invalidates the cache.
+ * and `RealMeaningClient` (Step 3B, gated) implement.
+ *
+ * The cache key per team ruling 2026-06-19 includes:
+ *   `${item_id}@@${prompt_version}@@${model_id}@@${content_hash}`
+ * so model swaps and item edits force fresh judgments.
  */
 export interface MeaningClient {
   readonly id: string;             // human-readable identifier for logging
   readonly prompt_version: string; // participates in the cache key
+  readonly model_id: string;       // participates in the cache key
   judge(item: IngestedItem): Promise<ModelDerived>;
 }

@@ -30,3 +30,7 @@ build/
 .env
 .env.local
 *.local
+
+# Drift live meaning-pass cache (Step 3B). Per-developer; never committed.
+.meaning-cache/
+playground/.meaning-cache/

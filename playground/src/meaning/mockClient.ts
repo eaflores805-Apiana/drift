@@ -8,16 +8,17 @@ import {
 
 /**
  * MockMeaningClient — deterministic, no network. Wraps `handStubbedMeaning`
- * and validates the output against `ModelDerivedSchema` so the mock can't
+ * and validates its output against `ModelDerivedSchema` so the mock can't
  * silently drift from the Step 3 contract.
  *
- * `prompt_version` defaults to a mock identifier so it doesn't collide with
- * the real prompt's version key in the cache. Override via constructor to
- * simulate `prompt_version` bumps (used in the cache-invalidation smoke test).
+ * `prompt_version` and `model_id` distinguish mock entries from live entries
+ * in the cache. Override `prompt_version` via constructor to simulate
+ * prompt-version bumps (used in the cache-invalidation smoke test).
  */
 export class MockMeaningClient implements MeaningClient {
   readonly id = "mock";
   readonly prompt_version: string;
+  readonly model_id = "mock";
 
   constructor(prompt_version: string = "meaning-pass-mock-v0.1.0") {
     this.prompt_version = prompt_version;
@@ -25,7 +26,6 @@ export class MockMeaningClient implements MeaningClient {
 
   async judge(item: IngestedItem): Promise<ModelDerived> {
     const out = handStubbedMeaning(item);
-    // Validate against the Step 3 contract — catches mock drift in dev.
     const parsed = ModelDerivedSchema.safeParse(out);
     if (!parsed.success) {
       throw new Error(

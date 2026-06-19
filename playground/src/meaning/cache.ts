@@ -7,40 +7,42 @@ export type CacheStats = {
 };
 
 /**
- * In-memory meaning cache keyed by `{item_id, prompt_version}`.
+ * In-memory meaning cache keyed by a composed `key: string`.
  *
- * Bumping `prompt_version` on the client invalidates entries — the new
- * key won't match any existing entry, so the next lookup is a miss
- * and the new judgment is computed and stored.
- *
- * Step 3A: in-memory only. Step 3B will introduce a disk-backed cache
- * (location TBD via team approval) so meaning passes survive restarts.
- *
- * NOTE — Step 3B will EXPAND the cache key per team ruling 2026-06-19 to:
+ * Per team ruling 2026-06-19 the key shape is:
  *   `${item_id}@@${prompt_version}@@${model_id}@@${content_hash}`
- * so that swapping models or editing item content forces a fresh judgment.
- * The Step 3A in-memory cache stays at the 2-part key because the mock has
- * a fixed prompt_version and there is no model swap to track. See
- * `docs/correspondence/cs-step3b-meaning-pass-proposal-2026-06-19.md`.
+ * composed by `keyFor.cacheKeyFor(item, client)`. The cache itself is
+ * key-shape agnostic — it just stores by string.
+ *
+ * `DiskMeaningCache` (Node only) implements the same `MeaningCacheLike`
+ * surface and writes to disk so judgments survive process restarts.
  */
-export class MeaningCache {
+export interface MeaningCacheLike {
+  get(key: string): ModelDerived | undefined;
+  set(key: string, value: ModelDerived): void;
+  has(key: string): boolean;
+  stats(): CacheStats;
+  resetStats(): void;
+}
+
+export class MeaningCache implements MeaningCacheLike {
   private store = new Map<string, ModelDerived>();
   private hits = 0;
   private misses = 0;
 
-  get(item_id: string, prompt_version: string): ModelDerived | undefined {
-    const v = this.store.get(this.key(item_id, prompt_version));
+  get(key: string): ModelDerived | undefined {
+    const v = this.store.get(key);
     if (v) this.hits++;
     else this.misses++;
     return v;
   }
 
-  set(item_id: string, prompt_version: string, value: ModelDerived): void {
-    this.store.set(this.key(item_id, prompt_version), value);
+  set(key: string, value: ModelDerived): void {
+    this.store.set(key, value);
   }
 
-  has(item_id: string, prompt_version: string): boolean {
-    return this.store.has(this.key(item_id, prompt_version));
+  has(key: string): boolean {
+    return this.store.has(key);
   }
 
   stats(): CacheStats {
@@ -50,9 +52,5 @@ export class MeaningCache {
   resetStats(): void {
     this.hits = 0;
     this.misses = 0;
-  }
-
-  private key(item_id: string, prompt_version: string): string {
-    return `${item_id}@@${prompt_version}`;
   }
 }

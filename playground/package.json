@@ -8,9 +8,11 @@
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
-    "smoke": "tsx scripts/smoke-test.ts"
+    "smoke": "tsx scripts/smoke-test.ts",
+    "meaning:live": "tsx scripts/meaning-live.ts"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.105.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "zod": "^3.23.8"
