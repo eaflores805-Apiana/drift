@@ -1,42 +1,191 @@
 # Drift — Memo: Roles & Decision Authority
 
-> **v0.1.0** · 2026-06-19 · from Engineer 1, for the team (Product Owner, Engineer 2, CS Engineer). Purpose: set the boundary on who decides the build, so authority and ownership are unambiguous before the code grows.
+> **v0.1.1** · 2026-06-19 · for the team: Product Owner, Engineer 1, Engineer 2, CS Engineer
 
-## Why this memo
-The work is going well and CS's instincts are good. But the line between *deciding the build* and *building it* has blurred — including on our side, where specs got written that were really CS's to author. This memo makes the boundary explicit so nobody steps over it in either direction.
+## Purpose
 
-## The rule
-**The build is decided by the Product Owner, Engineer 2, and Engineer 1. CS recommends and implements; CS does not decide architecture unilaterally.**
+This memo clarifies who owns which decisions before the codebase hardens.
 
-- A recommendation from CS is **input, not a ruling.** It comes to the team; the team approves, amends, or rejects it; *then* it is the plan.
-- Nothing becomes architecture because it was written down. It becomes architecture when the team signs off.
+The project is moving well, and CS's instincts have been good. But we need to keep a clean boundary between:
 
-## How decisions actually flow
-This is a loop, and the direction matters:
+* setting product/architecture direction,
+* proposing implementation,
+* writing code,
+* and approving changes that affect Drift's judgment engine.
 
-1. **CS proposes** the implementation — schemas, module layout, types, the specifics of how a step gets built.
-2. **The team approves or amends** the proposal. Contracts get blessed before they harden.
-3. **CS builds** it.
-4. **The team reviews** the result against the agreed contracts and the safety bar.
+This prevents two failure modes:
 
-Authority sits with the team. Keystrokes sit with CS. Decisions flow *down* (from the team); code and proposals flow *up* (from CS for sign-off).
+1. the team accidentally writing CS's implementation for him, and
+2. CS accidentally turning implementation choices into architecture without team approval.
 
-**Important — this is not a license to over-specify.** "The team decides the build" does **not** mean the team hands CS finished specs. Pre-writing every schema and file is how we slid into doing CS's job. The healthy form is: **CS proposes the implementation; the team approves or amends.** That keeps the authority with us and the actual engineering with CS — which is also how we find out whether the engineering is any good.
+Both are avoidable.
 
-## Roles, briefly
-- **Product Owner** — vision, taste calls, gold labels, final approval.
-- **Engineer 2 (Team Lead)** — product/technical direction; scoring/prompt/safety logic; reviews.
-- **Engineer 1 (Senior)** — architecture/risk review; owns the judgment artifacts (meaning-pass prompt, gold labels, sentinels, principles); reviews implementation against contracts.
-- **CS Engineer** — proposes implementation, then builds it: data loader, scoring, sliders, safety checks, generation, UI, export. Owns the code end to end, under team-approved contracts.
+## Core rule
 
-## Ruling on the open item: CS's modular-architecture recommendation
-CS's modular memo is a good recommendation. Per the rule above, here's the team ruling so it's settled rather than floating:
+> **The team sets the product and architecture direction. CS proposes implementation and owns the code. Architecture becomes real only after team sign-off.**
 
-- **Approved — the principle.** Build as a pipeline of replaceable modules with stable contracts: *same interface, different adapter*, so simulated data now and real data later swap without rebuilding the brain. And the non-negotiable: **model calls are a meaning/generation service, never the source of truth for scoring or safety** — code owns consent, scoring, bucket assignment, and claim-grounding.
-- **CS's to propose, team to approve — the specifics.** The exact schemas, type definitions, file structure, and module names are CS's to propose and ours to bless before they harden. Good instinct; CS owns the implementation of it.
+CS recommendations are valuable input. They are not rulings until approved.
 
-## The healthiest next move
-This project is well-documented — arguably over-documented. The next thing that moves us forward is **a running bench, not more prose.** CS builds Steps 1–2 (loader, deterministic scoring, sliders, buckets, export) and we react to something real. The one judgment artifact still genuinely outstanding is the **meaning-pass prompt**, which is Engineer 1's to draft and the team's to approve — and it's what CS needs before Step 3.
+Likewise, team direction should define contracts, constraints, behavior, and acceptance criteria — not over-specify every internal file, helper, and implementation detail.
+
+## Decision flow
+
+The healthy loop is:
+
+1. **Team sets the target**
+   Product behavior, architecture constraints, safety requirements, scoring goals, and phase gates.
+
+2. **CS proposes the implementation**
+   Schemas, module layout, libraries, types, file structure, and implementation plan.
+
+3. **Team approves or amends the proposal**
+   Contracts and behavior are blessed before they harden.
+
+4. **CS builds**
+   CS owns the code end to end under the approved contracts.
+
+5. **Team reviews against the agreed bar**
+   Review focuses on behavior, safety, reproducibility, and whether the code matches the approved contracts.
+
+## Decision classes
+
+### 1. Team-approved decisions
+
+These require team approval before they harden:
+
+* input/output contracts
+* shared schemas
+* scoring formula
+* bucket definitions
+* safety gates
+* meaning-pass output shape
+* gold-label format
+* evaluation metrics
+* exported decision format
+* any change affecting product behavior
+* any change affecting safety or reproducibility
+
+### 2. CS-owned implementation decisions
+
+CS owns these without needing full-team approval, as long as approved contracts and behavior are preserved:
+
+* internal helper functions
+* component/file organization inside approved module boundaries
+* local refactors
+* UI implementation details for the bench
+* code style within project conventions
+* adapter internals
+* non-behavior-changing performance improvements
+
+### 3. Escalate-if-changed decisions
+
+CS should escalate before merging or hardening changes that alter:
+
+* schema shape
+* scoring behavior
+* safety behavior
+* model call behavior
+* caching behavior
+* slider semantics
+* gold-label comparison
+* export format
+* anything that changes what gets dropped, ambient, voiced, or expandable
+
+## Roles
+
+### Product Owner
+
+Owns:
+
+* vision
+* taste calls
+* gold labels
+* final product approval
+* whether outputs feel connected, natural, or creepy
+
+### Engineer 2 / Team Lead
+
+Owns:
+
+* product/technical direction
+* scoring/prompt/safety logic
+* review of behavior against product principles
+* passdowns and build sequencing
+* keeping the team on Phase B
+
+### Engineer 1 / Senior Engineer
+
+Owns:
+
+* architecture and risk review
+* judgment artifacts
+* meaning-pass prompt
+* gold-label and sentinel coverage
+* implementation review against safety and architecture constraints
+
+### CS Engineer
+
+Owns:
+
+* implementation proposals
+* codebase structure under approved contracts
+* data loader
+* deterministic scoring
+* sliders
+* safety checks
+* generation integration
+* playground UI
+* exports
+* keeping code modular and maintainable
+
+## Ruling on modular architecture
+
+The modular architecture recommendation is approved in principle.
+
+Approved principles:
+
+* Build as replaceable modules with stable contracts.
+* Use the same interface for simulated data now and real adapters later.
+* The model is a meaning/generation service, not the source of truth.
+* Code owns consent, scoring, bucket assignment, and claim-grounding.
+* Simulated and real data must normalize to the same input contract.
+* Playground and future product surfaces should consume the same decision contract.
+
+CS should now propose the specific schemas, module layout, types, and file structure for team approval.
+
+## Current priority
+
+The project is well-documented. The next thing that moves us forward is a running bench.
+
+Immediate CS focus:
+
+* playground skeleton
+* seed data loader
+* schema validation
+* placeholder deterministic scoring
+* buckets
+* exportable `Decision` objects
+
+Immediate Engineer 1 focus:
+
+* meaning-pass prompt
+* corpus coverage gaps
+* sensitivity sentinel plan
+
+Immediate Product Owner focus:
+
+* gold-label current corpus
+
+Immediate Engineer 2 focus:
+
+* review proposals
+* protect scope
+* keep work tied to Phase B
 
 ## One line for the wall
-> The team decides the build. CS proposes and builds. Nothing is architecture until the team signs off — and deciding the build is not the same as writing CS's code.
+
+> The team sets direction and approves contracts. CS proposes and owns implementation. Nothing becomes architecture until the team signs off.
+
+---
+
+*Filed by CS Engineer, 2026-06-19. Supersedes v0.1.0 (preserved in git history at commit 970d725). Drove this turn's correction: rewrite of `playground/ARCHITECTURE.md` from "binding spec" to "approved principles + CS-to-propose specifics," and the move of the original modular-architecture memo to `docs/correspondence/eng1-modular-architecture-memo-2026-06-19.md`.*
