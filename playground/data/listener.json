@@ -1,0 +1,52 @@
+{
+  "_note": "First test fixture only \u2014 not a market definition. Listener Fixture 001.",
+  "id": "listener_001",
+  "name": "Alex Rivera",
+  "location": "Ventura, CA",
+  "interests": [
+    "indie pop",
+    "surfing",
+    "specialty coffee",
+    "local food",
+    "basketball",
+    "product design",
+    "hiking"
+  ],
+  "followed_entities": [
+    "Driftwood Roasters",
+    "Buena High Athletics",
+    "Patagonia",
+    "Ventura County News",
+    "Coastal Sounds"
+  ],
+  "calendar": [
+    {
+      "title": "Dinner with Priya",
+      "when": "2026-06-19T19:00:00"
+    },
+    {
+      "title": "Dentist",
+      "when": "2026-06-25T14:00:00"
+    },
+    {
+      "title": "Dana's birthday",
+      "when": "2026-06-21T00:00:00"
+    }
+  ],
+  "closeness_map": {
+    "mark": "close",
+    "mateo": "close",
+    "priya": "close",
+    "dana": "close",
+    "jordan": "acquaintance",
+    "lena": "known",
+    "sam": "known",
+    "uncle_ray": "distant_family",
+    "buena_athletics": "followed",
+    "driftwood": "followed",
+    "patagonia": "followed",
+    "ventura_news": "followed",
+    "coastal_sounds": "followed",
+    "kelp_surf_co": "followed"
+  }
+}

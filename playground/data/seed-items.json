@@ -1,0 +1,693 @@
+{
+  "_meta": {
+    "version": "0.1.0",
+    "description": "Seed world for the Drift promotion bench: accounts (sources) + raw items (Ingested fields only). Pairs with listener.json (Alex Rivera / listener_001) and gold-labels.json.",
+    "consent_note": "Items whose audience_scope is not public/published MUST be dropped at the ingest gate before any scoring. p002 (a private DM) is included on purpose to verify the gate fails closed.",
+    "scaling_note": "Seed = 14 accounts / 40 items. Scale to ~40 accounts / 300-500 items keeping the gem-to-noise ratio low (most items should land ambient or drop)."
+  },
+  "accounts": [
+    {
+      "account_id": "mark",
+      "name": "Mark",
+      "source_type": "friend"
+    },
+    {
+      "account_id": "mateo",
+      "name": "Mateo",
+      "source_type": "friend"
+    },
+    {
+      "account_id": "priya",
+      "name": "Priya",
+      "source_type": "friend"
+    },
+    {
+      "account_id": "dana",
+      "name": "Dana (sister)",
+      "source_type": "family"
+    },
+    {
+      "account_id": "jordan",
+      "name": "Jordan",
+      "source_type": "friend"
+    },
+    {
+      "account_id": "lena",
+      "name": "Lena",
+      "source_type": "friend"
+    },
+    {
+      "account_id": "sam",
+      "name": "Sam (coworker)",
+      "source_type": "friend"
+    },
+    {
+      "account_id": "uncle_ray",
+      "name": "Uncle Ray",
+      "source_type": "family"
+    },
+    {
+      "account_id": "buena_athletics",
+      "name": "Buena High Athletics",
+      "source_type": "local_org"
+    },
+    {
+      "account_id": "driftwood",
+      "name": "Driftwood Roasters",
+      "source_type": "brand"
+    },
+    {
+      "account_id": "patagonia",
+      "name": "Patagonia",
+      "source_type": "brand"
+    },
+    {
+      "account_id": "ventura_news",
+      "name": "Ventura County News",
+      "source_type": "news"
+    },
+    {
+      "account_id": "coastal_sounds",
+      "name": "Coastal Sounds",
+      "source_type": "creator"
+    },
+    {
+      "account_id": "kelp_surf_co",
+      "name": "Kelp Surf Co.",
+      "source_type": "brand"
+    }
+  ],
+  "items": [
+    {
+      "id": "p001",
+      "account_id": "mark",
+      "source_name": "Mark",
+      "audience_scope": "friends",
+      "timestamp": "2026-06-19T08:12:00",
+      "expires_at": null,
+      "raw_text": "Landed in DC. Big weekend ahead \u2014 wish me luck.",
+      "entities": [
+        {
+          "type": "place",
+          "value": "Washington, DC"
+        }
+      ],
+      "location": "Washington, DC",
+      "novelty_key": "mark_dc_trip"
+    },
+    {
+      "id": "p002",
+      "account_id": "mark",
+      "source_name": "Mark",
+      "audience_scope": "private",
+      "timestamp": "2026-06-19T08:20:00",
+      "expires_at": null,
+      "raw_text": "hey can you water my plants while I'm gone? key's under the mat",
+      "entities": [],
+      "location": null,
+      "novelty_key": "mark_plants_dm"
+    },
+    {
+      "id": "p003",
+      "account_id": "mark",
+      "source_name": "Mark",
+      "audience_scope": "public",
+      "timestamp": "2026-06-18T19:40:00",
+      "expires_at": null,
+      "raw_text": "airport sushi is a crime against humanity and yet here i am",
+      "entities": [],
+      "location": null,
+      "novelty_key": "mark_airport_food"
+    },
+    {
+      "id": "p004",
+      "account_id": "mateo",
+      "source_name": "Mateo",
+      "audience_scope": "friends",
+      "timestamp": "2026-06-19T07:05:00",
+      "expires_at": null,
+      "raw_text": "Rough week. Holding my people close.",
+      "entities": [],
+      "location": null,
+      "novelty_key": "mateo_hard_week"
+    },
+    {
+      "id": "p005",
+      "account_id": "mateo",
+      "source_name": "Mateo",
+      "audience_scope": "public",
+      "timestamp": "2026-06-17T12:30:00",
+      "expires_at": null,
+      "raw_text": "this playlist got me through the morning",
+      "entities": [],
+      "location": null,
+      "novelty_key": "mateo_playlist"
+    },
+    {
+      "id": "p006",
+      "account_id": "priya",
+      "source_name": "Priya",
+      "audience_scope": "friends",
+      "timestamp": "2026-06-19T09:30:00",
+      "expires_at": "2026-06-19T23:00:00",
+      "raw_text": "so ready for dinner tonight, been saving up my appetite all week",
+      "entities": [
+        {
+          "type": "event",
+          "value": "dinner"
+        }
+      ],
+      "location": "Ventura, CA",
+      "novelty_key": "priya_dinner_tonight"
+    },
+    {
+      "id": "p007",
+      "account_id": "priya",
+      "source_name": "Priya",
+      "audience_scope": "public",
+      "timestamp": "2026-06-18T15:10:00",
+      "expires_at": null,
+      "raw_text": "monday brain, tuesday body, please cooperate",
+      "entities": [],
+      "location": null,
+      "novelty_key": "priya_mood"
+    },
+    {
+      "id": "p008",
+      "account_id": "dana",
+      "source_name": "Dana (sister)",
+      "audience_scope": "public",
+      "timestamp": "2026-06-19T11:00:00",
+      "expires_at": null,
+      "raw_text": "IT'S OFFICIAL \u2014 I got the job!! New chapter starts in two weeks. Still shaking.",
+      "entities": [
+        {
+          "type": "life_event",
+          "value": "new job"
+        }
+      ],
+      "location": null,
+      "novelty_key": "dana_new_job"
+    },
+    {
+      "id": "p009",
+      "account_id": "dana",
+      "source_name": "Dana (sister)",
+      "audience_scope": "friends",
+      "timestamp": "2026-06-18T20:15:00",
+      "expires_at": null,
+      "raw_text": "anyone else's dog refuse to come inside when it's raining",
+      "entities": [],
+      "location": null,
+      "novelty_key": "dana_dog"
+    },
+    {
+      "id": "p010",
+      "account_id": "jordan",
+      "source_name": "Jordan",
+      "audience_scope": "public",
+      "timestamp": "2026-06-19T10:22:00",
+      "expires_at": null,
+      "raw_text": "ugh. can't believe it happened again \ud83d\ude29",
+      "entities": [],
+      "location": null,
+      "novelty_key": "jordan_vague"
+    },
+    {
+      "id": "p011",
+      "account_id": "jordan",
+      "source_name": "Jordan",
+      "audience_scope": "public",
+      "timestamp": "2026-06-18T13:05:00",
+      "expires_at": null,
+      "raw_text": "new profile pic, same disappointment",
+      "entities": [],
+      "location": null,
+      "novelty_key": "jordan_pfp"
+    },
+    {
+      "id": "p012",
+      "account_id": "lena",
+      "source_name": "Lena",
+      "audience_scope": "public",
+      "timestamp": "2026-06-19T09:45:00",
+      "expires_at": null,
+      "raw_text": "Lena liked your photo",
+      "entities": [],
+      "location": null,
+      "novelty_key": "lena_liked_photo"
+    },
+    {
+      "id": "p013",
+      "account_id": "lena",
+      "source_name": "Lena",
+      "audience_scope": "public",
+      "timestamp": "2026-06-18T17:30:00",
+      "expires_at": null,
+      "raw_text": "sunset from the pier never gets old \ud83c\udf05",
+      "entities": [
+        {
+          "type": "place",
+          "value": "the pier"
+        }
+      ],
+      "location": "Ventura, CA",
+      "novelty_key": "lena_pier"
+    },
+    {
+      "id": "p014",
+      "account_id": "sam",
+      "source_name": "Sam (coworker)",
+      "audience_scope": "public",
+      "timestamp": "2026-06-19T08:50:00",
+      "expires_at": null,
+      "raw_text": "third coffee before 9am, send help",
+      "entities": [],
+      "location": null,
+      "novelty_key": "sam_coffee"
+    },
+    {
+      "id": "p015",
+      "account_id": "sam",
+      "source_name": "Sam (coworker)",
+      "audience_scope": "public",
+      "timestamp": "2026-06-17T16:00:00",
+      "expires_at": null,
+      "raw_text": "shipped the thing. tired. proud. mostly tired.",
+      "entities": [],
+      "location": null,
+      "novelty_key": "sam_shipped"
+    },
+    {
+      "id": "p016",
+      "account_id": "uncle_ray",
+      "source_name": "Uncle Ray",
+      "audience_scope": "public",
+      "timestamp": "2026-06-19T06:30:00",
+      "expires_at": null,
+      "raw_text": "[long political rant, 400 words, shared article with heated commentary]",
+      "entities": [
+        {
+          "type": "topic",
+          "value": "politics"
+        }
+      ],
+      "location": null,
+      "novelty_key": "ray_politics"
+    },
+    {
+      "id": "p017",
+      "account_id": "uncle_ray",
+      "source_name": "Uncle Ray",
+      "audience_scope": "public",
+      "timestamp": "2026-06-18T10:00:00",
+      "expires_at": null,
+      "raw_text": "caught a 20lb halibut off the channel islands. she fought hard.",
+      "entities": [
+        {
+          "type": "place",
+          "value": "Channel Islands"
+        }
+      ],
+      "location": "Ventura, CA",
+      "novelty_key": "ray_fishing"
+    },
+    {
+      "id": "p018",
+      "account_id": "buena_athletics",
+      "source_name": "Buena High Athletics",
+      "audience_scope": "public",
+      "timestamp": "2026-06-19T12:15:00",
+      "expires_at": null,
+      "raw_text": "\ud83c\udfc6 Buena High girls wrestling is CIF-BOUND! Months of 6am practices paid off. Let's go Bulldogs!",
+      "entities": [
+        {
+          "type": "org",
+          "value": "Buena High girls wrestling"
+        },
+        {
+          "type": "event",
+          "value": "CIF"
+        }
+      ],
+      "location": "Ventura, CA",
+      "novelty_key": "buena_wrestling_cif"
+    },
+    {
+      "id": "p019",
+      "account_id": "buena_athletics",
+      "source_name": "Buena High Athletics",
+      "audience_scope": "public",
+      "timestamp": "2026-06-18T09:00:00",
+      "expires_at": null,
+      "raw_text": "Reminder: JV baseball practice moved to 4pm Thursday.",
+      "entities": [
+        {
+          "type": "event",
+          "value": "JV baseball practice"
+        }
+      ],
+      "location": "Ventura, CA",
+      "novelty_key": "buena_jv_practice"
+    },
+    {
+      "id": "p020",
+      "account_id": "driftwood",
+      "source_name": "Driftwood Roasters",
+      "audience_scope": "public",
+      "timestamp": "2026-06-19T07:00:00",
+      "expires_at": "2026-06-19T18:00:00",
+      "raw_text": "The fall seasonal blend is BACK as of this morning \u2014 first 20 cups on the house. Open til 6.",
+      "entities": [
+        {
+          "type": "product",
+          "value": "seasonal blend"
+        }
+      ],
+      "location": "Ventura, CA",
+      "novelty_key": "driftwood_seasonal"
+    },
+    {
+      "id": "p021",
+      "account_id": "driftwood",
+      "source_name": "Driftwood Roasters",
+      "audience_scope": "public",
+      "timestamp": "2026-06-18T08:30:00",
+      "expires_at": null,
+      "raw_text": "rainy mornings were made for pour-overs. \u2615",
+      "entities": [],
+      "location": "Ventura, CA",
+      "novelty_key": "driftwood_vibes"
+    },
+    {
+      "id": "p022",
+      "account_id": "patagonia",
+      "source_name": "Patagonia",
+      "audience_scope": "public",
+      "timestamp": "2026-06-19T10:00:00",
+      "expires_at": null,
+      "raw_text": "New: the lightweight river waders are here. Built for long days in cold water.",
+      "entities": [
+        {
+          "type": "product",
+          "value": "river waders"
+        }
+      ],
+      "location": null,
+      "novelty_key": "patagonia_waders"
+    },
+    {
+      "id": "p023",
+      "account_id": "patagonia",
+      "source_name": "Patagonia",
+      "audience_scope": "public",
+      "timestamp": "2026-06-17T14:00:00",
+      "expires_at": null,
+      "raw_text": "Our latest impact report is live. Read how we're cutting supply-chain emissions.",
+      "entities": [
+        {
+          "type": "topic",
+          "value": "sustainability"
+        }
+      ],
+      "location": null,
+      "novelty_key": "patagonia_impact"
+    },
+    {
+      "id": "p024",
+      "account_id": "ventura_news",
+      "source_name": "Ventura County News",
+      "audience_scope": "public",
+      "timestamp": "2026-06-19T13:30:00",
+      "expires_at": null,
+      "raw_text": "City council approves the new waterfront park: boardwalk, amphitheater, breaking ground next spring.",
+      "entities": [
+        {
+          "type": "event",
+          "value": "waterfront park approval"
+        }
+      ],
+      "location": "Ventura, CA",
+      "novelty_key": "ventura_park"
+    },
+    {
+      "id": "p025",
+      "account_id": "ventura_news",
+      "source_name": "Ventura County News",
+      "audience_scope": "public",
+      "timestamp": "2026-06-19T16:00:00",
+      "expires_at": "2026-06-19T22:00:00",
+      "raw_text": "Downtown street fair tonight: food trucks, live music starting around 8 on Main St.",
+      "entities": [
+        {
+          "type": "event",
+          "value": "street fair"
+        }
+      ],
+      "location": "Ventura, CA",
+      "novelty_key": "ventura_street_fair"
+    },
+    {
+      "id": "p026",
+      "account_id": "ventura_news",
+      "source_name": "Ventura County News",
+      "audience_scope": "public",
+      "timestamp": "2026-06-18T11:00:00",
+      "expires_at": null,
+      "raw_text": "County agenda item: routine update to the 2026 stormwater management ordinance.",
+      "entities": [
+        {
+          "type": "topic",
+          "value": "ordinance"
+        }
+      ],
+      "location": "Ventura, CA",
+      "novelty_key": "ventura_ordinance"
+    },
+    {
+      "id": "p027",
+      "account_id": "ventura_news",
+      "source_name": "Ventura County News",
+      "audience_scope": "public",
+      "timestamp": "2026-06-19T05:30:00",
+      "expires_at": "2026-06-19T20:00:00",
+      "raw_text": "Heat advisory in effect for inland valleys through this evening.",
+      "entities": [
+        {
+          "type": "topic",
+          "value": "weather"
+        }
+      ],
+      "location": "Ventura, CA",
+      "novelty_key": "ventura_heat"
+    },
+    {
+      "id": "p028",
+      "account_id": "coastal_sounds",
+      "source_name": "Coastal Sounds",
+      "audience_scope": "public",
+      "timestamp": "2026-06-19T09:00:00",
+      "expires_at": null,
+      "raw_text": "New single 'Saltwater' is out everywhere today. This one's for the early surf crowd.",
+      "entities": [
+        {
+          "type": "product",
+          "value": "single Saltwater"
+        }
+      ],
+      "location": null,
+      "novelty_key": "coastal_single"
+    },
+    {
+      "id": "p029",
+      "account_id": "coastal_sounds",
+      "source_name": "Coastal Sounds",
+      "audience_scope": "public",
+      "timestamp": "2026-06-18T18:00:00",
+      "expires_at": null,
+      "raw_text": "studio dust and bad coffee, the usual",
+      "entities": [],
+      "location": null,
+      "novelty_key": "coastal_studio"
+    },
+    {
+      "id": "p030",
+      "account_id": "kelp_surf_co",
+      "source_name": "Kelp Surf Co.",
+      "audience_scope": "public",
+      "timestamp": "2026-06-18T12:00:00",
+      "expires_at": null,
+      "raw_text": "20% off all rash guards this week. Code SUMMER.",
+      "entities": [
+        {
+          "type": "product",
+          "value": "rash guards"
+        }
+      ],
+      "location": null,
+      "novelty_key": "kelp_sale"
+    },
+    {
+      "id": "p031",
+      "account_id": "mark",
+      "source_name": "Mark",
+      "audience_scope": "public",
+      "timestamp": "2026-06-15T14:00:00",
+      "expires_at": null,
+      "raw_text": "rewatching the same three comfort shows like a responsible adult",
+      "entities": [],
+      "location": null,
+      "novelty_key": "mark_tv"
+    },
+    {
+      "id": "p032",
+      "account_id": "priya",
+      "source_name": "Priya",
+      "audience_scope": "public",
+      "timestamp": "2026-06-16T08:00:00",
+      "expires_at": null,
+      "raw_text": "the gym at 6am is a different breed of person and i am not one of them",
+      "entities": [],
+      "location": null,
+      "novelty_key": "priya_gym"
+    },
+    {
+      "id": "p033",
+      "account_id": "dana",
+      "source_name": "Dana (sister)",
+      "audience_scope": "public",
+      "timestamp": "2026-06-19T18:30:00",
+      "expires_at": null,
+      "raw_text": "celebrating tonight, who's around \ud83c\udf7e",
+      "entities": [
+        {
+          "type": "event",
+          "value": "celebration"
+        }
+      ],
+      "location": "Ventura, CA",
+      "novelty_key": "dana_celebrate"
+    },
+    {
+      "id": "p034",
+      "account_id": "lena",
+      "source_name": "Lena",
+      "audience_scope": "friends",
+      "timestamp": "2026-06-19T07:50:00",
+      "expires_at": null,
+      "raw_text": "booked the flights. iceland in september is HAPPENING \u2708\ufe0f",
+      "entities": [
+        {
+          "type": "place",
+          "value": "Iceland"
+        },
+        {
+          "type": "event",
+          "value": "trip"
+        }
+      ],
+      "location": null,
+      "novelty_key": "lena_iceland"
+    },
+    {
+      "id": "p035",
+      "account_id": "sam",
+      "source_name": "Sam (coworker)",
+      "audience_scope": "public",
+      "timestamp": "2026-06-19T15:00:00",
+      "expires_at": null,
+      "raw_text": "reply-all storms should be a federal crime",
+      "entities": [],
+      "location": null,
+      "novelty_key": "sam_replyall"
+    },
+    {
+      "id": "p036",
+      "account_id": "jordan",
+      "source_name": "Jordan",
+      "audience_scope": "friends",
+      "timestamp": "2026-06-19T20:00:00",
+      "expires_at": null,
+      "raw_text": "moving back to Ventura next month. it's time.",
+      "entities": [
+        {
+          "type": "place",
+          "value": "Ventura"
+        },
+        {
+          "type": "life_event",
+          "value": "moving"
+        }
+      ],
+      "location": null,
+      "novelty_key": "jordan_moving"
+    },
+    {
+      "id": "p037",
+      "account_id": "mateo",
+      "source_name": "Mateo",
+      "audience_scope": "public",
+      "timestamp": "2026-06-19T21:30:00",
+      "expires_at": null,
+      "raw_text": "thanks to everyone who reached out today. means more than you know. \u2764\ufe0f",
+      "entities": [],
+      "location": null,
+      "novelty_key": "mateo_thanks"
+    },
+    {
+      "id": "p038",
+      "account_id": "driftwood",
+      "source_name": "Driftwood Roasters",
+      "audience_scope": "public",
+      "timestamp": "2026-06-19T14:00:00",
+      "expires_at": null,
+      "raw_text": "now hiring a weekend barista \u2014 DM us",
+      "entities": [
+        {
+          "type": "topic",
+          "value": "hiring"
+        }
+      ],
+      "location": "Ventura, CA",
+      "novelty_key": "driftwood_hiring"
+    },
+    {
+      "id": "p039",
+      "account_id": "uncle_ray",
+      "source_name": "Uncle Ray",
+      "audience_scope": "public",
+      "timestamp": "2026-06-19T19:15:00",
+      "expires_at": null,
+      "raw_text": "happy birthday to my niece Dana \u2014 so proud of you kid",
+      "entities": [
+        {
+          "type": "person",
+          "value": "Dana"
+        },
+        {
+          "type": "event",
+          "value": "birthday"
+        }
+      ],
+      "location": null,
+      "novelty_key": "ray_dana_birthday"
+    },
+    {
+      "id": "p040",
+      "account_id": "coastal_sounds",
+      "source_name": "Coastal Sounds",
+      "audience_scope": "public",
+      "timestamp": "2026-06-19T17:00:00",
+      "expires_at": "2026-06-20T02:00:00",
+      "raw_text": "playing a free set at the downtown street fair tonight ~8:30. come say hi.",
+      "entities": [
+        {
+          "type": "event",
+          "value": "street fair set"
+        }
+      ],
+      "location": "Ventura, CA",
+      "novelty_key": "coastal_streetfair_set"
+    }
+  ]
+}
