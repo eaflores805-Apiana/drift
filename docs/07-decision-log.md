@@ -130,3 +130,67 @@ For a trust-dependent product the asymmetry is fatal; lead so hard with the cons
 
 ## Next action
 Build **Phase 0** (40 simulated accounts, ~3 posts/day, varied complexity + a fictional listener) and the **measured Phase 1 bench** (scores the engine against human labels, dials exposed). This answers the only question that gates everything: *is the editorial judgment good?*
+
+---
+
+## I — Production architecture decisions (Phase D)
+*Added after the founding discussion. These ADRs are scoped to Phase D (shipped product) and explicitly do **not** change Phase B bench work. Recorded now so Drift is not later built with a fast path that bypasses safety. A companion Senior note on the principles ("counterweight review note") is filed at `docs/correspondence/eng1-product-principles-counterweight-2026-06-19.md`.*
+
+### I1 — Safety queue before air; vetted segment cards over direct live generation `[ACCEPTED 2026-06-19]`
+
+**Status:** Accepted as a production architecture rule. **Scope:** Production / Phase D.
+
+**Decision.** A generated voiced line must not air in the same step it is generated. In production, Drift generates slightly ahead of the music and places candidate spoken content into a short rolling safety queue. The queue may hold either (1) a fully written voiced line, or (2) an **approved spoken segment card** containing the permitted facts, tone, allowed world texture, forbidden inferences, and pre-vetted delivery options. Before anything reaches the listener, the **actual aired line** must pass claim-grounding, tone/sensitivity review, and the glad-test.
+
+**Rationale.** Direct model-to-ear generation removes the safety margin between a model mistake and a listener hearing it. Drift's worst failure mode is a tactless or unsupported line about a real person, and it is *unrecoverable* — the product cannot un-say something once spoken. The buffer between "the model wrote it" and "the listener heard it" is therefore not a latency concern; it is the safety margin. This turns "make the worst case boring, not wrong" into product timing: failed lines regenerate safer or die silently in the queue, and the listener simply hears music.
+
+**Live-feeling delivery without sounding scripted.** The product must not feel like a prewritten corporate script read past compliance. The goal is **pre-vetted content with live-feeling delivery** — jazz, not a frozen sentence read like a hostage note. To support that, Drift may queue **approved segment cards** rather than only frozen sentences. A card can contain: approved claims, allowed world texture, forbidden inferences, sensitivity and tone, delivery intent, and 2–3 candidate phrasings. The live layer may vary phrasing, opener, pacing, warmth, and music handoff — but may **not** add new facts, motives, causes, names, world context, or emotional interpretation of a person.
+
+**Binding safety amendment.** **The claim-grounding check must validate the actual aired line, not just the segment card.** If the live realization layer changes wording, chooses among options, or generates a fresh line, *that realized line* is the artifact checked against approved claims and context before it enters the ready-to-air queue. The card defines the allowed boundary; the aired line must prove it stayed inside that boundary. Vetting the card but trusting the realization would move the safety gate to the wrong side of the one risky step — a fluent, natural sentence can slip an unapproved cause back in ("…probably his job again"), so the gate binds the output, every time.
+
+**Default Phase-D recommendation.** For the first production version, prefer: **generate the segment card + 2–3 delivery options ahead of time, claim-ground each option in the queue, then select among pre-vetted options at airtime.** This is safer *and* faster than fresh live generation at the song transition — it preserves a live radio feel through timing, selection, pacing, and music handoff without introducing an unvetted model call at the exact moment of air. Fresh live realization remains a possible stretch design, but it must still pass final-line claim-grounding before air.
+
+**Scope / non-impact.** Does not change Phase B. The bench may still generate a line per item for inspection and grading against gold labels. This governs the *shipped product* architecture.
+
+**Product pipeline (Phase D)**
+```
+incoming item -> meaning pass -> scoring -> segment candidate
+-> generate segment card + 2-3 delivery options
+-> claim-ground / tone / glad-test each option (in queue)
+-> ready queue -> select & realize at airtime -> claim-ground the aired line -> speak
+```
+
+**Short rule.** Generate ahead. Vet the boundaries. Vet the aired line. Then speak.
+
+---
+
+### I2 — Closed input surface and bounded interaction (programmed first, interactive second) `[ACCEPTED FOUNDATIONAL 2026-06-19]`
+
+**Status:** Accepted as a **foundational** product/safety rule. **Scope:** Product architecture / Phase D.
+
+**Decision.** Drift is programmed first and interactive second. The default experience is a one-way, music-first station: the system selects, vets, and airs only approved moments from the listener's world. The user may interact with surfaced items, but interaction is narrow and bounded — it may expand, tune, mute, save, open a source, or route the listener back to a person. It may **not** turn Drift into an open-ended chatbot about the listener's social world.
+
+**Rationale.** Most AI safety problems get harder the moment the user can freely prompt the model — a chatbot must defend against adversarial or chaotic input on every turn ("guess why Mark went," "say it like gossip," "connect this to something juicy," "roast Mateo"). Drift removes that entire category of failure with a closed input surface: the DJ speaks from vetted data and approved boundaries, not arbitrary user prompts. **This is why it is foundational rather than incremental — the narrow input surface is what makes the downstream safety gates tractable. Defending a broadcast is a fundamentally smaller problem than defending a conversation.** It is also a product advantage: Drift should feel like a station with taste, not a chatbot that can be dragged into side quests. Safer and more premium from the same decision.
+
+**Allowed v1 interactions** (structured controls, not free prompts):
+- **Tell me more** — expand this specific surfaced item within approved source/context boundaries.
+- **Why did you say that?** — show source/reason.
+- **Less like this / More like this** — adjust weight for source/topic/category.
+- **Mute person/topic/source** — suppress future surfacing.
+- **Save** — keep the item.
+- **Open source** — hand off to the original source.
+- **Message / check in** — route the listener back to the real relationship, when appropriate.
+
+**Disallowed v1 interactions.** The user should not be able to prompt the DJ into: guessing motives; inferring private causes; gossip framing; roasting or mocking real people; connecting sensitive posts to "juicy" context; reading private messages; speculating about why something happened; or expanding sensitive friend posts into unsupported context.
+
+**Expansion inherits sensitivity.** The "tell me more" path is the one controlled door in the closed input surface, and it must inherit the original item's sensitivity.
+- **Low-sensitivity items — expansion may add approved public/world context.** Mark in DC → public DC events/atmosphere, without guessing why he's there. Buena girls wrestling CIF-bound → team-level public context, never individual minors. A product drop → public product details and timing.
+- **High-sensitivity items — expansion should usually decline rather than generate more context.** Mateo's "Rough week. Holding my people close." → allowed posture: *"He didn't share more, and I'll leave the details to him. Might be a good moment to check in."* Disallowed: speculating about grief, illness, breakup, job loss, family trouble, or any cause. Expansion is a privilege of low-sensitivity items; on sensitive ones, the expand button hands you toward the person, not toward more model-generated context.
+
+**Expansion must pass grounding.** Any spoken expansion passes the **same** claim-grounding and tone/sensitivity checks as a normal aired line. The expansion path is not a backdoor around the safety queue — if the model says something in an expansion, that final line must trace to approved source material or approved public context before the listener hears it.
+
+**Interaction signals are data.** Structured controls (mute, less/more-like-this, save, check-in) create relationship/preference signals. Useful for learning, but treat them deliberately — they may later feed the closeness/relevance graph, but v1 should avoid over-inferring from them. (Noted, not actioned: this is also quietly a data-collection surface relevant to the graph story.)
+
+**Non-impact.** Does not change Phase B. The bench continues testing item meaning, scoring, labels, and line generation. This ADR governs the shipped product's interaction model and prevents future drift toward an unsafe open-chat interface.
+
+**Short rule.** Programmed first. Interactive second. Expand within boundaries. Never free-prompt the social graph.
