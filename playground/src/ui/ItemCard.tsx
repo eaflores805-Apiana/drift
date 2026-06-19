@@ -1,4 +1,5 @@
 import { type Decision, type IngestedItem } from "../data/schemas";
+import { ScoreBreakdown } from "./ScoreBreakdown";
 
 type Props = {
   item: IngestedItem;
@@ -22,6 +23,7 @@ export function ItemCard({ item, decision }: Props) {
       {dropped && decision.safety_check.rejected_reason && (
         <div className="card-reason">{decision.safety_check.rejected_reason}</div>
       )}
+      {!dropped && <ScoreBreakdown decision={decision} />}
     </div>
   );
 }

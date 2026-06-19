@@ -28,6 +28,56 @@ body, html {
   align-items: center;
   flex-wrap: wrap;
 }
+
+/* ---- Slider panel ---- */
+.slider-panel {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  background: white;
+  border: 1px solid #d4cdbf;
+  border-radius: 6px;
+  padding: 12px 16px;
+  margin-bottom: 16px;
+}
+.slider-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.slider-group-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #555;
+  margin-bottom: 4px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.slider-group-label .hint {
+  font-weight: 400;
+  color: #999;
+  text-transform: none;
+  letter-spacing: 0;
+}
+.slider-row {
+  display: grid;
+  grid-template-columns: 130px 1fr 50px;
+  gap: 10px;
+  align-items: center;
+  font-size: 12px;
+}
+.slider-label {
+  color: #555;
+  text-transform: capitalize;
+}
+.slider-value {
+  font-family: ui-monospace, monospace;
+  font-size: 11px;
+  color: #444;
+  text-align: right;
+}
+
+/* ---- Columns ---- */
 .columns {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -52,10 +102,10 @@ body, html {
   color: #999;
   font-weight: 400;
 }
-.column-drop      { background: #faf0f0; }
-.column-ambient   { background: #f6f4ed; }
-.column-voiced    { background: #f0f5ea; }
-.column-expandable{ background: #eef2f7; }
+.column-drop       { background: #faf0f0; }
+.column-ambient    { background: #f6f4ed; }
+.column-voiced     { background: #f0f5ea; }
+.column-expandable { background: #eef2f7; }
 
 .cards { display: flex; flex-direction: column; gap: 8px; }
 .card {
@@ -112,6 +162,37 @@ body, html {
   color: #a33;
   font-style: italic;
 }
+
+/* ---- Score breakdown ---- */
+.breakdown {
+  margin-top: 6px;
+  border-top: 1px dashed #e0d8c8;
+  padding-top: 4px;
+}
+.breakdown summary {
+  font-size: 11px;
+  color: #666;
+  cursor: pointer;
+  font-family: ui-monospace, monospace;
+}
+.breakdown-table {
+  margin-top: 4px;
+  border-collapse: collapse;
+  font-size: 11px;
+  font-family: ui-monospace, monospace;
+}
+.breakdown-table td { padding: 1px 8px 1px 0; }
+.breakdown-table .key { color: #777; }
+.breakdown-table .val { color: #222; text-align: right; }
+.breakdown-reason {
+  margin-top: 6px;
+  font-size: 10px;
+  color: #888;
+  font-family: ui-monospace, monospace;
+  line-height: 1.4;
+}
+
+/* ---- Debug panel ---- */
 .debug {
   margin-top: 20px;
   background: white;

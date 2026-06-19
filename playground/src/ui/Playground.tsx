@@ -4,19 +4,30 @@ import {
   type IngestedItem,
   type Listener,
 } from "../data/schemas";
+import { type ScoringSettings } from "../scoring/scoringEngine";
 import { BucketColumn } from "./BucketColumn";
 import { DebugPanel } from "./DebugPanel";
+import { SliderPanel } from "./SliderPanel";
 
 type Props = {
   listener: Listener;
   items: IngestedItem[];
   decisions: Decision[];
   warnings: string[];
+  settings: ScoringSettings;
+  onSettingsChange: (next: ScoringSettings) => void;
 };
 
 const BUCKETS: Bucket[] = ["drop", "ambient", "voiced", "expandable"];
 
-export function Playground({ listener, items, decisions, warnings }: Props) {
+export function Playground({
+  listener,
+  items,
+  decisions,
+  warnings,
+  settings,
+  onSettingsChange,
+}: Props) {
   const itemById = new Map(items.map((i) => [i.id, i]));
   const grouped = new Map<Bucket, Decision[]>(BUCKETS.map((b) => [b, []]));
   for (const d of decisions) {
@@ -26,7 +37,7 @@ export function Playground({ listener, items, decisions, warnings }: Props) {
   return (
     <div className="playground">
       <header className="playground-header">
-        <h1>Drift Playground — Step 1: Shell + Consent Gate</h1>
+        <h1>Drift Playground — Step 2: Deterministic Scorer + Sliders</h1>
         <div className="meta">
           <span>
             Listener: <strong>{listener.name}</strong>
@@ -34,7 +45,7 @@ export function Playground({ listener, items, decisions, warnings }: Props) {
           </span>
           <span>·</span>
           <span>
-            Items loaded: <strong>{items.length}</strong>
+            Items: <strong>{items.length}</strong>
           </span>
           <span>·</span>
           <span>
@@ -42,6 +53,8 @@ export function Playground({ listener, items, decisions, warnings }: Props) {
           </span>
         </div>
       </header>
+
+      <SliderPanel settings={settings} onChange={onSettingsChange} />
 
       <div className="columns">
         {BUCKETS.map((bucket) => (
@@ -54,7 +67,12 @@ export function Playground({ listener, items, decisions, warnings }: Props) {
         ))}
       </div>
 
-      <DebugPanel items={items} decisions={decisions} warnings={warnings} />
+      <DebugPanel
+        items={items}
+        decisions={decisions}
+        warnings={warnings}
+        settings={settings}
+      />
     </div>
   );
 }

@@ -1,12 +1,14 @@
 import { type Decision, type IngestedItem } from "../data/schemas";
+import { type ScoringSettings } from "../scoring/scoringEngine";
 
 type Props = {
   items: IngestedItem[];
   decisions: Decision[];
   warnings: string[];
+  settings: ScoringSettings;
 };
 
-export function DebugPanel({ items, decisions, warnings }: Props) {
+export function DebugPanel({ items, decisions, warnings, settings }: Props) {
   const dropped = decisions.filter((d) => d.bucket === "drop");
   return (
     <details className="debug" open>
@@ -20,6 +22,11 @@ export function DebugPanel({ items, decisions, warnings }: Props) {
         </div>
         <div>
           Model calls this run: <strong>0</strong>
+        </div>
+        <div>
+          Voice threshold: <strong>{settings.voiceThreshold.toFixed(2)}</strong>{" "}
+          · Expandable: <strong>{settings.expandableThreshold.toFixed(2)}</strong>{" "}
+          · Novelty window: <strong>{settings.noveltyWindowHours}h</strong>
         </div>
         {warnings.length > 0 && (
           <div className="warnings">
