@@ -1,4 +1,5 @@
 import { type Decision, type IngestedItem } from "../data/schemas";
+import { type CacheStats } from "../meaning/cache";
 import { type ScoringSettings } from "../scoring/scoringEngine";
 
 type Props = {
@@ -6,9 +7,10 @@ type Props = {
   decisions: Decision[];
   warnings: string[];
   settings: ScoringSettings;
+  cacheStats: CacheStats;
 };
 
-export function DebugPanel({ items, decisions, warnings, settings }: Props) {
+export function DebugPanel({ items, decisions, warnings, settings, cacheStats }: Props) {
   const dropped = decisions.filter((d) => d.bucket === "drop");
   return (
     <details className="debug" open>
@@ -21,7 +23,12 @@ export function DebugPanel({ items, decisions, warnings, settings }: Props) {
           Dropped by consent gate: <strong>{dropped.length}</strong>
         </div>
         <div>
-          Model calls this run: <strong>0</strong>
+          Live model calls this run: <strong>0</strong>
+        </div>
+        <div>
+          Meaning cache — size: <strong>{cacheStats.size}</strong>{" "}
+          · hits: <strong>{cacheStats.hits}</strong>{" "}
+          · misses: <strong>{cacheStats.misses}</strong>
         </div>
         <div>
           Voice threshold: <strong>{settings.voiceThreshold.toFixed(2)}</strong>{" "}

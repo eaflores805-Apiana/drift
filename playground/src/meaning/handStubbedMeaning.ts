@@ -1,22 +1,15 @@
 import { type IngestedItem } from "../data/schemas";
+import { type ModelDerived, type Sensitivity } from "./types";
 
 /**
- * Hand-stubbed ModelDerived fields for Step 2.
+ * Deterministic hand-stub of the Step 3 meaning-pass output.
  *
- * These are placeholders the real meaning-pass prompt (Step 3) will replace.
- * The point in Step 2 is to make the scoring pipeline run end-to-end with
- * plausible inputs — NOT to be accurate. Treat values here as scaffolding.
+ * Returns the FULL `ModelDerived` shape so it validates against the same
+ * contract the real client will produce. The judgments themselves are
+ * scaffolding — Step 3B's real model output replaces these wholesale.
  *
- * When Step 3 lands, swap this module for the cached meaning-pass output
- * keyed by `prompt_version`.
+ * Same item → same result (deterministic): pure function over `item`.
  */
-
-export type ModelDerived = {
-  category: string;
-  magnitude: number;            // 0..1
-  sensitivity: "none" | "low" | "high";
-  confidence: number;           // 0..1
-};
 
 const CATEGORY_MAGNITUDE: Record<string, number> = {
   life_event: 0.9,
@@ -30,7 +23,6 @@ const CATEGORY_MAGNITUDE: Record<string, number> = {
   calendar: 0.5,
 };
 
-// Crude keyword sensitivity heuristic — Step 3 will replace this with real judgment.
 const HIGH_SENSITIVITY_KEYWORDS = [
   "grief", "loss", "died", "death", "miss you", "memorial",
   "political", "politics", "rant",
@@ -47,6 +39,18 @@ export function handStubbedMeaning(item: IngestedItem): ModelDerived {
     magnitude,
     sensitivity,
     confidence: 0.7, // stub: modestly confident across the board
+    context_candidates: [], // Step 3B real model adds these
+    connection_read: "stub: no connection_read computed in Step 3A",
+    rationale: {
+      category: "stub: category inferred from source_type",
+      magnitude: "stub: magnitude from CATEGORY_MAGNITUDE lookup",
+      sensitivity: "stub: sensitivity from keyword scan",
+      confidence: "stub: fixed 0.7 across the board",
+      context_candidates: "stub: none computed",
+      connection_read: "stub: none computed",
+    },
+    allowed_claims: [], // Step 3B real model derives from raw_text
+    forbidden_inferences: [],
   };
 }
 
@@ -71,10 +75,10 @@ function inferCategory(item: IngestedItem): string {
   }
 }
 
-function inferSensitivity(item: IngestedItem): ModelDerived["sensitivity"] {
+function inferSensitivity(item: IngestedItem): Sensitivity {
   const text = item.raw_text.toLowerCase();
   for (const kw of HIGH_SENSITIVITY_KEYWORDS) {
     if (text.includes(kw)) return "high";
   }
-  return "none";
+  return "low";
 }

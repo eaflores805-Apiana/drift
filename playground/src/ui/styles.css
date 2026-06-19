@@ -28,6 +28,7 @@ body, html {
   align-items: center;
   flex-wrap: wrap;
 }
+.meta .loading { color: #a66; font-style: italic; }
 
 /* ---- Slider panel ---- */
 .slider-panel {
