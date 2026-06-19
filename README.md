@@ -23,7 +23,9 @@ See `governance/roles.md` for what each seat does and how decisions get signed o
 
 ## Current phase
 
-**Phase 0 + Phase 1** — simulated corpus (40 accounts) and the measured promotion bench. This answers the only gating question: *is the editorial judgment good?* Details in `docs/00-vision/drift-record-and-plan.md` (Part II) and the architecture requirements in `docs/03-decisions/drift-eng1-architecture-review.md`.
+**Phase B — Prove the brain (the Promotion Playground).** Current `[NOW]` step: gold-labeling (Product Owner + 1–2 reviewers). Live status lives in `docs/00-vision/drift-roadmap.md` (the canonical phase map; phases run A → G).
+
+**The one rule:** for any new idea — *"Later. Does it help prove the brain?"* If not, it waits.
 
 ## Repo layout
 

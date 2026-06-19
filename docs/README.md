@@ -1,7 +1,9 @@
 # Drift — Documentation Map
-*Start here to understand what we built and why. Adopts the reading order proposed by Engineer 1 in `03-decisions/drift-senior-project-index-proposal.md`.*
+*Start here to understand what we built and why.*
 
 If you read these in order you should walk away knowing what Drift is, where we are, why it works the way it does, and where to find any detail you need.
+
+**The one rule:** for any new idea — *"Later. Does it help prove the brain?"* If not, it waits.
 
 ## Reading order
 
@@ -20,8 +22,8 @@ Founding discussion: every `[AGREED]` item, why it was agreed, what was rejected
 `03-decisions/drift-eng1-architecture-review.md`
 Engineer 1's architecture review. Establishes the three required changes — **R1** hybrid scoring (model judges meaning, code computes score), **R2** fail-closed two-layer safety (consent gate at ingest + post-generation claim-grounding), **R3** eval-first (gold labels before scoring) — and the schema refinements (Ingested / ModelDerived / Computed / Decision, listener as first-class object).
 
-`03-decisions/drift-senior-project-index-proposal.md` *(proposal — awaiting Acting Manager call)*
-Engineer 1's proposed v0.1.0 project index. Implies a docs restructure (flat `docs/`, separate `data/`, `prototypes/`, `archive/`, strip `drift-` prefix). Not yet adopted.
+`03-decisions/drift-eng1-review-2026-06-19.md`
+Engineer 1's review of the repo state after the initial CS scaffolding. Flagged visibility (resolved: stay public), phase-vocab inconsistency (A–G wins), and README dedup (this doc is canonical).
 
 ### 4. The engine spec — how it works  ★
 `01-spec/drift-rules-and-format.md`
