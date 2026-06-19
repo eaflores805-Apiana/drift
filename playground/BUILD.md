@@ -10,12 +10,14 @@
 
 ## Step 1 — Shell + consent gate
 **Build:** load `listener.json` + `seed-items.json`; run the consent gate; render items in four columns (drop / ambient / voiced / expandable) using a **stub scorer** (fixed or random numbers — real scoring comes later).
+**Consent gate (eligible-audience semantics, per team ruling 2026-06-19):** pass items that are published to the listener's eligible audience (`public`, `published`, or fixture-valid `friends`). Drop private, unknown, blank, missing, or unsupported scope. Audience scope must remain attached to the item for later safety/tone decisions. The gate is *only* "is this eligible to enter the system?" — whether/how to voice, sensitivity, and detail-level happen downstream. See `docs/correspondence/team-consent-gate-ruling-2026-06-19.md`.
 **Done-when:**
 - All 40 items and `listener_001` load.
 - **`p002` (the private DM) never appears in any column** — it's dropped at the gate. *(hard check)*
+- A `friends`-scoped item such as `p004` or `p036` **passes** the consent gate and reaches scoring.
 - Blank out one item's `audience_scope` as a test → it drops too (fail-closed on unknown).
 - The gate makes **no model call**.
-**Who checks:** Engineer 1 confirms p002 is gone and the gate is deterministic.
+**Who checks:** Engineer 1 confirms p002 is gone, a friends item survives, and the gate is deterministic.
 
 ## Step 2 — Deterministic scorer + sliders
 **Build:** the scoring function over structural fields (closeness from `listener.closeness_map`, timeliness from `timestamp`/`expires_at`, novelty from `novelty_key`, focus weights) plus *hand-stubbed* ModelDerived fields for now. Wire sliders for the weights and thresholds.

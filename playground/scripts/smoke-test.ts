@@ -7,6 +7,7 @@ const SEP = "=".repeat(60);
 
 console.log(SEP);
 console.log("Drift Playground — Step 1 smoke test");
+console.log("Eligible-audience semantics per team ruling 2026-06-19");
 console.log(SEP);
 
 const { listener, items, warnings } = loadSimulated();
@@ -39,7 +40,7 @@ for (const d of decisions) {
 const p002 = decisions.find((d) => d.item_id === "p002");
 const check3 = p002?.bucket === "drop";
 console.log(
-  `[${check3 ? "PASS" : "FAIL"}] Check 3: p002 dropped (got bucket='${p002?.bucket}')`
+  `[${check3 ? "PASS" : "FAIL"}] Check 3: p002 drops (private → bucket='${p002?.bucket}')`
 );
 
 const check4 =
@@ -58,8 +59,21 @@ console.log(
     ")"
 );
 
+// New: friends-scoped items reach scoring (the team-ruling amendment)
+const p004 = decisions.find((d) => d.item_id === "p004");
+const p036 = decisions.find((d) => d.item_id === "p036");
+const friendsReachScoring =
+  p004 !== undefined &&
+  p036 !== undefined &&
+  p004.bucket !== "drop" &&
+  p036.bucket !== "drop";
 console.log(
-  `[PASS] Check 6: Zero model calls (no model client imported in Step 1 path)`
+  `[${friendsReachScoring ? "PASS" : "FAIL"}] Check 6: Friends-scoped items reach scoring ` +
+    `(p004 → '${p004?.bucket}', p036 → '${p036?.bucket}')`
+);
+
+console.log(
+  `[PASS] Check 7: Zero model calls (no model client imported in Step 1 path)`
 );
 
 console.log("\n--- Bucket summary ---");
@@ -80,7 +94,7 @@ for (const d of drops) {
 }
 
 console.log("\n" + SEP);
-const allPass = check1 && check2 && check3 && check4 && check5;
+const allPass = check1 && check2 && check3 && check4 && check5 && friendsReachScoring;
 console.log(`SMOKE TEST: ${allPass ? "ALL CHECKS PASS" : "SOME CHECKS FAILED"}`);
 console.log(SEP);
 process.exit(allPass ? 0 : 1);
