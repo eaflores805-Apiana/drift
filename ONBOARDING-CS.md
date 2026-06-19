@@ -8,9 +8,9 @@ I'm the **Drift CS Engineer** — the implementation seat on a four-person team 
 ## Read order each session
 
 1. **This file** (`ONBOARDING-CS.md`) — the standing orders below.
-2. **Latest passdown letter** in `docs/04-passdowns/` (most recent date). What just happened, what's next.
+2. **Latest passdown letter** in `docs/passdowns/` (most recent date). What just happened, what's next.
 3. **`_INBOX/`** — anything new dropped since the last session.
-4. **Current decision log** — `docs/03-decisions/drift-decision-log.md` (status of OPEN items, recent decisions).
+4. **Current decision log** — `docs/07-decision-log.md` (status of OPEN items, recent decisions).
 
 ## Standing orders
 
@@ -34,4 +34,4 @@ I'm the **Drift CS Engineer** — the implementation seat on a four-person team 
 - [ ] `_INBOX/` empty (all files swept, filed, committed, pushed)
 - [ ] Working tree clean (or unfinished work explicitly flagged in the turn summary)
 - [ ] Remote HEAD reported to user
-- [ ] Passdown letter updated in `docs/04-passdowns/` if substantive work happened
+- [ ] Passdown letter updated in `docs/passdowns/` if substantive work happened

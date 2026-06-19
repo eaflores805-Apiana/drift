@@ -16,7 +16,7 @@
 
 A file is **FILED** only when all three are true:
 
-- It's in its destination folder under `docs/` or `experiments/`.
+- It's in its destination folder under `docs/`, `playground/`, `prototypes/`, or `examples/`.
 - The commit containing it is on `origin/main` (verified by remote SHA match).
 - The CS Engineer has reported the destination and the remote HEAD to the user.
 

@@ -4,25 +4,35 @@
 ## How it works
 
 1. Anyone (acting manager, Engineer 1, Engineer 2) drops files into this folder during or between sessions.
-2. The CS Engineer (Claude) reads each file at the start of the next session, classifies it, and moves it to its proper destination under `docs/`, `experiments/`, or elsewhere.
+2. The CS Engineer (Claude) reads each file at the start of the next session, classifies it, and moves it to its proper destination under `docs/`, `playground/`, `prototypes/`, or `examples/`.
 3. After filing, the CS Engineer commits and pushes, then reports what landed where (with the post-push remote HEAD).
 4. `_INBOX/` should be empty at the end of every CS Engineer turn.
 
 ## Naming hints
 
-Filenames don't have to be perfect — the CS Engineer renames during filing — but a hint helps classification:
+Filenames don't have to be perfect — the CS Engineer renames during filing — but a hint helps classification. Per Senior's migration plan v0.1.0, the `drift-` prefix is stripped on filing.
 
 | Filename hint | Destination |
 |---|---|
-| `drift-decision-*`, decision logs | `docs/03-decisions/` |
-| `drift-eng[12]-*` (Eng1/Eng2 reviews & specs) | `docs/03-decisions/` or `docs/01-spec/` |
-| `drift-spec-*`, engine schema updates | `docs/01-spec/` |
-| `drift-design-*`, `*.html`, `*.png` mockups | `docs/02-design/` |
-| `passdown-*` | `docs/04-passdowns/` |
-| `phase[012]-*` artifact | `experiments/phase-N-.../` |
+| `drift-roadmap*` | `docs/00-roadmap.md` |
+| `drift-product-principles*` | `docs/01-product-principles.md` |
+| `drift-record-*`, `drift-plan-*` | `docs/02-record-and-plan.md` |
+| `drift-rules*`, engine schema/format | `docs/03-rules-and-format.md` |
+| `drift-architecture-*` | `docs/04-architecture-review.md` |
+| `drift-playground-spec*` | `docs/05-promotion-playground-spec.md` |
+| `drift-gold-labeling*`, eval instrument | `docs/06-gold-labeling-guide.md` |
+| `drift-decision-log*`, `drift-decisions*` | `docs/07-decision-log.md` |
+| `drift-design*` (background origin doc) | `docs/design.md` |
+| `drift-eng[12]-*` review / memo / letter (dated) | `docs/correspondence/<author>-<topic>-<date>.md` |
+| `passdown-*` | `docs/passdowns/` |
+| `*.html`, `*.png` UI mockups / reference imgs | `prototypes/` or `prototypes/reference-images/` |
+| `dj-lines*`, sample DJ outputs | `examples/` |
+| `listener.json`, `seed-items.json`, `gold-labels.json` | `playground/data/` |
+| `bench-run-*`, tuning outputs | `playground/runs/` |
+| Source code (scoring / safety / prompts / UI) | `playground/src/<area>/` |
 
 ## What does NOT go here
 
-- Production code (goes to a future `src/` when we have one).
+- Production code (after Phase B, lives in `playground/src/`; a future real `src/` may come later).
 - Anything that should land on a feature branch — drop a passdown note instead.
 - `.DS_Store` / OS junk (caught by `.gitignore`).

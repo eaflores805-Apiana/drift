@@ -5,49 +5,34 @@ If you read these in order you should walk away knowing what Drift is, where we 
 
 **The one rule:** for any new idea — *"Later. Does it help prove the brain?"* If not, it waits.
 
-## Reading order
+## Reading order (the numbered docs)
 
-### 1. The map — where we are
-`00-vision/drift-roadmap.md` ← canonical orientation
-Phases A → G, current `[NOW]` marker, exit criteria for the current phase, and the on-task rule (*"Later. Does it help prove the brain?"*).
+| # | File | What it is |
+|---|---|---|
+| 0 | `00-roadmap.md` | The map — phases A–G, where we are now, exit criteria |
+| 1 | `01-product-principles.md` *(forthcoming — Engineer 1)* | The product principles distilled |
+| 2 | `02-record-and-plan.md` | Clean record + original phased plan (Phase 0/1/2/3+ numbering predates the roadmap's A–G) |
+| 3 | `03-rules-and-format.md` ★ | Engine spec: schemas, scoring, host rules |
+| 4 | `04-architecture-review.md` ★ | Eng1 architecture: R1 hybrid scoring, R2 fail-closed safety, R3 eval-first; the Ingested / ModelDerived / Computed / Decision schema groupings |
+| 5 | `05-promotion-playground-spec.md` ★ | Buildable v1 spec for the bench |
+| 6 | `06-gold-labeling-guide.md` ★ | The labeling instrument — the eval target |
+| 7 | `07-decision-log.md` | Founding decisions, rationale, rejected alternatives, OPEN items |
 
-### 2. The record + plan — what & why
-`00-vision/drift-record-and-plan.md`
-The clean record + the original phased execution plan. *Note: the phase numbering in this doc (0/1/2/3/4+) predates the roadmap's A–G nomenclature; trust the roadmap as the live phase map.*
+★ = build-critical for the CS Engineer. If reading only four, read these four.
 
-### 3. The decisions — the discussion record
-`03-decisions/drift-decision-log.md`
-Founding discussion: every `[AGREED]` item, why it was agreed, what was rejected, what's deferred, what's still `OPEN`.
+## Background (unnumbered)
 
-`03-decisions/drift-eng1-architecture-review.md`
-Engineer 1's architecture review. Establishes the three required changes — **R1** hybrid scoring (model judges meaning, code computes score), **R2** fail-closed two-layer safety (consent gate at ingest + post-generation claim-grounding), **R3** eval-first (gold labels before scoring) — and the schema refinements (Ingested / ModelDerived / Computed / Decision, listener as first-class object).
+- `design.md` — original strategy + full system design (deep origin; partly superseded by the numbered docs)
 
-`03-decisions/drift-eng1-review-2026-06-19.md`
-Engineer 1's review of the repo state after the initial CS scaffolding. Flagged visibility (resolved: stay public), phase-vocab inconsistency (A–G wins), and README dedup (this doc is canonical).
+## Other doc subfolders
 
-### 4. The engine spec — how it works  ★
-`01-spec/drift-rules-and-format.md`
-Attention ladder, eligibility gate, promotion score, host behavior rules, schemas (Item / Score / Segment / spoken format / interaction events), tunable parameters.
+- `correspondence/` — dated memos, reviews, letters (not canonical decisions; kept out of the decision log to keep it clean)
+- `passdowns/` — chronological CS Engineer session letters; latest date = current state
 
-### 5. The gold labels — the eval target  ★
-`01-spec/drift-gold-labeling-guide.md`
-The labeling instrument. Defines what "correct" looks like for the bench — the asset per Eng1 R3. Supersedes any inline label template in the seed corpus.
+## Data + prototypes (live outside `docs/`)
 
-### 6. The data — the messy raw material  ★
-`experiments/phase-0-corpus/drift-seed-corpus.json`
-The simulated 40-account corpus + the defined fictional listener. What the bench loads.
-
-### 7. The design — what it looks like
-- `02-design/drift-onecard.html` — current locked one-card prototype (reference for Phase D, **not now**)
-- `02-design/drift-demo.html` — earlier stacked-feed prototype (archived, superseded by onecard)
-- `02-design/reference-images/` — visual target references
-
-### 8. The passdowns — what just happened
-`04-passdowns/` — chronological CS Engineer session letters. Latest date = current state.
-
-## Build-critical for the CS Engineer (★)
-If reading only four: **rules-and-format**, **architecture-review**, **gold-labeling-guide**, **seed-corpus.json**.
-
-## Known gaps (referenced but not yet filed)
-- `design.md` — referenced as "original strategy + system design (deep version)." Background, not build-critical.
-- **Engineer 2's Promotion Playground v1 spec** — referenced by Eng1's architecture review. Expected to land in `01-spec/` once R1–R3 are incorporated.
+- `../playground/data/seed-corpus.json` — 40-account simulated corpus + defined listener. Engineer 1 to split into `listener.json` + `seed-items.json` + `gold-labels.json` once the persona call is resolved.
+- `../prototypes/onecard.html` — locked one-card UI reference (Phase D target, not now)
+- `../prototypes/demo.html` — archived earlier prototype
+- `../prototypes/reference-images/` — visual target references
+- `../examples/dj-lines.md` *(forthcoming — Engineer 1)* — sample DJ outputs
