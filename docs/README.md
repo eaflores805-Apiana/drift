@@ -26,7 +26,7 @@ If you read these in order you should walk away knowing what Drift is, where we 
 
 ## Other doc subfolders
 
-- `correspondence/` — dated memos, reviews, letters (not canonical decisions; kept out of the decision log to keep it clean)
+- `correspondence/` — dated memos, reviews, letters from Engineer 1, the team, or CS (not canonical decisions; kept out of the decision log to keep it clean). Notable as of 2026-06-19: the eligible-audience consent-gate ruling, the roles-and-authority v0.1.1 memo, Step 3A acceptance, and the **Step 3B live meaning-pass proposal** (`cs-step3b-meaning-pass-proposal-2026-06-19.md`) awaiting team sign-off before any live API call.
 - `passdowns/` — chronological CS Engineer session letters; latest date = current state
 
 ## The bench (`playground/`)

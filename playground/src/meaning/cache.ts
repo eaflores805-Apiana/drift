@@ -15,6 +15,13 @@ export type CacheStats = {
  *
  * Step 3A: in-memory only. Step 3B will introduce a disk-backed cache
  * (location TBD via team approval) so meaning passes survive restarts.
+ *
+ * NOTE — Step 3B will EXPAND the cache key per team ruling 2026-06-19 to:
+ *   `${item_id}@@${prompt_version}@@${model_id}@@${content_hash}`
+ * so that swapping models or editing item content forces a fresh judgment.
+ * The Step 3A in-memory cache stays at the 2-part key because the mock has
+ * a fixed prompt_version and there is no model swap to track. See
+ * `docs/correspondence/cs-step3b-meaning-pass-proposal-2026-06-19.md`.
  */
 export class MeaningCache {
   private store = new Map<string, ModelDerived>();

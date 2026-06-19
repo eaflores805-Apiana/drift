@@ -27,6 +27,16 @@ export const RationaleSchema = z.object({
 });
 export type Rationale = z.infer<typeof RationaleSchema>;
 
+/**
+ * Sensitivity tier — `low | medium | high`, aligned with `meaning-pass-v1.md`.
+ *
+ * Important per the 2026-06-19 team ruling: **"low" does not mean "zero risk
+ * forever".** It means the item is normal to speak about (no special restraint
+ * around the topic), but the rest of the safety machinery still applies to
+ * every item — consent gate, claim-grounding, proximity-routes-behavior, the
+ * glad-test. There is no "none" tier; the previous `none|low|high` schema
+ * was widened to match the prompt.
+ */
 export const SensitivitySchema = z.enum(["low", "medium", "high"]);
 export type Sensitivity = z.infer<typeof SensitivitySchema>;
 
