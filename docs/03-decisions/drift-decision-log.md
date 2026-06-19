@@ -120,7 +120,8 @@ For a trust-dependent product the asymmetry is fatal; lead so hard with the cons
 ## OPEN — needs decision / three-way sign-off
 
 1. **The name.** "Drift" is taken — a registered AI/software company (conversational marketing, acquired by Salesloft). **Must change before any public-facing step.** `[OPEN — blocker]`
-2. **GTM posture: loud-public vs quiet-direct.** Loud public demand can be *leverage* or a *roadmap for platforms to clone* (the Huxe risk). Engineer 1's lean: quiet-direct, given how copyable the idea is. Needs the team. `[OPEN]`
+2. **GTM posture: loud-public vs quiet-direct.** Loud public demand can be *leverage* or a *roadmap for platforms to clone* (the Huxe risk). Engineer 1's lean: quiet-direct, given how copyable the idea is. Needs the team. `[RESOLVED 2026-06-19 — public]`
+   - *Resolution:* Acting Manager elected to make the repo public to give web-based LLM teammates direct URL access (private-repo URLs can't be fetched without auth). Accepts the cloning/visibility risk in exchange for collaboration ergonomics. Repo protected by proprietary `LICENSE` (visibility is not a license). Pending formal ratification by Engineer 1 and Engineer 2.
 3. **Scoring weights & thresholds.** To be tuned empirically via the bench, not decided on paper. `[OPEN — resolved by Phase 1]`
 4. **Hardest open engineering problems:** (a) relevance-to-you computation; (b) inferring magnitude for friend posts that are life events without saying so. `[OPEN — research]`
 5. **Owned-network thesis** as a real product direction (vs. just the sim constraint). `[OPEN — own conversation]`
