@@ -98,13 +98,41 @@ record(
 );
 
 // 8. Timeliness uses expires_at (Team Lead hard check #2)
-const withExpiry = timeliness("2026-06-19T18:00:00", 0.5); // ~5h to expiry → 1.0
-const noExpiry = timeliness(null, 0.5);                    // → baseline 0.5
-const expired = timeliness("2026-06-18T00:00:00", 0.5);    // past → 0.0
+//    All three calls anchor a "recent post" timestamp so the no-expiry case
+//    sits at the neutral band per the 2026-06-19 timeliness patch.
+const withExpiry = timeliness("2026-06-19T12:00:00", "2026-06-19T18:00:00", 0.5); // 5h to expiry → 1.0
+const recentNoExpiry = timeliness("2026-06-19T12:00:00", null, 0.5);              // 1h old → baseline 0.5
+const expired = timeliness("2026-06-17T13:00:00", "2026-06-18T00:00:00", 0.5);    // past expiry → 0
 record(
   "Check 8: Timeliness uses expires_at",
-  withExpiry.value > noExpiry.value && expired.value === 0 && noExpiry.value === 0.5,
-  `(soon=${withExpiry.value}, none=${noExpiry.value}, expired=${expired.value})`
+  withExpiry.value > recentNoExpiry.value &&
+    expired.value === 0 &&
+    recentNoExpiry.value === 0.5,
+  `(soon=${withExpiry.value}, recent-no-exp=${recentNoExpiry.value}, expired=${expired.value})`
+);
+
+// 8a. No-expiry items decay by post age (the 2026-06-19 patch)
+const oldNoExp = timeliness("2026-06-17T12:00:00", null, 0.5); // ~49h old → ≤72h band → 0.35
+record(
+  "Check 8a: Recent no-expiry is fresher than older no-expiry",
+  recentNoExpiry.value > oldNoExp.value,
+  `(recent=${recentNoExpiry.value}, ~2d-old=${oldNoExp.value})`
+);
+
+// 8b. One-week-old no-expiry decays from baseline (≤7d band)
+const oneWeekNoExp = timeliness("2026-06-13T13:00:00", null, 0.5); // exactly 144h (6d) → ≤7d → 0.20
+record(
+  "Check 8b: ~1-week-old no-expiry decays from baseline",
+  oneWeekNoExp.value < 0.5 && oneWeekNoExp.value < recentNoExpiry.value,
+  `(value=${oneWeekNoExp.value}, band='${oneWeekNoExp.decay_band}')`
+);
+
+// 8c. Two-week-old no-expiry decays further (>7d band)
+const twoWeekNoExp = timeliness("2026-06-05T13:00:00", null, 0.5); // 336h (14d) → >7d → 0.10
+record(
+  "Check 8c: ~2-week-old no-expiry decays further than 1-week-old",
+  twoWeekNoExp.value < oneWeekNoExp.value,
+  `(value=${twoWeekNoExp.value}, band='${twoWeekNoExp.decay_band}')`
 );
 
 // 9. Novelty uses novelty_key (Team Lead hard check #3)

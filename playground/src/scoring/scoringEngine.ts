@@ -81,7 +81,7 @@ function scoreOne(
 
   const meaning = handStubbedMeaning(item);
   const close = closeness(item, listener);
-  const time = timeliness(item.expires_at, settings.timelinessBaseline);
+  const time = timeliness(item.timestamp, item.expires_at, settings.timelinessBaseline);
   const relevance = settings.relevanceBaseline;
   const focus = focusBoost(item.source_type, settings.focusWeights);
 
@@ -157,16 +157,11 @@ function buildReason(ctx: {
   if (!ctx.novel) {
     return `not novel (novelty_key seen within ${ctx.settings.noveltyWindowHours}h) → ambient`;
   }
-  const timeNote = ctx.time.expired
-    ? "expired"
-    : ctx.time.hours_until_expiry === null
-      ? "no expiry"
-      : `${ctx.time.hours_until_expiry.toFixed(1)}h to expiry`;
   return (
     `${ctx.meaning.category}(mag=${ctx.meaning.magnitude.toFixed(2)}) ` +
     `× closeness=${ctx.close.value.toFixed(2)}(${ctx.close.tier}) ` +
     `× rel-boost(${ctx.settings.relevanceBaseline.toFixed(2)}) ` +
-    `× time-boost(${ctx.time.value.toFixed(2)}, ${timeNote}) ` +
+    `× time-boost(${ctx.time.value.toFixed(2)}, ${ctx.time.decay_band}) ` +
     `= ${ctx.rawScore.toFixed(3)}, ` +
     `× focus(${ctx.focus.toFixed(2)}) = ${ctx.effective.toFixed(3)} ` +
     `vs voice=${ctx.settings.voiceThreshold.toFixed(2)} / exp=${ctx.settings.expandableThreshold.toFixed(2)} → ${ctx.bucket}`
