@@ -1,7 +1,22 @@
 # Drift — Product Principles
-> **v0.1.0** · updated 2026-06-19 · the guardrail against genericness. If a feature or a DJ line violates one of these, it's wrong — however clever it is. The failure mode we're guarding against: **Drift becoming "an AI that reads your feed out loud."**
+> **v0.2.0** · updated 2026-06-19 · the guardrail against genericness. If a feature or a DJ line violates one of these, it's wrong — however clever it is. The failure mode we're guarding against: **Drift becoming "an AI that reads your feed out loud."**
+>
+> *v0.2.0 — added "Why Drift exists" (the mission/grievance behind the principles).*
 
 **Positioning:** Drift is a music-first personal radio station powered by an editorial judgment engine. *The app is the stage; the engine is the product.*
+
+---
+
+## Why Drift exists
+Social feeds stopped feeling social. People open them to see their friends, family, places, teams, creators, and the companies they follow — and get a machine-optimized stream of strangers, shorts, memes, ads, rage bait, and filler instead. The problem isn't that people stopped wanting connection. It's that the feed turned connection into noise.
+
+> **The feed became noise. Drift turns the signal back into radio.**
+
+Drift's bet is structural: restraint instead of engagement, signal instead of time-on-app. The DJ doesn't try to maximize scrolling, posting, or staying — it earns the microphone only when something would make the listener feel more connected to their actual world.
+
+That's why "doorway, not destination" matters: surface the moment, then point the listener back to life — text the friend, go to the show, support the team, catch the drop.
+
+The grievance is the story. Music is the habit. Permissioned social context is the fuel. The judgment engine is how Drift finds the signal without becoming the feed again.
 
 ---
 

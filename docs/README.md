@@ -17,6 +17,7 @@ If you read these in order you should walk away knowing what Drift is, where we 
 | 5 | `05-promotion-playground-spec.md` ★ | Buildable v1 spec for the bench |
 | 6 | `06-gold-labeling-guide.md` ★ | The labeling instrument — the eval target |
 | 7 | `07-decision-log.md` | Founding decisions, rationale, rejected alternatives, OPEN items |
+| 8 | `08-value-and-moat.md` | Where the value is — the asset and the moat. The "social graph" data dependency and what it forces strategically |
 
 ★ = build-critical for the CS Engineer. If reading only four, read these four.
 
