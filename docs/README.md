@@ -35,6 +35,7 @@ If you read these in order you should walk away knowing what Drift is, where we 
 - `../playground/ARCHITECTURE.md` — **approved principles** (modular pipeline, `IngestedItem` + `Decision` contracts, test-mode/real-mode parity, "model calls are services, not source of truth"). The specifics — exact schemas, module layout, libraries — are CS's to propose and the team's to approve, per the roles-and-authority memo.
 - `../playground/BUILD.md` — build sequence + verification checks (Steps 1–6, with done-when criteria and the four checks we never skip)
 - `../playground/meaning-pass-v1.md` — the meaning-pass prompt (v1, owned by Engineer 1). `prompt_version: meaning-pass-v0.1.0`. Unblocks Step 3+; judges meaning only, code decides the bucket
+- `../playground/{package.json,tsconfig.json,vite.config.ts,index.html}` + `../playground/src/` — the bench code (Step 1 complete as of 2026-06-19; TypeScript + Vite + React + Zod). Run `npm install && npm run smoke` inside `playground/` to verify the acceptance checks; `npm run dev` to open the UI.
 - `../playground/data/listener.json` — Listener Fixture 001 (Alex Rivera, Ventura, CA)
 - `../playground/data/seed-items.json` — the simulated item corpus
 - `../playground/data/gold-labels.json` — the gold-label eval set (seeds; grows as the team labels)
