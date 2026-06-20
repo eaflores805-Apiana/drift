@@ -4,6 +4,7 @@ import {
   type IngestedItem,
   type Listener,
 } from "../data/schemas";
+import { type Comparison } from "../evaluation/mismatchTypes";
 import { type CacheStats } from "../meaning/cache";
 import { type ScoringSettings } from "../scoring/scoringEngine";
 import { BucketColumn } from "./BucketColumn";
@@ -14,6 +15,7 @@ type Props = {
   listener: Listener;
   items: IngestedItem[];
   decisions: Decision[];
+  comparisons: Map<string, Comparison>;
   warnings: string[];
   settings: ScoringSettings;
   onSettingsChange: (next: ScoringSettings) => void;
@@ -29,6 +31,7 @@ export function Playground({
   listener,
   items,
   decisions,
+  comparisons,
   warnings,
   settings,
   onSettingsChange,
@@ -46,16 +49,20 @@ export function Playground({
   return (
     <div className="playground">
       <header className="playground-header">
-        <h1>Drift Playground — Step 3A: Cached Meaning Pass (mock)</h1>
+        <h1>Drift Playground — Diagnostic Decision Board</h1>
         <div className="meta">
           <span>
             Listener: <strong>{listener.name}</strong>
             {listener.location ? ` (${listener.location})` : ""}
           </span>
           <span>·</span>
-          <span>Items: <strong>{items.length}</strong></span>
+          <span>
+            Items: <strong>{items.length}</strong>
+          </span>
           <span>·</span>
-          <span>Live model calls: <strong>0</strong></span>
+          <span>
+            Live model calls: <strong>0</strong>
+          </span>
           <span>·</span>
           <span>
             Meaning client: <strong>{clientId}</strong> ({promptVersion})
@@ -78,6 +85,8 @@ export function Playground({
             bucket={bucket}
             decisions={grouped.get(bucket) ?? []}
             itemById={itemById}
+            comparisonById={comparisons}
+            settings={settings}
           />
         ))}
       </div>
@@ -85,6 +94,7 @@ export function Playground({
       <DebugPanel
         items={items}
         decisions={decisions}
+        comparisons={comparisons}
         warnings={warnings}
         settings={settings}
         cacheStats={cacheStats}

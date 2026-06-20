@@ -193,6 +193,102 @@ body, html {
   line-height: 1.4;
 }
 
+/* ---- Pipeline strip (safety-coded; never reused by gold comparison) ---- */
+.pipeline-strip {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 2px;
+  margin-top: 6px;
+  font-size: 10px;
+  font-family: ui-monospace, monospace;
+}
+.stage {
+  padding: 1px 6px;
+  border-radius: 3px;
+  border: 1px solid transparent;
+}
+.stage-pass    { background: #e0f0e0; color: #2a6a2a; border-color: #b8d8b8; }
+.stage-caution { background: #fdf3d3; color: #8a6a1a; border-color: #e8d49a; }
+.stage-fail    { background: #fde0e0; color: #9a3a3a; border-color: #e8b8b8; }
+.stage-na      { background: #eee; color: #999; border-color: #ddd; }
+.stage-sep     { margin: 0 4px; color: #aaa; font-weight: 400; }
+
+/* ---- Gold comparison (NEUTRAL palette; distinct from safety colors) ---- */
+.gold-comparison {
+  margin-top: 6px;
+  padding: 5px 8px;
+  border-radius: 3px;
+  font-size: 11px;
+  border: 1px solid #ccc;
+  background: #f7f7f9;        /* neutral gray-blue, NOT the safety palette */
+}
+.gold-agreement      { border-color: #c8c8d8; background: #f4f4fa; }
+.gold-mismatch       { border-color: #b8c2d2; background: #eef1f7; }
+.gold-review-needed  { border-color: #d4cdbf; background: #faf8f1; }
+.gold-row { display: flex; gap: 6px; align-items: center; }
+.gold-key { color: #777; font-weight: 600; }
+.gold-val { color: #222; font-family: ui-monospace, monospace; }
+.gold-val-missing { color: #999; font-style: italic; }
+.gold-sep { color: #aaa; }
+.gold-comparison-line { margin-top: 3px; color: #555; }
+.gold-agree            { color: #2a4a8a; font-weight: 600; }
+.gold-mismatch-label   { color: #4a4a8a; font-weight: 600; }
+.gold-review-label     { color: #6a5a3a; font-weight: 600; }
+.gold-mismatch-type    { background: #e8e8f0; padding: 1px 4px; border-radius: 2px; color: #2a2a5a; }
+.gold-reason {
+  margin-top: 3px;
+  color: #777;
+  font-size: 10px;
+  font-style: italic;
+}
+
+/* ---- Factor bars ---- */
+.factor-bars {
+  margin-top: 6px;
+  padding: 4px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.factor-row {
+  display: grid;
+  grid-template-columns: 90px 1fr 44px;
+  gap: 8px;
+  align-items: center;
+  font-size: 10px;
+  font-family: ui-monospace, monospace;
+}
+.factor-label { color: #777; }
+.factor-value { color: #222; text-align: right; }
+.factor-bar {
+  position: relative;
+  height: 8px;
+  background: #f0eada;
+  border-radius: 2px;
+  overflow: visible;
+}
+.factor-bar-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: #c9b97a;
+  border-radius: 2px;
+}
+.factor-row-score .factor-label { color: #333; font-weight: 600; }
+.factor-bar-score { background: #ede5cf; height: 10px; }
+.factor-bar-fill-score { background: #8a7d4d; }
+.factor-bar-tick {
+  position: absolute;
+  top: -3px;
+  bottom: -3px;
+  width: 1px;
+  background: #555;
+}
+.factor-bar-tick-voice      { background: #2a4a8a; }
+.factor-bar-tick-expandable { background: #6a3a8a; }
+
 /* ---- Debug panel ---- */
 .debug {
   margin-top: 20px;

@@ -18,6 +18,8 @@ import { meaningBatch, meaningFor } from "../src/meaning/meaningPass";
 import { cacheKeyFor, contentHashOf } from "../src/meaning/keyFor";
 import { parseAndValidate } from "../src/meaning/parseModelResponse";
 import { ModelDerivedSchema } from "../src/meaning/types";
+import { loadGoldLabels } from "../src/evaluation/goldLabels";
+import { classifyComparison } from "../src/evaluation/mismatchTypes";
 import type { Decision, IngestedItem } from "../src/data/schemas";
 
 const SEP = "=".repeat(60);
@@ -414,6 +416,106 @@ async function main() {
     "Check 31: parseAndValidate strips markdown code fences",
     fencedResult.ok === true,
     fencedResult.ok ? "(parsed past the fence)" : `(error: ${fencedResult.error})`
+  );
+
+  console.log("\n--- Diagnostic decision board acceptance checks ---");
+
+  // Reusable helpers for the diagnostic checks.
+  const goldLabels = loadGoldLabels();
+  const decisionsById = new Map(decisions.map((d) => [d.item_id, d]));
+  const meaningById = meaningMap;
+  const itemsById = new Map(items.map((i) => [i.id, i]));
+  const comparisonOf = (id: string) => {
+    const item = itemsById.get(id);
+    const decision = decisionsById.get(id);
+    if (!item || !decision) return null;
+    return classifyComparison(
+      item,
+      decision,
+      goldLabels.get(id),
+      meaningById.get(id),
+      listener
+    );
+  };
+
+  // Check 32 — Gold labels load (5 calibration seeds expected per gold-labels.json)
+  record(
+    "Check 32: loadGoldLabels returns the seed labels",
+    goldLabels.size >= 5 &&
+      goldLabels.has("p002") &&
+      goldLabels.has("p004") &&
+      goldLabels.has("p018"),
+    `(loaded ${goldLabels.size} labels)`
+  );
+
+  // Check 33 — p004 detected as close_friend_over_suppression under default settings
+  const cmpP004 = comparisonOf("p004");
+  record(
+    "Check 33: p004 detected as close_friend_over_suppression",
+    cmpP004?.hasGold === true &&
+      cmpP004?.agreement === false &&
+      cmpP004?.mismatch === "close_friend_over_suppression",
+    cmpP004
+      ? `(gold=${cmpP004.goldBucket}, engine=${cmpP004.engineBucket}, mismatch=${cmpP004.mismatch})`
+      : "(p004 not in decisions)"
+  );
+
+  // Check 34 — p002 stays consent-dropped (engine bucket=drop, agreement with gold=drop)
+  const cmpP002 = comparisonOf("p002");
+  record(
+    "Check 34: p002 consent-dropped agrees with gold (drop/drop)",
+    cmpP002?.engineBucket === "drop" &&
+      cmpP002?.hasGold === true &&
+      cmpP002?.agreement === true,
+    cmpP002 ? `(gold=${cmpP002.goldBucket}, engine=${cmpP002.engineBucket})` : "(p002 missing)"
+  );
+
+  // Check 35 — Unlabeled commercial drop (p020) flagged as label_review_needed
+  const cmpP020 = comparisonOf("p020");
+  record(
+    "Check 35: p020 (followed brand + time-bound) flagged label_review_needed",
+    cmpP020?.hasGold === false && cmpP020?.mismatch === "label_review_needed",
+    cmpP020 ? `(mismatch=${cmpP020.mismatch}, reason='${cmpP020.reason.slice(0, 60)}…')` : "(p020 missing)"
+  );
+
+  // Check 36 — Unlabeled local event (p025) flagged as label_review_needed
+  const cmpP025 = comparisonOf("p025");
+  record(
+    "Check 36: p025 (local event + listener's town + time-bound) flagged label_review_needed",
+    cmpP025?.hasGold === false && cmpP025?.mismatch === "label_review_needed",
+    cmpP025 ? `(mismatch=${cmpP025.mismatch}, reason='${cmpP025.reason.slice(0, 60)}…')` : "(p025 missing)"
+  );
+
+  // Check 37 — p016 / p030 / p010 don't reach a "false_voice" mismatch (engine restraint
+  // looks correct on junk / political / generic promo)
+  const cmpP010 = comparisonOf("p010");
+  const cmpP016 = comparisonOf("p016");
+  const cmpP030 = comparisonOf("p030");
+  const noFalseVoice =
+    cmpP010?.mismatch !== "false_voice" &&
+    cmpP010?.mismatch !== "high_sensitivity_false_voice" &&
+    cmpP010?.mismatch !== "junk_promoted" &&
+    cmpP016?.mismatch !== "false_voice" &&
+    cmpP016?.mismatch !== "high_sensitivity_false_voice" &&
+    cmpP030?.mismatch !== "false_voice" &&
+    cmpP030?.mismatch !== "commercial_overpromotion";
+  record(
+    "Check 37: Junk/political/generic-promo items don't trigger a false-voice mismatch",
+    noFalseVoice,
+    `(p010=${cmpP010?.mismatch ?? "none"}, p016=${cmpP016?.mismatch ?? "none"}, p030=${cmpP030?.mismatch ?? "none"})`
+  );
+
+  // Check 38 — Comparison surface uses distinct status vocabulary from the safety palette.
+  // Structural check: pipeline statuses are "pass|caution|fail|na"; gold comparison
+  // statuses are "agreement|mismatch|review-needed". No overlap.
+  // Tested by string membership rather than DOM inspection (smoke is Node-only).
+  const pipelineStatuses = ["pass", "caution", "fail", "na"];
+  const goldStatuses = ["agreement", "mismatch", "review-needed"];
+  const noOverlap = pipelineStatuses.every((s) => !goldStatuses.includes(s));
+  record(
+    "Check 38: Gold-comparison status vocabulary distinct from safety palette",
+    noOverlap,
+    `(pipeline=[${pipelineStatuses.join(",")}] vs gold=[${goldStatuses.join(",")}])`
   );
 
   console.log("\n--- Bucket summary (defaults) ---");

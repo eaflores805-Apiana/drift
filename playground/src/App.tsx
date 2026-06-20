@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { loadSimulated } from "./data/adapters/simulatedAdapter";
+import { loadGoldLabels } from "./evaluation/goldLabels";
+import { classifyComparison, type Comparison } from "./evaluation/mismatchTypes";
 import { MeaningCache } from "./meaning/cache";
 import { MockMeaningClient } from "./meaning/mockClient";
 import { meaningBatch } from "./meaning/meaningPass";
@@ -14,13 +16,12 @@ import { Playground } from "./ui/Playground";
 
 export function App() {
   const { listener, items, warnings } = useMemo(() => loadSimulated(), []);
+  const goldLabels = useMemo(() => loadGoldLabels(), []);
   const cache = useMemo(() => new MeaningCache(), []);
   const client = useMemo(() => new MockMeaningClient(), []);
   const [settings, setSettings] = useState<ScoringSettings>(DEFAULT_SETTINGS);
   const [meaningMap, setMeaningMap] = useState<MeaningMap | null>(null);
 
-  // Meaning pass runs ONCE on load (and on client change). Sliders do not
-  // trigger this — they only re-run scoring.
   useEffect(() => {
     let cancelled = false;
     meaningBatch(items, client, cache).then((m: Map<string, ModelDerived>) => {
@@ -36,11 +37,24 @@ export function App() {
     [items, listener, meaningMap, settings]
   );
 
+  const comparisons = useMemo(() => {
+    const map = new Map<string, Comparison>();
+    for (const d of decisions) {
+      const item = items.find((i) => i.id === d.item_id);
+      if (!item) continue;
+      const gold = goldLabels.get(d.item_id);
+      const meaning = meaningMap?.get(d.item_id);
+      map.set(d.item_id, classifyComparison(item, d, gold, meaning, listener));
+    }
+    return map;
+  }, [items, listener, decisions, goldLabels, meaningMap]);
+
   return (
     <Playground
       listener={listener}
       items={items}
       decisions={decisions}
+      comparisons={comparisons}
       warnings={warnings}
       settings={settings}
       onSettingsChange={setSettings}
