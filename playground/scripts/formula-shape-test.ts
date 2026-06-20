@@ -33,7 +33,12 @@ import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { loadSimulated } from "../src/data/adapters/simulatedAdapter";
 import { type IngestedItem, type Listener } from "../src/data/schemas";
-import { loadGoldLabels, type GoldLabel } from "../src/evaluation/goldLabels";
+import {
+  loadCommunityCluster,
+  loadGoldLabels,
+  type CommunityClusterLabel,
+  type GoldLabel,
+} from "../src/evaluation/goldLabels";
 import { DiskMeaningCache } from "../src/meaning/diskCache";
 import { cacheKeyFor } from "../src/meaning/keyFor";
 import {
@@ -62,7 +67,55 @@ const TARGETS = [
   { id: "p010", short: "Jordan vague" },
   { id: "p016", short: "Uncle Ray politics" },
   { id: "p030", short: "Kelp Surf promo" },
+  // Community cluster — added per Eng1 task 2026-06-20.
+  // Gold lives in community_cluster[], not labels[]; the resolver merges.
+  { id: "p041", short: "Rolling Pin bakery wins" },
+  { id: "p042", short: "Library 1k kids (maybe)" },
+  { id: "p043", short: "Farmers market peak" },
+  { id: "p044", short: "Harbor Threads sale" },
+  { id: "p045", short: "Anacapa science team" },
 ];
+
+// IDs that belong to the community cluster for the within-route ranking
+// section. p018 is in BOTH labels[] (highlight) and community_cluster[]
+// (highlight community-pride flavor); included here because the community
+// section is about within-community ranking, not strict membership.
+const COMMUNITY_CLUSTER_IDS = ["p018", "p041", "p042", "p043", "p044", "p045"];
+
+/**
+ * Unified gold lookup. labels[] takes precedence; falls through to
+ * community_cluster[] for items only annotated there (e.g., p041–p045).
+ * Maps community_cluster.disposition → desired_bucket so the rendering
+ * path is unchanged.
+ */
+type GoldRow = {
+  route: string;
+  voiceworthiness: string;
+  desired_bucket: string;
+};
+function resolveGold(
+  id: string,
+  labels: Map<string, GoldLabel>,
+  community: Map<string, CommunityClusterLabel>
+): GoldRow {
+  const l = labels.get(id);
+  if (l) {
+    return {
+      route: l.route ?? "—",
+      voiceworthiness: l.voiceworthiness ?? "—",
+      desired_bucket: l.desired_bucket ?? "—",
+    };
+  }
+  const c = community.get(id);
+  if (c) {
+    return {
+      route: c.route ?? "—",
+      voiceworthiness: c.voiceworthiness ?? "—",
+      desired_bucket: (c.disposition as string | undefined) ?? "—",
+    };
+  }
+  return { route: "—", voiceworthiness: "—", desired_bucket: "—" };
+}
 
 const REL_BASELINE = 0.5;
 const TIME_BASELINE = 0.5;
@@ -135,7 +188,7 @@ async function buildInputs(
   item: IngestedItem,
   listener: Listener,
   meaning: ModelDerived,
-  gold: GoldLabel | undefined
+  gold: GoldRow
 ): Promise<Inputs> {
   const close = closeness(item, listener);
   const time = timeliness(item.timestamp, item.expires_at, TIME_BASELINE);
@@ -148,9 +201,9 @@ async function buildInputs(
     time: time.value,
     conf: meaning.confidence,
     sens: meaning.sensitivity,
-    route: gold?.route ?? "—",
-    voiceworthiness: gold?.voiceworthiness ?? "—",
-    desired_bucket: gold?.desired_bucket ?? "—",
+    route: gold.route,
+    voiceworthiness: gold.voiceworthiness,
+    desired_bucket: gold.desired_bucket,
   };
 }
 
@@ -163,9 +216,11 @@ async function main(): Promise<void> {
   const client = new CachedReadOnlyClient();
   const { listener, items } = loadSimulated();
   const itemsById = new Map(items.map((i) => [i.id, i]));
-  const gold = loadGoldLabels();
+  const labels = loadGoldLabels();
+  const community = loadCommunityCluster();
 
-  // Build inputs for the 8 targets.
+  // Build inputs for all TARGETS (labeled cluster + community cluster).
+  // Gold resolves from labels[] first, then community_cluster[].
   const rows: Inputs[] = [];
   const missing: string[] = [];
   for (const t of TARGETS) {
@@ -180,7 +235,7 @@ async function main(): Promise<void> {
       missing.push(`${t.id} (no cached meaning at ${key.slice(0, 50)}…)`);
       continue;
     }
-    rows.push(await buildInputs(item, listener, meaning, gold.get(t.id)));
+    rows.push(await buildInputs(item, listener, meaning, resolveGold(t.id, labels, community)));
   }
 
   // === Header ===
@@ -245,6 +300,41 @@ async function main(): Promise<void> {
     console.log(`  cross-tier check: strong_candidate min (${fmt(strongMin, 3)}) > candidate max (${fmt(candidateMax, 3)})? ${strongVsCandidate ? "YES" : "NO"}; candidate min (${fmt(candidateMin, 3)}) > not_voiceworthy max (${fmt(notMax, 3)})? ${candidateVsNot ? "YES" : "NO"}`);
     console.log("");
   }
+
+  // === Community-cluster within-route ranking (Eng1 task 2026-06-20) ===
+  // Per ADR J1, routes rank within themselves. Show the community cluster's
+  // v3 ordering against its gold dispositions so the W_community question
+  // is decided on the official table rather than appendix arithmetic.
+  console.log("## Community cluster — within-route v3 ranking");
+  console.log("");
+  console.log("All items use closeness=0.2 (unknown) by Eng1 design: new community accounts");
+  console.log("are NOT in listener.closeness_map, so magnitude is the single discriminator.");
+  console.log("");
+  const communityRows = rows.filter((r) => COMMUNITY_CLUSTER_IDS.includes(r.id));
+  const communityV3 = communityRows
+    .map((r) => ({ id: r.id, short: r.short, score: v3(r).score, gold: r.desired_bucket, vw: r.voiceworthiness, sens: r.sens }))
+    .sort((a, b) => b.score - a.score);
+  console.log("| rank | id | name | v3 score | gold disposition | voiceworthiness | sens |");
+  console.log("|---:|---|---|---:|---|---|---|");
+  communityV3.forEach((r, idx) => {
+    console.log(`| ${idx + 1} | ${r.id} | ${r.short} | **${fmt(r.score, 3)}** | ${r.gold} | ${r.vw} | ${r.sens} |`);
+  });
+  console.log("");
+  // Gap analysis between the highest "noise" item and the lowest "wins" item
+  // (treating wins as everything labeled voiced/candidate, noise as ambient/drop).
+  const winsIds = ["p018", "p041", "p042", "p045"];
+  const noiseIds = ["p043", "p044"];
+  const winsScores = communityV3.filter((r) => winsIds.includes(r.id)).map((r) => r.score);
+  const noiseScores = communityV3.filter((r) => noiseIds.includes(r.id)).map((r) => r.score);
+  if (winsScores.length > 0 && noiseScores.length > 0) {
+    const winsMin = Math.min(...winsScores);
+    const noiseMax = Math.max(...noiseScores);
+    const gap = winsMin - noiseMax;
+    console.log(`Wins band (${winsIds.join(",")}) min v3 = ${fmt(winsMin, 3)}.`);
+    console.log(`Noise band (${noiseIds.join(",")}) max v3 = ${fmt(noiseMax, 3)}.`);
+    console.log(`Separation gap = ${fmt(gap, 3)} (positive ⇒ a flat threshold cleanly separates wins from noise in this cluster).`);
+  }
+  console.log("");
 
   // === Low-confidence probe ===
   console.log("## Low-confidence probe (synthetic — required by spec)");
