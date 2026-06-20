@@ -456,6 +456,18 @@ async function main() {
     `(p004 route='${p004Gold?.route}')`
   );
 
+  // Check 32b — v0.3.0 fields load: eligibility_status, voiceworthiness,
+  // disposition_reason. p002 is the cleanest 'blocked' case; p004 the
+  // cleanest 'strong_candidate'.
+  const p002Gold = goldLabels.get("p002");
+  record(
+    "Check 32b: GoldLabel includes v0.3.0 fields (eligibility, voiceworthiness, disposition)",
+    p002Gold?.eligibility_status === "blocked" &&
+      p002Gold?.disposition_reason === "consent_blocked" &&
+      p004Gold?.voiceworthiness === "strong_candidate",
+    `(p002 elig='${p002Gold?.eligibility_status}', p002 disp='${p002Gold?.disposition_reason}', p004 vw='${p004Gold?.voiceworthiness}')`
+  );
+
   // Check 33 — p004 detected as close_friend_over_suppression (gold-confirmed)
   const cmpP004 = comparisonOf("p004");
   record(

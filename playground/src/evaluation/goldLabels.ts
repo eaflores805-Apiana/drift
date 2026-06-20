@@ -23,18 +23,41 @@ export type RiskLevel = "low" | "medium" | "high";
  *   highlight  — voiced as a celebration/important event
  *   doorway    — voiced as a check-in nudge back to a relationship (gentle)
  *   utility    — voiced as actionable information (commercial/local/event)
- *
- * NOTE: per team freeze, the route field is now in the data but is NOT yet
- * consumed by the scoring formula or the diagnostic board's mismatch
- * classifier. It's a label, not yet a route in code.
  */
 export type GoldRoute = "silent" | "highlight" | "doorway" | "utility";
+
+/**
+ * Added in gold-labels.json v0.3.0 — three orthogonal axes the Team Lead
+ * separated out so the labels carry the underlying judgment without
+ * conflating it with the bucket. `desired_bucket` stays clean
+ * (drop|ambient|voiced|expandable) so the current scorer + bucket-agreement
+ * metric stay usable.
+ *
+ *   eligibility_status   — pre-scoring: did the item pass consent etc.?
+ *                          ('blocked' = consent/safety failure; 'eligible' otherwise)
+ *   voiceworthiness      — per-item merit, independent of bucket
+ *                          ('strong_candidate' / 'candidate' / 'not_voiceworthy' / 'n/a')
+ *   disposition_reason   — free-text rationale for the bucket placement
+ *                          ('consent_blocked' / 'insufficient_signal' /
+ *                           'low_connection_value' / 'ambient_only' /
+ *                           'voiceworthy' / etc.)
+ *
+ * NOTE: per team freeze, none of these are consumed by the scoring formula
+ * or the diagnostic board's mismatch classifier yet. They are labels, not
+ * yet routes/gates/dispositions in code.
+ */
+export type EligibilityStatus = "eligible" | "blocked";
+export type Voiceworthiness =
+  | "strong_candidate" | "candidate" | "not_voiceworthy" | "n/a";
 
 export type GoldLabel = {
   item_id: string;
   desired_bucket: Bucket;
   route?: GoldRoute;
   tone: GoldTone;
+  eligibility_status?: EligibilityStatus;
+  voiceworthiness?: Voiceworthiness;
+  disposition_reason?: string;
   would_you_be_glad?: "yes" | "no";
   would_subject_be_ok?: "yes" | "no" | "n/a";
   risk_level?: RiskLevel;
