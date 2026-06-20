@@ -16,10 +16,24 @@ import { type Bucket } from "../data/schemas";
 export type GoldTone =
   | "celebratory" | "warm" | "playful" | "neutral" | "serious" | "gentle" | "avoid";
 export type RiskLevel = "low" | "medium" | "high";
+/**
+ * Route added in gold-labels.json v0.2.0 — the four paths to (or away from)
+ * the mic that the eventual scoring work needs to satisfy SEPARATELY.
+ *   silent     — drop or ambient; never voiced
+ *   highlight  — voiced as a celebration/important event
+ *   doorway    — voiced as a check-in nudge back to a relationship (gentle)
+ *   utility    — voiced as actionable information (commercial/local/event)
+ *
+ * NOTE: per team freeze, the route field is now in the data but is NOT yet
+ * consumed by the scoring formula or the diagnostic board's mismatch
+ * classifier. It's a label, not yet a route in code.
+ */
+export type GoldRoute = "silent" | "highlight" | "doorway" | "utility";
 
 export type GoldLabel = {
   item_id: string;
   desired_bucket: Bucket;
+  route?: GoldRoute;
   tone: GoldTone;
   would_you_be_glad?: "yes" | "no";
   would_subject_be_ok?: "yes" | "no" | "n/a";

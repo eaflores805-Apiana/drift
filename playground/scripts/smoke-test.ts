@@ -438,17 +438,25 @@ async function main() {
     );
   };
 
-  // Check 32 — Gold labels load (5 calibration seeds expected per gold-labels.json)
+  // Check 32 — Gold labels load (gold-labels.json v0.2.0 has 10 labels)
   record(
-    "Check 32: loadGoldLabels returns the seed labels",
-    goldLabels.size >= 5 &&
+    "Check 32: loadGoldLabels returns the labels (v0.2.0 has 10)",
+    goldLabels.size >= 10 &&
       goldLabels.has("p002") &&
       goldLabels.has("p004") &&
       goldLabels.has("p018"),
     `(loaded ${goldLabels.size} labels)`
   );
 
-  // Check 33 — p004 detected as close_friend_over_suppression under default settings
+  // Check 32a — Route field loads correctly on at least one label
+  const p004Gold = goldLabels.get("p004");
+  record(
+    "Check 32a: GoldLabel includes the v0.2.0 'route' field",
+    p004Gold?.route === "doorway",
+    `(p004 route='${p004Gold?.route}')`
+  );
+
+  // Check 33 — p004 detected as close_friend_over_suppression (gold-confirmed)
   const cmpP004 = comparisonOf("p004");
   record(
     "Check 33: p004 detected as close_friend_over_suppression",
@@ -470,20 +478,24 @@ async function main() {
     cmpP002 ? `(gold=${cmpP002.goldBucket}, engine=${cmpP002.engineBucket})` : "(p002 missing)"
   );
 
-  // Check 35 — Unlabeled commercial drop (p020) flagged as label_review_needed
+  // Check 35 — p020 now labeled voiced (utility route); engine ambient → over_suppression
   const cmpP020 = comparisonOf("p020");
   record(
-    "Check 35: p020 (followed brand + time-bound) flagged label_review_needed",
-    cmpP020?.hasGold === false && cmpP020?.mismatch === "label_review_needed",
-    cmpP020 ? `(mismatch=${cmpP020.mismatch}, reason='${cmpP020.reason.slice(0, 60)}…')` : "(p020 missing)"
+    "Check 35: p020 now labeled — classified as over_suppression",
+    cmpP020?.hasGold === true &&
+      cmpP020?.agreement === false &&
+      cmpP020?.mismatch === "over_suppression",
+    cmpP020 ? `(gold=${cmpP020.goldBucket}, engine=${cmpP020.engineBucket}, mismatch=${cmpP020.mismatch})` : "(p020 missing)"
   );
 
-  // Check 36 — Unlabeled local event (p025) flagged as label_review_needed
+  // Check 36 — p025 now labeled voiced (utility route); engine ambient → over_suppression
   const cmpP025 = comparisonOf("p025");
   record(
-    "Check 36: p025 (local event + listener's town + time-bound) flagged label_review_needed",
-    cmpP025?.hasGold === false && cmpP025?.mismatch === "label_review_needed",
-    cmpP025 ? `(mismatch=${cmpP025.mismatch}, reason='${cmpP025.reason.slice(0, 60)}…')` : "(p025 missing)"
+    "Check 36: p025 now labeled — classified as over_suppression",
+    cmpP025?.hasGold === true &&
+      cmpP025?.agreement === false &&
+      cmpP025?.mismatch === "over_suppression",
+    cmpP025 ? `(gold=${cmpP025.goldBucket}, engine=${cmpP025.engineBucket}, mismatch=${cmpP025.mismatch})` : "(p025 missing)"
   );
 
   // Check 37 — p016 / p030 / p010 don't reach a "false_voice" mismatch (engine restraint
@@ -508,7 +520,6 @@ async function main() {
   // Check 38 — Comparison surface uses distinct status vocabulary from the safety palette.
   // Structural check: pipeline statuses are "pass|caution|fail|na"; gold comparison
   // statuses are "agreement|mismatch|review-needed". No overlap.
-  // Tested by string membership rather than DOM inspection (smoke is Node-only).
   const pipelineStatuses = ["pass", "caution", "fail", "na"];
   const goldStatuses = ["agreement", "mismatch", "review-needed"];
   const noOverlap = pipelineStatuses.every((s) => !goldStatuses.includes(s));
@@ -516,6 +527,50 @@ async function main() {
     "Check 38: Gold-comparison status vocabulary distinct from safety palette",
     noOverlap,
     `(pipeline=[${pipelineStatuses.join(",")}] vs gold=[${goldStatuses.join(",")}])`
+  );
+
+  // Check 39 — p008 (Dana, close family, life event) classified as
+  // close_friend_over_suppression (closeness=close for Dana per listener map).
+  const cmpP008 = comparisonOf("p008");
+  record(
+    "Check 39: p008 (Dana close, life event) classified close_friend_over_suppression",
+    cmpP008?.hasGold === true &&
+      cmpP008?.agreement === false &&
+      cmpP008?.mismatch === "close_friend_over_suppression",
+    cmpP008 ? `(gold=${cmpP008.goldBucket}, engine=${cmpP008.engineBucket}, mismatch=${cmpP008.mismatch})` : "(p008 missing)"
+  );
+
+  // Check 40 — p018 (Buena, "followed" tier, not close) is over_suppression,
+  // NOT close_friend_over_suppression. Distinguishes close-friend from generic.
+  const cmpP018 = comparisonOf("p018");
+  record(
+    "Check 40: p018 (Buena followed) classified over_suppression (NOT close_friend)",
+    cmpP018?.hasGold === true &&
+      cmpP018?.agreement === false &&
+      cmpP018?.mismatch === "over_suppression",
+    cmpP018 ? `(gold=${cmpP018.goldBucket}, engine=${cmpP018.engineBucket}, mismatch=${cmpP018.mismatch})` : "(p018 missing)"
+  );
+
+  // Check 41 — p030 (Kelp Surf generic promo, gold=ambient) and p036 (Jordan-
+  // moving, gold=ambient) both agree with engine ambient. Restraint matches.
+  const cmpP036 = comparisonOf("p036");
+  record(
+    "Check 41: p030 + p036 both agree with engine (gold=ambient, engine=ambient)",
+    cmpP030?.hasGold === true && cmpP030?.agreement === true &&
+      cmpP036?.hasGold === true && cmpP036?.agreement === true,
+    `(p030 agree=${cmpP030?.agreement}, p036 agree=${cmpP036?.agreement})`
+  );
+
+  // Check 42 — Over-suppression landscape: at default settings, the engine
+  // disagrees with gold on EVERY voiced item the PO labeled. This is the
+  // "polite corpse" failure mode made concrete in the test suite.
+  const overSuppressed = ["p004", "p008", "p018", "p020", "p025"]
+    .map(comparisonOf)
+    .filter((c) => c && (c.mismatch === "over_suppression" || c.mismatch === "close_friend_over_suppression"));
+  record(
+    "Check 42: All five gold-voiced items show as over_suppression at default settings",
+    overSuppressed.length === 5,
+    `(${overSuppressed.length}/5: p004/p008/p018/p020/p025 — flag for team formula discussion)`
   );
 
   console.log("\n--- Bucket summary (defaults) ---");
