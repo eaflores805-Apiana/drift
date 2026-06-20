@@ -9,15 +9,16 @@ If you read these in order you should walk away knowing what Drift is, where we 
 
 | # | File | What it is |
 |---|---|---|
-| 0 | `00-roadmap.md` | The map — phases A–G, where we are now, exit criteria |
-| 1 | `01-product-principles.md` | The product principles distilled — the guardrail against "an AI that reads your feed out loud" |
-| 2 | `02-record-and-plan.md` | Clean record + original phased plan (Phase 0/1/2/3+ numbering predates the roadmap's A–G) |
+| **start** | **`00-product-description.md`** | **Team-alignment doc — "what Drift is, what it is for, how it works, and what we are actually building right now."** Single source of truth; explicitly the start-here doc per its own §0. v0.1.0, 2026-06-19. |
+| 0 | `00-roadmap.md` | The map — phases A–G, where we are now, exit criteria. Operational sibling to the product description. |
+| 1 | `01-product-principles.md` | The product principles distilled — the guardrail against "an AI that reads your feed out loud" (subsumed by 00-product-description §6–7; retained as the longer treatment) |
+| 2 | `02-record-and-plan.md` | Clean record + original phased plan (Phase 0/1/2/3+ numbering predates the roadmap's A–G; substantially subsumed by 00-product-description) |
 | 3 | `03-rules-and-format.md` ★ | Engine spec: schemas, scoring, host rules |
 | 4 | `04-architecture-review.md` ★ | Eng1 architecture: R1 hybrid scoring, R2 fail-closed safety, R3 eval-first; the Ingested / ModelDerived / Computed / Decision schema groupings |
 | 5 | `05-promotion-playground-spec.md` ★ | Buildable v1 spec for the bench |
 | 6 | `06-gold-labeling-guide.md` ★ | The labeling instrument — the eval target |
 | 7 | `07-decision-log.md` | Founding decisions, rationale, rejected alternatives, OPEN items |
-| 8 | `08-value-and-moat.md` | Where the value is — the asset and the moat. The "social graph" data dependency and what it forces strategically |
+| 8 | `08-value-and-moat.md` | Where the value is — the asset and the moat. The "social graph" data dependency and what it forces strategically (substantially subsumed by 00-product-description §10) |
 
 ★ = build-critical for the CS Engineer. If reading only four, read these four.
 

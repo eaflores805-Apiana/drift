@@ -14,6 +14,7 @@ Filenames don't have to be perfect — the CS Engineer renames during filing —
 
 | Filename hint | Destination |
 |---|---|
+| `drift-product-description*`, `*vision*`, `*team-alignment*` | `docs/00-product-description.md` |
 | `drift-roadmap*` | `docs/00-roadmap.md` |
 | `drift-product-principles*` | `docs/01-product-principles.md` |
 | `drift-record-*`, `drift-plan-*` | `docs/02-record-and-plan.md` |
