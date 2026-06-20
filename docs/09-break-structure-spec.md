@@ -1,8 +1,10 @@
 # Drift — Break Structure & Session Programming
 ### Layer 2 spec (the session programmer)
 
-> **v0.2.0** · 2026-06-19 · How a break gets *assembled*, how a session *flows*, and the *anatomy of one segment*. This document is deliberately **honest about its own certainty**: it specifies the parts the music anchors (which we can decide now) and holds the parts taste governs as **open questions to be resolved by trial and error** (build it loose, listen, adjust). Do not let the team over-lock the open middle — that's the part that has to stay free, because it's where the show actually lives.
+> **v0.4.0** · 2026-06-19 · How a break gets *assembled*, how a session *flows*, and the *anatomy of one segment*. This document is deliberately **honest about its own certainty**: it specifies the parts the music anchors (which we can decide now) and holds the parts taste governs as **open questions to be resolved by trial and error** (build it loose, listen, adjust). Do not let the team over-lock the open middle — that's the part that has to stay free, because it's where the show actually lives.
 >
+> *v0.4.0 — added residual load & the recovery arc (load *across* breaks): cognitive dose decays-but-never-auto-resets, the dual check (a break can pass its own budget and still fail on session pressure), grave as a hard cross-break cooldown, count-based v0 decay (mood-aware parked), the recovery arc (earn back to brighter on fresh content, never replay), and the hard guardrail that this is show-state memory, NOT listener-mood inference.*
+> *v0.3.0 — added the airtime budget measured in weighted units of listener load (not seconds): the fail-if-over-units rule, the v0 unit-cost and break-budget tables, and the grave/sensitive "owns the break" hard rule above the arithmetic. Units and budgets are starting priors, calibrated by ear.*
 > *v0.2.0 — added segment anatomy (the five-part skeleton, marked rules-vs-default) and the "how this gets to exceptional" method note: the structure here is v0, dialed in by generating real segments and listening, and that loop is blocked until the generation layer exists.*
 >
 > **Scope:** This is Layer 2. It is **not built yet** and **must not be built** until Layer 1 (item judgment) reliably ranks candidates — you cannot assemble a good break until the engine can tell a strong candidate from a weak one. This spec is the *target* the session programmer is built toward, not a current work item.
@@ -57,6 +59,89 @@ What is **open** (the trial-and-error questions, to be answered by listening, no
 - When should the DJ plant a thread early and pay it off later (callbacks)?
 
 These are **not failures to be specified away** — they are the research the bench and real listening will resolve. The document records them as open *on purpose.*
+
+---
+
+## The airtime budget — measured in *units of listener load*, not seconds
+
+Sparseness needs **teeth**, and time is the wrong currency for them. A DJ can talk for 20 seconds and overload you, or 40 and feel smooth — the difference isn't duration, it's **how many things the break asked your brain and heart to hold.** So the session programmer budgets each break in **units**, and the governing rule is:
+
+> **A break fails if it stays under the time budget but exceeds the unit budget. Units measure listener load, not script length.**
+
+**A unit is one cognitive payload** — one thing the listener has to process — **not one sentence.** And payloads are **weighted**, because they aren't equal: a five-second "your friend's having a rough week" is *heavier* than a twelve-second music-history aside, because personal and emotional content demands more attention than safe music texture. The weighting is deliberate — it makes the budget push the show *toward* music and *away* from emotional pile-up, which is the direction the product should always lean.
+
+**Starting unit costs (v0 — provisional, tuned by ear against real breaks, NOT locked):**
+
+| Content type | Unit cost | Note |
+|---|---|---|
+| Music backsell / song ID | 0.5–1 | low load, radio-native |
+| Music trivia / history | 1 | low personal risk, must be grounded |
+| Time / weather / vibe | 0.5 | light connective tissue |
+| Utility / local event | 1 | useful, lower emotional load |
+| Product / brand wanted-signal | 1 | must not feel like ad clutter |
+| Synthesis thought | 1 | the reason longer breaks exist |
+| Quick callback (already aired) | 0.5 | not a re-announcement |
+| Bridge / transition | 0.5 | necessary glue |
+| Social / personal celebration | 1.5 | higher emotional load |
+| Local / community pride | 1.5 | especially if minors involved |
+| Sensitive doorway | 2 | heavy; usually alone |
+| Grave doorway | (owns the break — see rule) | |
+
+**Starting break budgets (v0 — provisional):**
+
+| Break type | Budget | Personal/social cap |
+|---|---|---|
+| Micro handoff | 0.5–1.5 | 0–1 item |
+| Standard break | 2–3 | 1 personal item max |
+| Feature beat | 3–4 | 1 primary item |
+| Top/bottom-of-hour | 4–5.5 | 3–4 personal/community items, only one *primary* |
+| Sensitive break | 2–3 | the sensitive item owns it |
+| Grave break | 3 max | the grave item owns it — no pile-on |
+
+*A good top-of-hour:* backsell (1) + synthesis (1) + Jake callback (1) + Buena callback (1) + weather handoff (0.5) = **4.5 units** — feels like radio. *A bad one:* backsell + Jake + Dana + Buena + Mark + coffee + street-fair + weather + news = **8.5 units** — not radio; a hostage situation with background music.
+
+**The one hard rule that sits ABOVE the arithmetic — grave and sensitive items *own the break*.**
+A grave beat next to even one light item is a tonal failure *regardless of whether the math allows it* — "Mateo's dad passed away… and the street fair's tonight!" scores maybe 3.5 units (under budget) and is catastrophic. So for the grave zone, and usually the sensitive zone, pile-on isn't *expensive* — it's **forbidden**. A grave item **sets the break's budget to itself**: it owns the break, no co-items, the return-to-music carries the mood. The unit arithmetic governs the *normal* range; the grave/sensitive owns-the-break rule is a structural floor *above* it, because a weight can be gamed by a budget that happens to have room — a hard rule can't.
+
+**Status:** the *system* is decided (weighted units, load-not-length, per-break budgets, the fail-if-over-units rule, grave/sensitive owns-the-break). The *specific numbers* are v0 starting priors — calibrated by generating breaks at a given budget and *listening* for whether a "4.5-unit" top-of-hour lands smooth or stuffed. Same discipline as the scoring constants: framework decided, constants found by ear. **This is a Layer-2 mechanism — built when the session programmer is built, not before.**
+
+---
+
+## Residual load & the recovery arc — load *across* breaks
+
+The unit budget governs load *within* a break. But a heavy beat doesn't vanish because one song played — air a sensitive doorway, then three minutes later launch a dense top-of-hour, and that's tonal whiplash with math homework. So the session programmer carries a **residual load** across breaks, and the governing rule is:
+
+> **Cognitive dose decays across the music, but it does not reset to zero automatically.**
+
+**The single most important guardrail — this is memory of the *show's own pacing*, NOT inference of the listener's mood.**
+The forbidden version: *"the listener is sad now, so adjust the experience"* — creepy, ungrounded, the exact mood-inference over-reach ruled out on the ladder. The correct version: *"the session just aired a high-dose sensitive item, so reduce density for the next break."* `residual_load` is computed **only** from the show's *emitted output* — never from any guess about the listener's state. This keeps it deterministic, auditable, and on the safe side of the privacy/mood floor. It is the first real piece of session-level awareness, and it's the *safe* piece, precisely because the show remembers what *it* did, not what the *listener* feels.
+
+**The mechanic.** After every break: `residual_load += break_dose`. While music plays: `residual_load` decays. Before the next break: `effective_budget = base_budget − residual_penalty`. So after a heavy break, the next break gets smaller automatically.
+
+**The dual check (the real insight) — a break can pass its own budget and still fail.**
+```
+break_dose ≤ break_budget                    (the break is legal on its own)
+break_dose + residual_load ≤ pressure_limit  (the hour isn't exhausting)
+```
+This catches the failure mode the per-break budget can't: *every local decision passes and the whole hour still feels exhausting.* If session pressure exceeds the limit → reduce items, downgrade to connective tissue, delay the route, or go music-only.
+
+**v0 residual behavior (provisional numbers, found by ear):**
+- **After a grave doorway — a HARD cooldown, not a computed decay.** The next break is **music-or-connective-tissue only, for a fixed floor of songs** — full stop, *not* "until residual decays below X." A decay threshold can be gamed by tempo (three short songs clear a timer faster than three long ones), and the tonal protection must not depend on how long the next tracks happen to be. Grave gets a *rule*; the arithmetic doesn't get a vote here. (Same logic as grave owning its own break.)
+- **After a sensitive doorway** — next-break budget reduced ~1.0–1.5 units; next break may carry only music info, time/weather, or a gentle handoff; no celebration immediately unless enough music has passed.
+- **After a social/community celebration** — next-break budget reduced ~0.5; avoid another personal item immediately unless a top/bottom-of-hour synthesis requires it.
+- **After normal utility/music/local** — residual decays normally.
+
+**v0 decay is count-based; mood-aware decay is parked.** Decay by *track count* (a fixed amount per song) for v0 — simple, deterministic, good enough to start. The tempting refinement — decay by *mood-match* (a sad beat decays slower under slow songs, faster under bright ones) — is real but is its own judgment with its own failure modes (it requires reading the music's mood), so it's **parked as a later refinement, not built in v0.** Start with count; add mood-awareness only once the base mechanic is proven.
+
+**The recovery arc — what residual decay is *for*.**
+After sad news, the show neither pretends it didn't happen nor stays stuck there forever: it **earns its way back to brighter — gradually, over the music, if the listener stays.** A lighter touch, then a warm one, then eventually full energy once enough music has carried the mood. The climb-back is *forward motion*, not a snap and not a permanent grey.
+
+**The trap the recovery arc must not spring — climbing back must use FRESH content and tone, never a replayed beat.**
+The natural-but-wrong instinct when lifting the mood is to reach back for warmth by re-airing something good that already aired — *"that was heavy, but hey, remember Jake got into UCLA!"* That is a **no-repeat violation** (Jake already had his moment; recycling it for emotional lift is exactly the feed-repetition the show forbids). The recovery climbs back using **the music, fresh content, and the host's own warmth of tone** — *never* by replaying a beat for its emotional value. The host gets back to brighter by finding the *next* good thing, not by re-selling the last one.
+
+**One faculty, two uses.** The no-repeat tracking and the residual-load meter are the same kind of thing — *the show's memory of its own output.* The session already remembers *what* aired (no-repeat); it now also remembers *how heavy* it was (residual load). One memory, two axes, both on the safe show-state side of the line — never listener inference.
+
+**Status:** the *mechanic* is decided (residual decays-not-resets, the dual check, grave-as-hard-cooldown, count-based v0 decay, the recovery arc, climb-back-on-fresh-content-only, show-state-not-mood). The *numbers* (pressure limits, decay rate, cooldown song-count) are v0 priors found by listening to real sessions. **Layer-2 mechanism — built with the session programmer, not before.**
 
 ---
 
@@ -117,6 +202,15 @@ The discipline: **resist polishing the structure on paper. Lock v0, build the en
 | Priority: connection beats information for scarce airtime | **Decided** (principle) |
 | Anchored edges: backsell on song-end, history at track-edges, time/weather at handoff | **Decided** (defaults, music-triggered) |
 | An item airs once; longer break is synthesis-not-replay | **Decided** (Layer-2 rule) |
+| Airtime budget measured in weighted units of listener load, not seconds | **Decided** (Layer-2 mechanism) |
+| Grave/sensitive items own the break (hard rule above the unit arithmetic) | **Decided** (rule) |
+| Residual load carries across breaks (decays, never auto-resets); the dual check | **Decided** (Layer-2 mechanism) |
+| Residual is show-state memory, NOT listener-mood inference | **Decided** (hard guardrail) |
+| Recovery arc: earn back to brighter gradually, on fresh content only, never replay | **Decided** (rule) |
+| Grave cross-break cooldown as a hard rule (not a computed decay) | **Decided** (rule) |
+| v0 decay is count-based; mood-aware decay | **Parked** — later refinement |
+| The specific unit costs and break budgets | **v0 starting priors** — calibrated by ear against real breaks |
+| Residual numbers (pressure limits, decay rate, cooldown song-count) | **v0 starting priors** — found by listening |
 | Sparseness; full repertoire never run in one break | **Decided** (principle) |
 | Segment skeleton: music bookends, tonal turn before payload, mood-matched return, doorway-when-a-person | **Decided** (rules — violating breaks something) |
 | The five-part arc as a fixed sequence | **Default shape only** — deviation is a feature, not a template |
