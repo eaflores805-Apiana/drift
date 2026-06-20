@@ -19,12 +19,15 @@ If you read these in order you should walk away knowing what Drift is, where we 
 | 6 | `06-gold-labeling-guide.md` ★ | The labeling instrument — the eval target |
 | 7 | `07-decision-log.md` | Founding decisions, rationale, rejected alternatives, OPEN items |
 | 8 | `08-value-and-moat.md` | Where the value is — the asset and the moat. The "social graph" data dependency and what it forces strategically (substantially subsumed by 00-product-description §10) |
+| 9 | `09-break-structure-spec.md` | **Layer 2 spec** — how a break gets assembled, how a session flows, the anatomy of one segment. v0.2.0, honest about its own certainty. Target the session programmer is built toward; **not yet built** (blocked until Layer 1 ranks candidates). |
+| 10 | `10-life-event-taxonomy.md` | **Engine material** — life-event recognition for the meaning pass, gold labels, magnitude calibration, and treatment/route selection. v0.1.0. Governing rule: *the more serious the event, the less the DJ gets to interpret.* |
 
 ★ = build-critical for the CS Engineer. If reading only four, read these four.
 
 ## Background (unnumbered)
 
 - `design.md` — original strategy + full system design (deep origin; partly superseded by the numbered docs)
+- `build-map.md` — **v0.2.0** the route, not the wish-list. Phase gates + done-conditions + critical-path spine. Operational companion to `00-roadmap.md`; the roadmap names *where* we are, the build map names *what blocks what*.
 
 ## Other doc subfolders
 
@@ -49,3 +52,4 @@ If you read these in order you should walk away knowing what Drift is, where we 
 - `../prototypes/demo.html` — archived earlier prototype
 - `../prototypes/reference-images/` — visual target references
 - `../examples/dj-lines.md` — DJ voice reference (the voice bible — what good sounds like, what stays silent)
+- `../examples/dj-segments-showcase.md` — DJ segment showcase ("what the DJ sounds like at its best") — longer-form companion to `dj-lines.md`

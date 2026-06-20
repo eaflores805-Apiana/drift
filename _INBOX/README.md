@@ -21,6 +21,11 @@ Filenames don't have to be perfect — the CS Engineer renames during filing —
 | `drift-rules*`, engine schema/format | `docs/03-rules-and-format.md` |
 | `drift-architecture-*` | `docs/04-architecture-review.md` |
 | `drift-playground-spec*` | `docs/05-promotion-playground-spec.md` |
+| `drift-break-structure*`, `*session-programmer*`, `*layer-2*` | `docs/09-break-structure-spec.md` |
+| `drift-life-event*`, `*event-taxonomy*` | `docs/10-life-event-taxonomy.md` |
+| `drift-build-map*` | `docs/build-map.md` (unnumbered) |
+| `drift-dj-segments*`, `*showcase*` | `examples/dj-segments-showcase.md` |
+| `drift-*-parked*` (parked future-work notes) | `docs/correspondence/eng1-*-parked-<date>.md` |
 | `drift-gold-labeling*`, eval instrument | `docs/06-gold-labeling-guide.md` |
 | `drift-decision-log*`, `drift-decisions*` | `docs/07-decision-log.md` |
 | `drift-design*` (background origin doc) | `docs/design.md` |
