@@ -29,7 +29,8 @@
  * gap not covered by the 8 labeled items.
  */
 
-import { resolve } from "node:path";
+import { dirname, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 import { loadSimulated } from "../src/data/adapters/simulatedAdapter";
 import { type IngestedItem, type Listener } from "../src/data/schemas";
 import { loadGoldLabels, type GoldLabel } from "../src/evaluation/goldLabels";
@@ -154,7 +155,10 @@ async function buildInputs(
 }
 
 async function main(): Promise<void> {
-  const cacheDir = resolve(".meaning-cache");
+  // Anchor cache path to the script's location so the script is
+  // cwd-independent (works from repo root, from playground/, or via npm).
+  const scriptDir = dirname(fileURLToPath(import.meta.url));
+  const cacheDir = resolve(scriptDir, "..", ".meaning-cache");
   const cache = new DiskMeaningCache(cacheDir);
   const client = new CachedReadOnlyClient();
   const { listener, items } = loadSimulated();
@@ -269,7 +273,7 @@ async function main(): Promise<void> {
   console.log(`- v3: ${probeV3.arith} = **${fmt(probeV3.score, 3)}**`);
   console.log("");
 
-  // Compare probe to median-of-strong-candidate for each variant
+  // Compare probe to strong_candidate band for each variant
   for (const [vname, vfn] of [
     ["v1", v1],
     ["v2", v2],
@@ -285,6 +289,35 @@ async function main(): Promise<void> {
     console.log(`- ${vname}: probe ${fmt(probeScore, 3)} vs strong_candidate band [${fmt(strongMin, 3)}, ${fmt(strongMax, 3)}] → ${probeVsStrong}`);
   }
   console.log("");
+
+  // === REGRESSION ASSERTION (per team ruling 2026-06-20, ADR J1) ===
+  // The high-magnitude / low-confidence probe protects a GLOBAL safety
+  // property per the route-aware-ranking ruling: low-confidence high-
+  // magnitude items must never out-voice safe, well-grounded candidates
+  // simply because magnitude is high.
+  //
+  // For the formula carried forward (v3), the probe must NOT exceed the
+  // strong_candidate band ceiling. Any future constant tweak that breaks
+  // this fails this script with exit 1.
+  const v3StrongScores = rows
+    .filter((r) => r.voiceworthiness === "strong_candidate")
+    .map((r) => v3(r).score);
+  const v3StrongMax = Math.max(...v3StrongScores);
+  const v3ProbeScore = v3(probe).score;
+  console.log("## Regression assertion (per ADR J1)");
+  console.log("");
+  console.log(`  probe v3 score:               ${fmt(v3ProbeScore, 3)}`);
+  console.log(`  strong_candidate v3 max:      ${fmt(v3StrongMax, 3)}`);
+  console.log(`  probe ≤ max (must pass):      ${v3ProbeScore <= v3StrongMax ? "OK" : "FAIL — global safety invariant violated"}`);
+  if (v3ProbeScore > v3StrongMax) {
+    console.error("");
+    console.error("[REGRESSION] v3 probe out-voices strong_candidate max. The high-magnitude /");
+    console.error("low-confidence probe is a must-pass regression per ADR J1 (2026-06-20).");
+    console.error("A damper tweak has let a low-confidence high-magnitude item rise above the");
+    console.error("safe-candidate band. This is the exact failure mode the dampers exist to");
+    console.error("prevent.");
+    process.exit(1);
+  }
 }
 
 main().catch((e) => {

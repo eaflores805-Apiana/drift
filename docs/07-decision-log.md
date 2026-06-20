@@ -196,3 +196,36 @@ incoming item -> meaning pass -> scoring -> segment candidate
 **Non-impact.** Does not change Phase B. The bench continues testing item meaning, scoring, labels, and line generation. This ADR governs the shipped product's interaction model and prevents future drift toward an unsafe open-chat interface.
 
 **Short rule.** Programmed first. Interactive second. Expand within boundaries. Never free-prompt the social graph.
+
+---
+
+## J — Layer 1 engine architecture decisions (Phase B)
+*Added 2026-06-20. Scope: Layer 1 item judgment / scoring. First entry adopted in response to Step 1.1 formula-shape test findings. Source: `docs/correspondence/team-route-aware-ranking-ruling-2026-06-20.md`.*
+
+### J1 — Route-aware ranking as the Layer 1 scoring contract `[ACCEPTED 2026-06-20]`
+
+**Status:** Accepted as the binding scoring contract for Layer 1.
+
+**Decision.** Drift adopts **route-aware ranking** as the Layer 1 scoring contract. Layer 1 ranks candidates **within their route** (highlight / doorway / utility / silent) — it does not produce a single global voiceworthiness ordering. Layer 2 owns **cross-route airtime competition** (which route speaks now, given music, recent breaks, tone, repetition, airtime budget, session arc).
+
+**Formula shape decision:** carry **v3 additive-with-dampers** forward. v1 and v2 are not to be reopened. Do not add asymmetric dampers to rescue p004 globally.
+
+**Reason.** The global-score interpretation was the wrong abstraction. A doorway beat, a local-pride beat, a utility nudge, and a music-history beat do not compete in one raw global pool — they have different airtime jobs, risk profiles, and treatments. Forcing the scorer to solve a radio-programming problem (which item beats which across routes) imports the wrong responsibility into Layer 1; that belongs to Layer 2.
+
+**p004 resolution.** p004 is not a v3 failure under the accepted contract. Its apparent failure (in CS's Step 1.1 report) came from testing p004 against utility items in a global cross-tier ordering. Under the actual contract, p004 only needs to rank correctly inside the doorway route. It was never required to out-rank a utility candidate because they do not share a route pool.
+
+**Invariants.**
+- *Voiceworthiness is route-local.* Within each route: `strong_candidate > candidate > not_voiceworthy`.
+- *No strict global ordering is required* across routes.
+- *Safety is global.* Absolute safety gates (consent, allowed_claims, forbidden_inference, grounding, high-sensitivity false-voice prevention) remain outside the score. Route-aware ranking is **not** a safety relaxation.
+- *The high-magnitude / low-confidence probe is a permanent regression test.* The global safety property it protects — *low-confidence high-magnitude items must never out-voice safe, well-grounded candidates simply because magnitude is high* — must hold across every formula change. Failing the probe fails the change.
+
+**Step 1.3 direction (gated on PO community-cluster labeling).**
+1. Carry v3 forward.
+2. Fit constants **by route**, not by global ordering.
+3. Keep absolute safety gates outside the score.
+4. Preserve the probe as a must-pass regression.
+5. Treat cross-route choice as a Layer 2 / session-programmer responsibility.
+6. Do not tune v3 to make p004 beat utility globally.
+
+**Build-map note.** Layer 2 now formally owns cross-route airtime competition. Does not change build order — Layer 2 is still gated on generation across routes — but when Layer 2 is reached, the session programmer must be designed to own route selection deliberately (music fit, tone, recent breaks, repetition, airtime budget, session arc).
