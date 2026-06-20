@@ -18,7 +18,7 @@ import { meaningBatch, meaningFor } from "../src/meaning/meaningPass";
 import { cacheKeyFor, contentHashOf } from "../src/meaning/keyFor";
 import { parseAndValidate } from "../src/meaning/parseModelResponse";
 import { ModelDerivedSchema } from "../src/meaning/types";
-import { loadGoldLabels } from "../src/evaluation/goldLabels";
+import { loadGoldLabels, loadCommunityCluster } from "../src/evaluation/goldLabels";
 import { classifyComparison } from "../src/evaluation/mismatchTypes";
 import type { Decision, IngestedItem } from "../src/data/schemas";
 
@@ -454,6 +454,43 @@ async function main() {
     "Check 32a: GoldLabel includes the v0.2.0 'route' field",
     p004Gold?.route === "doorway",
     `(p004 route='${p004Gold?.route}')`
+  );
+
+  // Check 32c — community_cluster loads (v0.4.0): 8 entries including
+  // the bracket anchors (p018 voiced, p030 ambient) and the new items
+  // p041–p045 that need seed-items support before Step 1.3 fitting.
+  const community = loadCommunityCluster();
+  const communityIds = Array.from(community.keys()).sort();
+  record(
+    "Check 32c: community_cluster loads with 8 entries (v0.4.0)",
+    community.size === 8 &&
+      community.has("p018") &&
+      community.has("p030") &&
+      community.has("p041") &&
+      community.has("p045"),
+    `(size=${community.size}, ids=[${communityIds.join(",")}])`
+  );
+
+  // Check 32d — p045's minor-treatment SAFETY FLOOR loads correctly.
+  // Per v0.4.0 _meta this is "the one thing that is NOT a dial."
+  // minor_treatment is free-form text starting with the policy token; we
+  // verify by prefix match.
+  const p045 = community.get("p045");
+  record(
+    "Check 32d: p045 minor_treatment prefix = 'group_level_STRIP_individuals' (safety floor)",
+    (p045?.minor_treatment ?? "").startsWith("group_level_STRIP_individuals") &&
+      p045?.minor_involved === true,
+    `(prefix-match ok; minor_involved=${p045?.minor_involved})`
+  );
+
+  // Check 32e — p044 is the only true 'drop' in the community cluster
+  // (per the _meta: "what_the_floor_actually_fits" — the floor fits
+  // voiced/ambient, not the lower drop gate; p044 is the only drop).
+  const drops = Array.from(community.values()).filter((c) => c.disposition === "drop");
+  record(
+    "Check 32e: p044 is the only 'drop' disposition in community_cluster",
+    drops.length === 1 && drops[0]?.id === "p044",
+    `(drop count=${drops.length}, ids=[${drops.map((d) => d.id).join(",")}])`
   );
 
   // Check 32b — v0.3.0 fields load: eligibility_status, voiceworthiness,

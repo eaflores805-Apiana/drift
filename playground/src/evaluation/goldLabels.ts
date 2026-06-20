@@ -75,7 +75,10 @@ export type GoldLabel = {
 type RawGoldFile = {
   _meta?: unknown;
   _schema?: unknown;
+  _community_cluster_schema?: unknown;
   labels: GoldLabel[];
+  community_cluster?: CommunityClusterLabel[];
+  _for_CS?: unknown;
 };
 
 export function loadGoldLabels(): Map<string, GoldLabel> {
@@ -83,6 +86,74 @@ export function loadGoldLabels(): Map<string, GoldLabel> {
   const map = new Map<string, GoldLabel>();
   for (const label of raw.labels ?? []) {
     map.set(label.item_id, label);
+  }
+  return map;
+}
+
+/**
+ * Community-cluster annotations (v0.4.0, PO ratified 2026-06-19).
+ *
+ * SEPARATE from `labels[]`. Lives in `community_cluster[]` and uses a richer
+ * schema (summary, bracket, minor_treatment, disposition). Provides the
+ * pattern-fit target for Step 1.3's W_community floor constant.
+ *
+ * Per v0.4.0 _meta: "magnitude / closeness / sensitivity / confidence are
+ * produced by the cached meaning pass, NOT in this file." So fitting also
+ * requires (a) seed-items.json entries for the NEW items p041–p045, and
+ * (b) cached meaning for those items. Without both, Step 1.3 cannot run.
+ *
+ * NOT consumed by the classifier yet — annotation/fitting data only.
+ */
+export type CommunityDisposition =
+  | "voiced"
+  | "ambient"
+  | "drop"
+  | "candidate (voiced-or-ambient — the maybe)"
+  | "voiced_at_group_level_only"
+  | string;
+
+/**
+ * `minor_treatment` in v0.4.0 community_cluster is free-form text that
+ * STARTS with one of the policy tokens below, then continues with inline
+ * rationale. Examples:
+ *   "group_level — celebrate the squad, never name or center an athlete"
+ *   "group_level_STRIP_individuals — celebrate the school/team; do NOT
+ *    name or center the kids EVEN THOUGH the source names them. SAFETY
+ *    FLOOR, not a dial."
+ *
+ * Use the policy-token prefix for any code-level decisions; the rest is
+ * for humans. Tokens currently in use:
+ *   - "group_level"
+ *   - "group_level_STRIP_individuals"  (SAFETY FLOOR — not revisable)
+ */
+export type MinorTreatment = string;
+
+export type CommunityClusterLabel = {
+  id: string;
+  summary?: string;
+  audience_scope?: string;
+  community_cluster?: boolean;
+  bracket?: string | null;
+  minor_involved?: boolean;
+  /**
+   * NOTE: `group_level_STRIP_individuals` is a SAFETY FLOOR per v0.4.0
+   * _meta — not subject to tuning. Disposition values are revisable;
+   * this protection is not.
+   */
+  minor_treatment?: MinorTreatment | null;
+  route?: string;
+  eligibility_status?: EligibilityStatus;
+  voiceworthiness?: Voiceworthiness;
+  disposition?: CommunityDisposition;
+  disposition_reason?: string;
+  ratified?: boolean;
+};
+
+export function loadCommunityCluster(): Map<string, CommunityClusterLabel> {
+  const raw = goldData as RawGoldFile;
+  const map = new Map<string, CommunityClusterLabel>();
+  for (const lbl of raw.community_cluster ?? []) {
+    map.set(lbl.id, lbl);
   }
   return map;
 }
