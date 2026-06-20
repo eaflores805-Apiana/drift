@@ -1,12 +1,13 @@
 {
   "_meta": {
-    "version": "0.3.0",
+    "version": "0.3.1",
     "note": "Gold labels are the eval target, not end-of-line QA. PO + 1-2 reviewers fill one entry per item_id from seed-items.json using _schema below. Label blind to the engine's output. Reviewer disagreements are taste decisions for the team, not noise to average away.",
     "canonical_guide": "docs/06-gold-labeling-guide.md",
     "listener": "listener_001 (Alex Rivera)",
     "v0.2.0_change": "PO locked the first definitive cluster (8 items) across all four routes. Calibration seeds for p004/p010/p018 confirmed (lines matched the worked exemplars). Added p008/p020/p025/p016 and resolved p030. Added 'route' field to make highlight/doorway/utility/silent machine-readable for the scoring work. p036 left as the open split-case, untouched.",
     "v0.3.0_change": "TL ruling: separated eligibility / voice-worthiness / treatment from the single 'drop' token, WITHOUT pulling labels ahead of the engine. Added eligibility_status (pre-scoring) and voiceworthiness (per-item merit) as SEPARATE axes; kept desired_bucket clean (drop|ambient|voiced|expandable) so the current scorer + bucket-agreement metric stay usable. 'blocked' and 'deferred' are NOT bucket values \u2014 blocked is an eligibility result before scoring, deferred is a future session-selection result. Added item-specific disposition_reason. p016 reframed: deferred-this-item, NOT a category ban.",
-    "phase_b_voiced_meaning": "In Phase B, desired_bucket='voiced' means the item is voice-worthy ON ITS OWN MERITS \u2014 it deserves consideration for the mic. It does NOT claim the shipped station should interrupt for all voiced items in a single session. Several items can be 'voiced' here; a future session programmer with a finite airtime budget will choose which voice-worthy candidates actually air."
+    "phase_b_voiced_meaning": "In Phase B, desired_bucket='voiced' means the item is voice-worthy ON ITS OWN MERITS \u2014 it deserves consideration for the mic. It does NOT claim the shipped station should interrupt for all voiced items in a single session. Several items can be 'voiced' here; a future session programmer with a finite airtime budget will choose which voice-worthy candidates actually air.",
+    "v0.3.1_change": "Documented grading model: the three judgment axes (eligibility, voiceworthiness, treatment) are GRADED; claims/forbidden-inferences/consent/final-line-grounding are HARD GATES, not a fourth ranking axis. Headline Phase-B metric = judgment agreement AMONG gate-passing items, with gate failures reported absolutely. (Per TL: prevents an item scoring 'correct' on the three axes while inventing a motive inside allowed_claims.)"
   },
   "_schema": {
     "item_id": "string \u2014 matches an id in seed-items.json",
@@ -295,5 +296,16 @@
   ],
   "_deferred_architecture": {
     "session_programmer": "ACCEPTED but DEFERRED until per-item judgment is proven. Drift will add a session programmer with a finite airtime budget that selects the best few items from the voice-worthy candidate pool. Consequence: not airing in a particular session means another moment won the slot \u2014 NOT that the category was silenced. Product rule: 'Not voiced does not mean silenced; it means another moment was more worth interrupting the music for. That is curation, not censorship.' Until built, labels carry voiceworthiness (per-item) but NOT session-selection outcomes."
-  }
+  },
+  "_grading_model": {
+    "graded_judgment_axes": "eligibility_status, voiceworthiness, preferred treatment (tone). These can be imperfect and improve over time \u2014 they are the taste metrics.",
+    "hard_gates_not_graded": "consent/eligibility false-pass, allowed_claims, forbidden_inferences, final-line grounding. Binary pass/fail. NEVER averaged into a score, NEVER traded against good tone.",
+    "headline_metric": "Judgment agreement % computed ONLY over items that pass every gate. Gate failures reported separately and absolutely (e.g. '0 consent false-passes, 0 ungrounded lines, N forbidden-inference violations'). A high-tone-agreement engine with one high-sensitivity false-voice is FAILING, not high-scoring \u2014 gates are preconditions on the metric being meaningful, not inputs to it.",
+    "voiced_means": "desired_bucket='voiced' = worthy of entering the future candidate pool (per-item merit), NOT guaranteed session airtime."
+  },
+  "_deferred_someday": [
+    "Session programmer: finite airtime budget selects the best few from the voice-worthy candidate pool. Built after per-item judgment is proven. Until then, no session-selection outcomes in labels (no lost_airtime / deferred_this_window).",
+    "Red-team baseline (eval artifact, NOT a product channel): run the same corpus through an engagement-maximizing, speculative policy and compare to Drift's restrained policy \u2014 demonstrates why trust/restraint is the moat. Internal only; its outputs (invented motives) are contained to the lab, never persisted to the corpus, never reachable from any user surface.",
+    "Channel/mode invariant (re-derives from 'safety is the floor' when modes are actually on the table): a mode may change what gets PRIORITIZED, never what counts as true or permissible. Not recorded as its own ADR yet \u2014 premature until channels exist."
+  ]
 }
