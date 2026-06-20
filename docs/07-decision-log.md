@@ -120,10 +120,11 @@ For a trust-dependent product the asymmetry is fatal; lead so hard with the cons
 ## OPEN — needs decision / three-way sign-off
 
 1. **The name.** "Drift" is taken — a registered AI/software company (conversational marketing, acquired by Salesloft). **Must change before any public-facing step.** `[OPEN — blocker]`
-2. **GTM posture: loud-public vs quiet-direct.** Loud public demand can be *leverage* or a *roadmap for platforms to clone* (the Huxe risk). Engineer 1's lean: quiet-direct, given how copyable the idea is. Needs the team. `[REVERTED 2026-06-19 — private]`
-   - *Earlier resolution (now reverted):* Repo briefly flipped public 2026-06-19 to give web-based LLM teammates direct URL access. Accepted the cloning/visibility risk for collaboration ergonomics.
-   - *Current state:* Acting Manager reverted to private later the same day. Aligns with Engineer 1's original quiet-direct lean and the team's "highly clonable concept; stay quiet" warning. LLM teammates that need repo access can be added as GitHub collaborators (or use file-attachment / paste workflows). Proprietary `LICENSE` remains in place.
-   - The deeper GTM posture (loud-public vs quiet-direct *at launch*, Phase F) is still **OPEN** — repo visibility was an ops decision, not a GTM decision.
+2. **GTM posture: loud-public vs quiet-direct.** Loud public demand can be *leverage* or a *roadmap for platforms to clone* (the Huxe risk). Engineer 1's lean: quiet-direct, given how copyable the idea is. Needs the team. `[CURRENT 2026-06-20 — public, for onboarding]`
+   - *2026-06-19 morning:* Flipped public to give web-based LLM teammates direct URL access. Accepted the cloning/visibility risk for collaboration ergonomics.
+   - *2026-06-19 evening:* Reverted to private. Aligned with Engineer 1's original quiet-direct lean.
+   - *2026-06-20:* Flipped public again to onboard a new Senior who needs visibility into the project as a whole. Same operational rationale as the first flip — collaboration access, not a GTM-posture change. Proprietary `LICENSE` continues to hold (visibility ≠ license).
+   - **The deeper GTM posture (loud-public vs quiet-direct *at launch*, Phase F) is still OPEN.** Repo visibility has been an ops/onboarding decision throughout — not a launch-loudness commitment. The team should re-flip to private once the new Senior has the access pattern they need (collaborator invite, file workflow, etc.), unless ongoing access is preferred.
 3. **Scoring weights & thresholds.** To be tuned empirically via the bench, not decided on paper. `[OPEN — resolved by Phase 1]`
 4. **Hardest open engineering problems:** (a) relevance-to-you computation; (b) inferring magnitude for friend posts that are life events without saying so. `[OPEN — research]`
 5. **Owned-network thesis** as a real product direction (vs. just the sim constraint). `[OPEN — own conversation]`
