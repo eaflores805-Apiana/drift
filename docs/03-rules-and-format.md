@@ -1,5 +1,7 @@
 # Drift — Tentative Rules & Format
-**v0 working draft.** Everything here is provisional and meant to be tuned. This governs the whole path: from a piece of content arriving, to whether it sits quietly, to whether the DJ says it out loud, to how it's said.
+> **v0.2.0 · 2026-06-20.** Working draft; weights/thresholds still provisional and tuned on the bench. This governs the whole path: from a piece of content arriving, to whether it sits quietly, to whether the DJ says it out loud, to how it's said.
+>
+> *v0.2.0 — Part 3 promoted to the ratified **v3 additive-with-dampers** scoring formula (ADR J1 route-aware ranking + ADR J2 no-`W_community`). The former multiplicative formula is retired to "superseded" below. Per-route thresholds marked pending the Step 1.3 fit; confidence added to the Score schema (6.2) and the dials (7). The p045 sensitivity-damper interaction is flagged as an open, separate de-risk/treatment track.*
 
 ---
 
@@ -59,19 +61,37 @@ The key asymmetry: **news carries content-intrinsic signal** (you can judge how 
 | Known / acquaintance | 0.5 |
 | Followed (creator, business) | 0.3 |
 
-### The formula
+### The formula — v3 additive-with-dampers *(ratified; constants pending Step 1.3)*
+
+An **additive base** (the four factors) with two **multiplicative dampers** (confidence, sensitivity) on top:
 
 ```
-value = magnitude
-      × closeness
-      × (0.5 + 0.5 · relevance)     // booster, never zeroes
-      × (0.5 + 0.5 · timeliness)    // booster, never zeroes
+base  = magnitude
+      + α · (closeness  − 0.5)        // α = β = γ = 0.2 (provisional)
+      + β · (relevance  − 0.5)
+      + γ · (timeliness − 0.5)
 
-voice it IF  value ≥ threshold  AND  glad_test == true  AND  novel
+value = base × confidence × sensitivity_damper
+
+voice it IF  value ≥ route_threshold  AND  glad_test == true  AND  novel
 then: voice the top 1–2 that clear the bar per window; everything else stays ambient.
 ```
 
-Relevance and timeliness are **boosters** (baseline 0.5), so unknown relevance never zeroes an item — magnitude × closeness is the core, the other two raise it.
+**Why additive, not multiplicative.** Magnitude leads; closeness, relevance, and timeliness are bounded ±0.2 *nudges*, not multipliers. This is the load-bearing change: under the old multiplicative formula a low-closeness source could *veto* a high-magnitude event — a strong community win from an acquaintance got crushed — which over-suppressed exactly the items Drift exists to surface (the bench voiced **0 of 40** items at default settings). The additive base removes that veto: magnitude carries, closeness adjusts.
+
+**No `W_community` term** *(ADR J2).* A separate community-floor weight was considered to rescue community items from the multiplicative veto. It is **rejected**: the additive base already removes the veto, the community cluster separates cleanly under threshold-only v3 (wins 0.53–0.58 vs noise 0.13–0.18), and an unnecessary constant is formula debt. Community items are handled by the **route threshold + the structural eligibility gate** (Part 2 / audience-scope), never a floor constant.
+
+**The dampers** (multiplicative, on the additive base):
+- **Confidence** `0..1` — the meaning pass's certainty. A high-magnitude / **low-confidence** item is damped so it cannot out-voice a safe, well-grounded one. This is the safety invariant the **probe regression** guards (a high-magnitude/low-confidence probe must never breach the strong-candidate ceiling; it runs on every bench commit once v3 is live).
+- **Sensitivity damper** — `low → 1.0 · medium → 0.8 · high → 0.6`. Reduces a sensitive item's score so it does not voice as loudly. *(See "whether vs. how" for the open tension this raises on positive-but-carefully-handled items.)*
+
+**Per-route thresholds, not one global bar** *(ADR J1).* Ranking is *route-local*: each route (doorway / community-highlight / utility / …) has its own `route_threshold`, fit in Step 1.3 against its cluster. A doorway item does not compete with a utility item in one global pool — cross-route airtime is Layer 2's job. The single `threshold: 0.45` in Part 7 is the legacy starting value; fitted per-route thresholds replace it.
+
+**Superseded — the former multiplicative formula** *(retained for the trail; do not use):*
+```
+value = magnitude × closeness × (0.5 + 0.5·relevance) × (0.5 + 0.5·timeliness)
+```
+Retired because magnitude × closeness let closeness veto high-magnitude items — a proven structural ceiling (0 of 40 voiced at default). Replaced by the additive base above.
 
 ### The governing test: *"Would you be glad I brought this up right now?"*
 
@@ -84,6 +104,8 @@ The final guardrail, applied after the math. It catches the three things worth v
 - **Sensitivity** decides the **tone** it rises *in* (bright vs. gentle).
 
 A friend's grief may score high on "matters" and surface — but routes to the gentle, low-detail rung, never a bright highlight. **Important never auto-means upbeat.**
+
+**Open tension — the sensitivity damper vs. this principle.** Strictly, sensitivity should set *tone*, not *whether an item rises* — yet v3's `sensitivity_damper` reduces the *score*. For genuinely heavy items (grief, illness) that is correct: they *should* score quieter and route gently. But p045 — a positive community win (a school science-fair result) whose only "sensitivity" is the *removable* exposure of named minors — exposed a conflation: the damper treats removable exposure-risk as reduced voiceworthiness and can sink a should-voice item below its route line. The fix is **not** a formula constant; it is the **earned de-risk recalculation** track — strip the separable risk, verify the residual is clean by a *deterministic* check, then score the safe residual — proposed, gated on TL's ruling, tracked separately. Until ruled, the damper stands as written and p045's placement is resolved by the de-risk/treatment layer, not the score.
 
 ---
 
@@ -139,7 +161,11 @@ Score {
   closeness:   0..1     // tier × like-gain (friends) | locality+topic (news)
   relevance:   0..1     // overlap with listener's own context; baseline 0.5
   timeliness:  0..1     // f(expires_at, now); baseline 0.5
-  value:       0..1     // per Part 3 formula
+  confidence:  0..1     // meaning-pass certainty; damper (v3)
+  sens_damper: 0..1     // 1.0/0.8/0.6 from sensitivity (none-low/medium/high)
+  base:        0..1     // additive base (Part 3 v3)
+  value:       0..1     // base × confidence × sens_damper
+  route:       str      // ranking is route-local (ADR J1)
   glad_test:   bool     // "would you be glad to hear this now?"
   rung:        "ambient" | "voiced"
 }
@@ -185,7 +211,10 @@ heard(item)                →  mark novelty_key seen (dedupe)
 Starting values, all provisional:
 
 ```
-threshold:           0.45
+route_threshold:     per-route — PENDING Step 1.3 fit  (legacy global 0.45, superseded)
+additive_nudge:      α = β = γ = 0.2  (closeness/relevance/timeliness; provisional)
+sensitivity_damper:  low 1.0 · medium 0.8 · high 0.6
+confidence:          multiplicative damper (from the meaning pass)
 chattiness:          ≤ 1 voiced item per ~2 songs   (talk:music ≈ 1:3)
 novelty_window:      24h
 like_gain:           +0.15 closeness   (cap 1.0)
@@ -201,13 +230,15 @@ timeliness_baseline: 0.5
 **Settled (the spine):**
 - The three-rung attention ladder, two-way movement.
 - Published-only, enforced at ingest; private never reaches the engine.
-- The four-factor score (magnitude × closeness, boosted by relevance & timeliness).
+- **The v3 additive-with-dampers score** — additive base (magnitude-led; closeness/relevance/timeliness as bounded ±0.2 nudges) × confidence × sensitivity_damper. **No `W_community`** (ADR J2). Replaces the former multiplicative formula.
+- **Route-local ranking** (ADR J1) — per-route thresholds; cross-route airtime is Layer 2's.
 - The "would you be glad I brought this up?" guardrail, doubling as the safety test.
 - Whether-to-voice (importance) vs. how-to-say-it (sensitivity) kept separate.
 - Learning via like/skip/promote as gains, channels as cold-start priors.
 
 **Open / to tune:**
-- All weights and the threshold (that's what the playground is for).
+- The per-route **thresholds** and the additive-nudge / damper constants — fit on the bench in Step 1.3.
+- The **sensitivity-damper / de-risk tension** (Part 3) — the earned de-risk recalculation for separable-risk items (e.g. p045), gated on TL's ruling; tracked separately.
 - **Relevance computation** — the hardest factor; matching an item to the listener's own context.
 - How **magnitude** gets inferred for friend posts *beyond* the category list (a post can be a life event without saying so).
 - **Chattiness** cadence — the line between "alive" and "too talky."

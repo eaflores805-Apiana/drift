@@ -336,6 +336,105 @@ async function main(): Promise<void> {
   }
   console.log("");
 
+  // === Step 1.3 — Fitted route thresholds (ADR J1 + J2, 2026-06-20) ===
+  // ADR J2 closed the W_community question: no separate community floor
+  // constant. Step 1.3 therefore fits ROUTE THRESHOLDS only — one per
+  // route in scope today (doorway, community/highlight). v3 stays canonical
+  // (rules-and-format.md v0.2.0). p045 is sens-damped below the community
+  // voiced line and is handled on the de-risk track — flagged and excluded
+  // from the community fit per the task spec.
+  const DOORWAY_THRESHOLD = 0.10;     // asserted; fit against single labeled doorway p004
+  const COMMUNITY_THRESHOLD = 0.532;  // asserted; fit at the "maybe" boundary (p042 voiced)
+
+  console.log("## Step 1.3 — Fitted route thresholds (per ADR J1 + J2)");
+  console.log("");
+  console.log(`> Doorway threshold:    **${fmt(DOORWAY_THRESHOLD, 3)}**  (single labeled doorway item; comfortable margin over silent floor)`);
+  console.log(`> Community threshold:  **${fmt(COMMUNITY_THRESHOLD, 3)}**  (at the maybe — p042 sits at the line; voiced by ≥ convention)`);
+  console.log("");
+  console.log("Bucket convention: score ≥ threshold ⇒ **voiced**; below ⇒ **ambient**.");
+  console.log("(Drop and consent-blocked are decided upstream, not by these thresholds.)");
+  console.log("");
+
+  // Doorway route — single labeled item today (p004). Show its v3 score
+  // vs the threshold and vs the silent-route ceiling so the margin is
+  // visible. (Silent items live on different routes per v0.3.1 gold, so
+  // they don't get bucketed by the doorway threshold; shown for margin
+  // context only.)
+  console.log("### Doorway route (threshold ≥ 0.100)");
+  console.log("");
+  console.log("| id | name | v3 score | vs threshold | bucket |");
+  console.log("|---|---|---:|---|---|");
+  const doorwayRows = rows.filter((r) => r.route === "doorway");
+  for (const r of doorwayRows) {
+    const s = v3(r).score;
+    const cmp = s >= DOORWAY_THRESHOLD ? `≥ ${fmt(DOORWAY_THRESHOLD, 3)}` : `< ${fmt(DOORWAY_THRESHOLD, 3)}`;
+    const bucket = s >= DOORWAY_THRESHOLD ? "**voiced**" : "ambient";
+    console.log(`| ${r.id} | ${r.short} | ${fmt(s, 3)} | ${cmp} | ${bucket} |`);
+  }
+  // Silent-route ceiling, for margin context
+  const silentScores = rows.filter((r) => r.route === "silent").map((r) => v3(r).score);
+  if (silentScores.length > 0) {
+    const silentMax = Math.max(...silentScores);
+    const margin = DOORWAY_THRESHOLD - silentMax;
+    console.log("");
+    console.log(`Silent-route v3 ceiling (context, separate route): ${fmt(silentMax, 3)}.`);
+    console.log(`Margin between threshold and silent ceiling: ${fmtSigned(margin)} (positive ⇒ no silent item crosses).`);
+  }
+  console.log("");
+
+  // Community / highlight route — fit against the cluster, EXCLUDING p045
+  // per the task spec (p045 is sens-damped and on the separate de-risk
+  // track). Show all six items with bucket placement; flag p045 explicitly.
+  console.log(`### Community route (threshold ≥ ${fmt(COMMUNITY_THRESHOLD, 3)})`);
+  console.log("");
+  console.log("p045 is flagged-and-excluded from the threshold search (sens-damped, on de-risk track).");
+  console.log("");
+  console.log("| id | name | v3 score | vs threshold | bucket (under fitted threshold) | note |");
+  console.log("|---|---|---:|---|---|---|");
+  const communityFit = rows
+    .filter((r) => COMMUNITY_CLUSTER_IDS.includes(r.id))
+    .map((r) => ({ ...r, score: v3(r).score }))
+    .sort((a, b) => b.score - a.score);
+  for (const r of communityFit) {
+    const cmp = r.score >= COMMUNITY_THRESHOLD ? `≥ ${fmt(COMMUNITY_THRESHOLD, 3)}` : `< ${fmt(COMMUNITY_THRESHOLD, 3)}`;
+    const bucket = r.score >= COMMUNITY_THRESHOLD ? "**voiced**" : "ambient";
+    const note = r.id === "p045"
+      ? "**deferred — de-risk track**"
+      : r.id === "p042"
+      ? "the maybe (at the line)"
+      : r.id === "p044"
+      ? "drop upstream (separate gate)"
+      : "";
+    console.log(`| ${r.id} | ${r.short} | ${fmt(r.score, 3)} | ${cmp} | ${bucket} | ${note} |`);
+  }
+
+  // Over-suppression resolution check — shown, not asserted.
+  // Pre-Step-1.3 ("default settings, multiplicative") suppression set per
+  // diagnostic-decision-board: 5 gold-voiced items scored ambient. Under
+  // the fitted thresholds, count how many gold-voiced items now voice
+  // within their fitted route.
+  console.log("");
+  console.log("### Over-suppression resolution (per task spec done-condition)");
+  console.log("");
+  const fitExclP045 = communityFit.filter((r) => r.id !== "p045");
+  const voicedGold = fitExclP045.filter(
+    (r) => r.voiceworthiness === "strong_candidate" || r.voiceworthiness === "candidate"
+  );
+  const voicedUnderFit = voicedGold.filter((r) => r.score >= COMMUNITY_THRESHOLD);
+  console.log(`Community gold-voiced items (excl. p045): ${voicedGold.map((r) => r.id).join(", ")} — ${voicedGold.length} total.`);
+  console.log(`Voicing under fitted community threshold: ${voicedUnderFit.map((r) => r.id).join(", ")} — ${voicedUnderFit.length}/${voicedGold.length}.`);
+  const ambientGold = fitExclP045.filter((r) => r.voiceworthiness === "not_voiceworthy");
+  const ambientHeldDown = ambientGold.filter((r) => r.score < COMMUNITY_THRESHOLD);
+  console.log(`Community gold-ambient items: ${ambientGold.map((r) => r.id).join(", ")} — held below threshold: ${ambientHeldDown.length}/${ambientGold.length}.`);
+  const doorwayVoiced = doorwayRows.filter((r) => v3(r).score >= DOORWAY_THRESHOLD);
+  console.log(`Doorway gold-voiced items: ${doorwayRows.map((r) => r.id).join(", ")} — voicing under fitted doorway threshold: ${doorwayVoiced.length}/${doorwayRows.length}.`);
+  const allVoicedPass = voicedUnderFit.length === voicedGold.length && doorwayVoiced.length === doorwayRows.length;
+  const allAmbientPass = ambientHeldDown.length === ambientGold.length;
+  console.log("");
+  console.log(`Over-suppression resolved for the fitted scope (community + doorway, excl. p045)? ${allVoicedPass && allAmbientPass ? "**YES — shown by the tables above.**" : "**NO — see deviations above.**"}`);
+  console.log("p045 remains deferred to the de-risk track; not resolved by Step 1.3 by design.");
+  console.log("");
+
   // === Low-confidence probe ===
   console.log("## Low-confidence probe (synthetic — required by spec)");
   console.log("");
