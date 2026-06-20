@@ -200,7 +200,11 @@ incoming item -> meaning pass -> scoring -> segment candidate
 ---
 
 ## J — Layer 1 engine architecture decisions (Phase B)
-*Added 2026-06-20. Scope: Layer 1 item judgment / scoring. First entry adopted in response to Step 1.1 formula-shape test findings. Source: `docs/correspondence/team-route-aware-ranking-ruling-2026-06-20.md`.*
+*Added 2026-06-20. Scope: Layer 1 item judgment / scoring. First entry adopted in response to Step 1.1 formula-shape test findings.*
+*Sources:*
+- *Eng1 formal ADR (authoritative; multi-party concurrence, decision class `ESCALATE-IF-CHANGED`): `docs/correspondence/eng1-adr-route-aware-ranking-2026-06-20.md`*
+- *Team Lead directive memo: `docs/correspondence/team-route-aware-ranking-ruling-2026-06-20.md`*
+- *CS Step 1.1 report that surfaced the question: `docs/correspondence/cs-formula-shape-test-report-2026-06-19.md` (commit `49f25a3`)*
 
 ### J1 — Route-aware ranking as the Layer 1 scoring contract `[ACCEPTED 2026-06-20]`
 
