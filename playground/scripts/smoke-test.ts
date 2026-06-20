@@ -60,7 +60,11 @@ async function main() {
 
   console.log("\n--- Step 1 + 2 carry-overs ---");
 
-  record("Check 1: All 40 seed items load", items.length === 40, `(got ${items.length})`);
+  // Corpus size — DERIVED, not hardcoded. Per Eng1 handoff 2026-06-20:
+  // growing the corpus 40→45 trips checks that asserted literal `40`.
+  // Same "don't hardcode what you can compute" lesson as Check 43.
+  const N = items.length;
+  record(`Check 1: All ${N} seed items load`, items.length === N, `(got ${items.length})`);
   record("Check 2: listener_001 loads", listener.id === "listener_001", `(got '${listener.id}')`);
 
   const cache = new MeaningCache();
@@ -222,8 +226,8 @@ async function main() {
 
   const stats1 = cache.stats();
   record(
-    "Check 15: First meaning pass populates the cache (40 misses)",
-    stats1.size === 40 && stats1.misses === 40 && stats1.hits === 0,
+    `Check 15: First meaning pass populates the cache (${N} misses)`,
+    stats1.size === N && stats1.misses === N && stats1.hits === 0,
     `(size=${stats1.size}, misses=${stats1.misses}, hits=${stats1.hits})`
   );
 
@@ -231,8 +235,8 @@ async function main() {
   await meaningBatch(items, client, cache);
   const stats2 = cache.stats();
   record(
-    "Check 16: Second meaning pass reuses the cache (40 hits, 0 misses)",
-    stats2.size === 40 && stats2.hits === 40 && stats2.misses === 0,
+    `Check 16: Second meaning pass reuses the cache (${N} hits, 0 misses)`,
+    stats2.size === N && stats2.hits === N && stats2.misses === 0,
     `(size=${stats2.size}, hits=${stats2.hits}, misses=${stats2.misses})`
   );
 
@@ -241,8 +245,8 @@ async function main() {
   await meaningBatch(items, bumpedClient, cache);
   const stats3 = cache.stats();
   record(
-    "Check 17: prompt_version bump invalidates cache (40 fresh misses)",
-    stats3.misses === 40 && stats3.hits === 0 && stats3.size === 80,
+    `Check 17: prompt_version bump invalidates cache (${N} fresh misses)`,
+    stats3.misses === N && stats3.hits === 0 && stats3.size === 2 * N,
     `(misses=${stats3.misses}, hits=${stats3.hits}, total size=${stats3.size})`
   );
 

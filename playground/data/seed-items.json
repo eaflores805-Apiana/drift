@@ -1,9 +1,10 @@
 {
   "_meta": {
-    "version": "0.1.0",
+    "version": "0.2.0",
     "description": "Seed world for the Drift promotion bench: accounts (sources) + raw items (Ingested fields only). Pairs with listener.json (Alex Rivera / listener_001) and gold-labels.json.",
     "consent_note": "Items whose audience_scope is not public/published MUST be dropped at the ingest gate before any scoring. p002 (a private DM) is included on purpose to verify the gate fails closed.",
-    "scaling_note": "Seed = 14 accounts / 40 items. Scale to ~40 accounts / 300-500 items keeping the gem-to-noise ratio low (most items should land ambient or drop)."
+    "scaling_note": "Seed = 19 accounts / 45 items. Scale to ~40 accounts / 300-500 items keeping the gem-to-noise ratio low (most items should land ambient or drop).",
+    "v0.2.0_change": "Added community-cluster items p041-p045 (+5 accounts) per gold-labels v0.4.0 / Step 1.3 corpus authoring. New community sources left at default (unknown) closeness on purpose: holds closeness ~constant across the cluster so MAGNITUDE is the discriminating variable for the route-threshold fit. p044 audience_scope='public' (a public sale post); its DROP is a lower-gate/eligibility decision, NOT a consent drop. p045 NAMES four minors in raw_text by design \u2014 the fixture exists to verify the DJ strips them (group_level_STRIP_individuals)."
   },
   "accounts": [
     {
@@ -75,6 +76,31 @@
       "account_id": "kelp_surf_co",
       "name": "Kelp Surf Co.",
       "source_type": "brand"
+    },
+    {
+      "account_id": "rolling_pin",
+      "name": "Rolling Pin Bakery",
+      "source_type": "brand"
+    },
+    {
+      "account_id": "ventura_library",
+      "name": "Ventura County Library",
+      "source_type": "local_org"
+    },
+    {
+      "account_id": "ventura_farmers_market",
+      "name": "Ventura Farmers Market",
+      "source_type": "local_org"
+    },
+    {
+      "account_id": "harbor_threads",
+      "name": "Harbor Threads",
+      "source_type": "brand"
+    },
+    {
+      "account_id": "anacapa_middle",
+      "name": "Anacapa Middle School",
+      "source_type": "local_org"
     }
   ],
   "items": [
@@ -688,6 +714,111 @@
       ],
       "location": "Ventura, CA",
       "novelty_key": "coastal_streetfair_set"
+    },
+    {
+      "id": "p041",
+      "account_id": "rolling_pin",
+      "source_name": "Rolling Pin Bakery",
+      "audience_scope": "public",
+      "timestamp": "2026-06-19T10:30:00",
+      "expires_at": null,
+      "raw_text": "Our sourdough just took 1st place \u2014 blue ribbon \u2014 at the California State Fair! Twelve years of 4am starts. Thank you, Ventura. \ud83e\udd56\ud83c\udfc6",
+      "entities": [
+        {
+          "type": "org",
+          "value": "Rolling Pin Bakery"
+        },
+        {
+          "type": "event",
+          "value": "California State Fair blue ribbon"
+        }
+      ],
+      "location": "Ventura, CA",
+      "novelty_key": "rolling_pin_state_fair"
+    },
+    {
+      "id": "p042",
+      "account_id": "ventura_library",
+      "source_name": "Ventura County Library",
+      "audience_scope": "public",
+      "timestamp": "2026-06-19T09:00:00",
+      "expires_at": null,
+      "raw_text": "This year our literacy program reached 1,000 local kids. To every volunteer who read with a child this year: thank you. \ud83d\udcda",
+      "entities": [
+        {
+          "type": "org",
+          "value": "Ventura County Library literacy program"
+        },
+        {
+          "type": "stat",
+          "value": "1,000 kids"
+        }
+      ],
+      "location": "Ventura, CA",
+      "novelty_key": "ventura_library_literacy"
+    },
+    {
+      "id": "p043",
+      "account_id": "ventura_farmers_market",
+      "source_name": "Ventura Farmers Market",
+      "audience_scope": "public",
+      "timestamp": "2026-06-19T08:30:00",
+      "expires_at": null,
+      "raw_text": "Peak stone-fruit season is here \ud83c\udf51 Gorgeous morning down at the market \u2014 come say hi to the growers.",
+      "entities": [
+        {
+          "type": "event",
+          "value": "farmers market"
+        },
+        {
+          "type": "topic",
+          "value": "stone fruit season"
+        }
+      ],
+      "location": "Ventura, CA",
+      "novelty_key": "ventura_farmers_market"
+    },
+    {
+      "id": "p044",
+      "account_id": "harbor_threads",
+      "source_name": "Harbor Threads",
+      "audience_scope": "public",
+      "timestamp": "2026-06-19T11:00:00",
+      "expires_at": null,
+      "raw_text": "WEEKEND SALE \u2014 20% off everything, come down! #Ventura #ShopLocal",
+      "entities": [
+        {
+          "type": "topic",
+          "value": "sale"
+        }
+      ],
+      "location": "Ventura, CA",
+      "novelty_key": "harbor_threads_weekend_sale"
+    },
+    {
+      "id": "p045",
+      "account_id": "anacapa_middle",
+      "source_name": "Anacapa Middle School",
+      "audience_scope": "public",
+      "timestamp": "2026-06-19T11:45:00",
+      "expires_at": null,
+      "raw_text": "1st place at the county science fair! \ud83e\udd47 So proud of our team \u2014 Maya R., Devon T., Priya S., and Liam K. What a group. (Photo: the four of them with their trophy.)",
+      "entities": [
+        {
+          "type": "org",
+          "value": "Anacapa Middle School science team"
+        },
+        {
+          "type": "event",
+          "value": "county science fair 1st place"
+        },
+        {
+          "type": "minor",
+          "value": "four students named and pictured in source"
+        }
+      ],
+      "location": "Ventura, CA",
+      "novelty_key": "anacapa_science_fair"
     }
   ]
 }
