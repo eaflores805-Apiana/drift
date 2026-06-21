@@ -72,11 +72,20 @@ export const DecisionLinesSchema = z.object({
 });
 export type DecisionLines = z.infer<typeof DecisionLinesSchema>;
 
+/**
+ * Route assigned by the structural classifier (Layer 1 stage-4 of the
+ * meta-spec). Empty for consent-dropped and missing-meaning decisions
+ * (the classifier doesn't run). See `playground/src/scoring/routes.ts`.
+ */
+export const RouteSchema = z.enum(["silent", "highlight", "doorway", "utility"]);
+export type RouteValue = z.infer<typeof RouteSchema>;
+
 export const DecisionSchema = z.object({
   item_id: z.string(),
   bucket: BucketSchema,
   score: z.number(),
   score_breakdown: z.record(z.string(), z.number()),
+  route: RouteSchema.optional(),
   reason: z.string(),
   lines: DecisionLinesSchema.optional(),
   allowed_claims: z.array(z.string()).default([]),

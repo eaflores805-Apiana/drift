@@ -7,10 +7,12 @@ type Props = {
 };
 
 /**
- * Factor bars per item — magnitude, closeness, relevance, timeliness,
- * focus weight, raw, effective. Effective is the score bar; it shows the
- * voice and expandable thresholds as vertical ticks so the team can see
- * whether an item is barely under or nowhere close.
+ * Factor bars per item — v3 decomposition: magnitude, closeness,
+ * relevance, timeliness, confidence, sensitivity_damper, focus weight,
+ * base, value. The effective_score bar shows the item's route-local
+ * voiced threshold and the (global) expandable threshold as vertical
+ * ticks. Items on routes with no voiced bar (utility per ADR J3,
+ * silent fail-closed) render without the voice tick.
  */
 export function FactorBars({ decision, settings }: Props) {
   const b = decision.score_breakdown;
@@ -21,10 +23,14 @@ export function FactorBars({ decision, settings }: Props) {
     { key: "closeness", value: b.closeness ?? 0, max: 1 },
     { key: "relevance", value: b.relevance ?? 0, max: 1 },
     { key: "timeliness", value: b.timeliness ?? 0, max: 1 },
+    { key: "confidence", value: b.confidence ?? 0, max: 1 },
+    { key: "sensitivity_damper", value: b.sensitivity_damper ?? 1, max: 1 },
     { key: "focus_weight", value: b.focus_weight ?? 1, max: 2 },
-    { key: "raw_score", value: b.raw_score ?? 0, max: 1 },
+    { key: "base", value: b.base ?? 0, max: 1 },
+    { key: "value", value: b.value ?? 0, max: 1 },
   ];
 
+  const routeThreshold = b.route_threshold; // undefined when route has no voiced bar
   return (
     <div className="factor-bars">
       {factors.map((f) => (
@@ -32,7 +38,8 @@ export function FactorBars({ decision, settings }: Props) {
       ))}
       <ScoreRow
         score={decision.score}
-        voiceThreshold={settings.voiceThreshold}
+        route={decision.route}
+        routeThreshold={routeThreshold}
         expandableThreshold={settings.expandableThreshold}
       />
     </div>
@@ -54,26 +61,31 @@ function FactorRow({ label, value, max }: { label: string; value: number; max: n
 
 function ScoreRow({
   score,
-  voiceThreshold,
+  route,
+  routeThreshold,
   expandableThreshold,
 }: {
   score: number;
-  voiceThreshold: number;
+  route: Decision["route"];
+  routeThreshold: number | undefined;
   expandableThreshold: number;
 }) {
   const pct = clampPct(score * 100);
-  const voicePct = clampPct(voiceThreshold * 100);
   const expPct = clampPct(expandableThreshold * 100);
+  const voicePct =
+    routeThreshold !== undefined ? clampPct(routeThreshold * 100) : null;
   return (
     <div className="factor-row factor-row-score">
-      <span className="factor-label">effective_score</span>
+      <span className="factor-label">effective_score {route ? `(${route})` : ""}</span>
       <div className="factor-bar factor-bar-score">
         <div className="factor-bar-fill factor-bar-fill-score" style={{ width: `${pct}%` }} />
-        <div
-          className="factor-bar-tick factor-bar-tick-voice"
-          style={{ left: `${voicePct}%` }}
-          title={`voice threshold ${voiceThreshold.toFixed(2)}`}
-        />
+        {voicePct !== null ? (
+          <div
+            className="factor-bar-tick factor-bar-tick-voice"
+            style={{ left: `${voicePct}%` }}
+            title={`voice threshold ${routeThreshold!.toFixed(3)} (${route} route)`}
+          />
+        ) : null}
         <div
           className="factor-bar-tick factor-bar-tick-expandable"
           style={{ left: `${expPct}%` }}

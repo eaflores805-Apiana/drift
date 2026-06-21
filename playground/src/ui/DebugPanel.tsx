@@ -42,8 +42,14 @@ export function DebugPanel({
           · misses: <strong>{cacheStats.misses}</strong>
         </div>
         <div>
-          Voice threshold: <strong>{settings.voiceThreshold.toFixed(2)}</strong>{" "}
-          · Expandable: <strong>{settings.expandableThreshold.toFixed(2)}</strong>{" "}
+          Route thresholds:{" "}
+          {Object.entries(settings.routeThresholds).map(([r, v], i, arr) => (
+            <span key={r}>
+              <code>{r}</code>=<strong>{v?.toFixed(3)}</strong>
+              {i < arr.length - 1 ? " · " : ""}
+            </span>
+          ))}
+          {" "}· Expandable: <strong>{settings.expandableThreshold.toFixed(2)}</strong>{" "}
           · Novelty window: <strong>{settings.noveltyWindowHours}h</strong>
         </div>
         <div className="comparison-summary">

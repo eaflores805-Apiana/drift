@@ -5,7 +5,9 @@ import { loadSimulated } from "../src/data/adapters/simulatedAdapter";
 import {
   DEFAULT_SETTINGS,
   scoreBatch,
+  type ScoringSettings,
 } from "../src/scoring/scoringEngine";
+import { classifyRoute } from "../src/scoring/routeClassifier";
 import { consentGate } from "../src/safety/consentGate";
 import { closeness } from "../src/scoring/closeness";
 import { timeliness } from "../src/scoring/timeliness";
@@ -17,10 +19,23 @@ import { RealMeaningClient } from "../src/meaning/realClient";
 import { meaningBatch, meaningFor } from "../src/meaning/meaningPass";
 import { cacheKeyFor, contentHashOf } from "../src/meaning/keyFor";
 import { parseAndValidate } from "../src/meaning/parseModelResponse";
-import { ModelDerivedSchema } from "../src/meaning/types";
+import { ModelDerivedSchema, type ModelDerived } from "../src/meaning/types";
 import { loadGoldLabels, loadCommunityCluster } from "../src/evaluation/goldLabels";
 import { classifyComparison } from "../src/evaluation/mismatchTypes";
 import type { Decision, IngestedItem } from "../src/data/schemas";
+
+// Helper: build a ScoringSettings with a single voiced threshold applied
+// uniformly across all known routes. Replaces the old single
+// `voiceThreshold: X` shorthand (which no longer exists post-v3 wiring).
+// Used by slider-movement smoke checks that need a global lever.
+function uniformRouteThresholds(value: number): Partial<Record<string, number>> {
+  return {
+    silent: value,
+    highlight: value,
+    doorway: value,
+    utility: value,
+  };
+}
 
 const SEP = "=".repeat(60);
 
@@ -176,13 +191,17 @@ async function main() {
     `(news present=${newsDecisions.length}, news.focus=1.0=${newsFocusUnboosted}, friend.focus=2.0=${friendFocusBoosted})`
   );
 
-  const lowered = { ...DEFAULT_SETTINGS, voiceThreshold: 0.05, expandableThreshold: 0.20 };
+  const lowered: ScoringSettings = {
+    ...DEFAULT_SETTINGS,
+    routeThresholds: uniformRouteThresholds(0.05),
+    expandableThreshold: 0.20,
+  };
   const loweredDecisions = scoreBatch(items, listener, meaningMap, lowered);
   const loweredVoiced = loweredDecisions.filter((d) => d.bucket === "voiced" || d.bucket === "expandable").length;
   record(
-    "Check 11: Sliders move items between buckets",
+    "Check 11: Lowered per-route thresholds move items between buckets",
     loweredVoiced > 0,
-    `(voiced+expandable with voice=0.05/exp=0.20: ${loweredVoiced})`
+    `(voiced+expandable with all-routes=0.05/exp=0.20: ${loweredVoiced})`
   );
 
   const scored = decisions.filter((d) => d.bucket !== "drop");
@@ -201,9 +220,9 @@ async function main() {
     `(scored=${scored.length}, all have ≥5 breakdown keys)`
   );
 
-  const aggressive = {
+  const aggressive: ScoringSettings = {
     ...DEFAULT_SETTINGS,
-    voiceThreshold: 0.0,
+    routeThresholds: uniformRouteThresholds(0.0),
     expandableThreshold: 0.0,
     focusWeights: Object.fromEntries(
       Object.entries(DEFAULT_SETTINGS.focusWeights).map(([k]) => [k, 2.0])
@@ -285,9 +304,9 @@ async function main() {
   );
 
   cache.resetStats();
-  scoreBatch(items, listener, meaningMap, { ...DEFAULT_SETTINGS, voiceThreshold: 0.1 });
-  scoreBatch(items, listener, meaningMap, { ...DEFAULT_SETTINGS, voiceThreshold: 0.3 });
-  scoreBatch(items, listener, meaningMap, { ...DEFAULT_SETTINGS, voiceThreshold: 0.7 });
+  scoreBatch(items, listener, meaningMap, { ...DEFAULT_SETTINGS, routeThresholds: uniformRouteThresholds(0.1) });
+  scoreBatch(items, listener, meaningMap, { ...DEFAULT_SETTINGS, routeThresholds: uniformRouteThresholds(0.3) });
+  scoreBatch(items, listener, meaningMap, { ...DEFAULT_SETTINGS, routeThresholds: uniformRouteThresholds(0.7) });
   const stats4 = cache.stats();
   record(
     "Check 21: Sliders do not touch the meaning cache",
@@ -523,15 +542,19 @@ async function main() {
     `(p002 elig='${p002Gold?.eligibility_status}', p002 disp='${p002Gold?.disposition_reason}', p004 vw='${p004Gold?.voiceworthiness}')`
   );
 
-  // Check 33 — p004 detected as close_friend_over_suppression (gold-confirmed)
+  // Check 33 — p004 voices under v3 + the fitted doorway threshold (0.100).
+  // REWRITTEN per Step 1.4 v3 wiring (was: asserted close_friend_over_suppression
+  // — that mismatch was the symptom of the multiplicative formula under-voicing
+  // a close-friend doorway item; v3 + doorway-route ranking resolves it).
+  // Under mock: p004 v3 ≈ 0.109 ≥ doorway 0.100 → voiced; agreement with gold.
   const cmpP004 = comparisonOf("p004");
   record(
-    "Check 33: p004 detected as close_friend_over_suppression",
+    "Check 33: p004 voices under v3 + doorway route (was close_friend_over_suppression)",
     cmpP004?.hasGold === true &&
-      cmpP004?.agreement === false &&
-      cmpP004?.mismatch === "close_friend_over_suppression",
+      cmpP004?.engineBucket === "voiced" &&
+      cmpP004?.agreement === true,
     cmpP004
-      ? `(gold=${cmpP004.goldBucket}, engine=${cmpP004.engineBucket}, mismatch=${cmpP004.mismatch})`
+      ? `(gold=${cmpP004.goldBucket}, engine=${cmpP004.engineBucket}, mismatch=${cmpP004.mismatch ?? "none — agreement"})`
       : "(p004 not in decisions)"
   );
 
@@ -545,24 +568,33 @@ async function main() {
     cmpP002 ? `(gold=${cmpP002.goldBucket}, engine=${cmpP002.engineBucket})` : "(p002 missing)"
   );
 
-  // Check 35 — p020 now labeled voiced (utility route); engine ambient → over_suppression
+  // Check 35 — p020 (brand, expires same day) routes to utility under the
+  // structural classifier. Per ADR J3 (utility deferred — relevance is
+  // uncomputed, Step-3 dependency), utility has no voiced bar today, so
+  // engine bucket = ambient is CORRECT BEHAVIOR per the ruling. The
+  // mismatch classifier still tags it `over_suppression` (because gold
+  // says voiced and engine says ambient) — that's the visible symptom of
+  // J3-deferred utility, not an engine bug. Re-fits when relevance lands
+  // and a utility cluster is authored.
   const cmpP020 = comparisonOf("p020");
   record(
-    "Check 35: p020 now labeled — classified as over_suppression",
+    "Check 35: p020 utility-routed, ambient per ADR J3 (mismatch is J3-symptom, not bug)",
     cmpP020?.hasGold === true &&
       cmpP020?.agreement === false &&
       cmpP020?.mismatch === "over_suppression",
-    cmpP020 ? `(gold=${cmpP020.goldBucket}, engine=${cmpP020.engineBucket}, mismatch=${cmpP020.mismatch})` : "(p020 missing)"
+    cmpP020 ? `(gold=${cmpP020.goldBucket}, engine=${cmpP020.engineBucket}, mismatch=${cmpP020.mismatch} — see ADR J3)` : "(p020 missing)"
   );
 
-  // Check 36 — p025 now labeled voiced (utility route); engine ambient → over_suppression
+  // Check 36 — p025 (news, expires same evening) routes to utility under
+  // the classifier (near-term expiry triggers utility-as-actionable). Per
+  // ADR J3 same as Check 35 — ambient is correct, mismatch is J3 symptom.
   const cmpP025 = comparisonOf("p025");
   record(
-    "Check 36: p025 now labeled — classified as over_suppression",
+    "Check 36: p025 utility-routed, ambient per ADR J3 (mismatch is J3-symptom, not bug)",
     cmpP025?.hasGold === true &&
       cmpP025?.agreement === false &&
       cmpP025?.mismatch === "over_suppression",
-    cmpP025 ? `(gold=${cmpP025.goldBucket}, engine=${cmpP025.engineBucket}, mismatch=${cmpP025.mismatch})` : "(p025 missing)"
+    cmpP025 ? `(gold=${cmpP025.goldBucket}, engine=${cmpP025.engineBucket}, mismatch=${cmpP025.mismatch} — see ADR J3)` : "(p025 missing)"
   );
 
   // Check 37 — p016 / p030 / p010 don't reach a "false_voice" mismatch (engine restraint
@@ -596,26 +628,37 @@ async function main() {
     `(pipeline=[${pipelineStatuses.join(",")}] vs gold=[${goldStatuses.join(",")}])`
   );
 
-  // Check 39 — p008 (Dana, close family, life event) classified as
-  // close_friend_over_suppression (closeness=close for Dana per listener map).
+  // Check 39 — p008 (Dana family, life event "got the job") stays
+  // over_suppressed UNDER MOCK because handStubbedMeaning assigns family
+  // items category=daily, magnitude=0.18 — it can't infer "got the job"
+  // → life_event (mag 0.9 in CATEGORY_MAGNITUDE). Under v3 + highlight
+  // 0.532, mock mag 0.18 produces v3 ≈ 0.182 → ambient. The LIVE meaning
+  // pass tags p008 mag=0.80, conf=0.95 → v3 = 0.836, voices correctly
+  // (see formula-shape-test.ts). This check documents the mock limit;
+  // it will flip when handStubbedMeaning learns life-event keywords or
+  // smoke runs against the live cache.
   const cmpP008 = comparisonOf("p008");
   record(
-    "Check 39: p008 (Dana close, life event) classified close_friend_over_suppression",
+    "Check 39: p008 still over_suppressed under MOCK (live meaning voices it; see formula-shape-test)",
     cmpP008?.hasGold === true &&
       cmpP008?.agreement === false &&
       cmpP008?.mismatch === "close_friend_over_suppression",
-    cmpP008 ? `(gold=${cmpP008.goldBucket}, engine=${cmpP008.engineBucket}, mismatch=${cmpP008.mismatch})` : "(p008 missing)"
+    cmpP008 ? `(gold=${cmpP008.goldBucket}, engine=${cmpP008.engineBucket}, mismatch=${cmpP008.mismatch} — mock crude on life events)` : "(p008 missing)"
   );
 
-  // Check 40 — p018 (Buena, "followed" tier, not close) is over_suppression,
-  // NOT close_friend_over_suppression. Distinguishes close-friend from generic.
+  // Check 40 — p018 (Buena CIF state finals, news_local). Same mock
+  // limit as Check 39: handStubbedMeaning assigns news_local mag=0.6;
+  // at close=0.3 (followed) v3 = 0.392 → ambient under highlight 0.532.
+  // The LIVE meaning pass tags p018 mag=0.65, conf=0.95, low sens → v3 =
+  // 0.580 → voices at the highlight line (see formula-shape-test.ts).
+  // Documents the mock-vs-live gap on community-pride news.
   const cmpP018 = comparisonOf("p018");
   record(
-    "Check 40: p018 (Buena followed) classified over_suppression (NOT close_friend)",
+    "Check 40: p018 still over_suppressed under MOCK (live meaning voices it at highlight)",
     cmpP018?.hasGold === true &&
       cmpP018?.agreement === false &&
       cmpP018?.mismatch === "over_suppression",
-    cmpP018 ? `(gold=${cmpP018.goldBucket}, engine=${cmpP018.engineBucket}, mismatch=${cmpP018.mismatch})` : "(p018 missing)"
+    cmpP018 ? `(gold=${cmpP018.goldBucket}, engine=${cmpP018.engineBucket}, mismatch=${cmpP018.mismatch} — mock crude on community-pride news)` : "(p018 missing)"
   );
 
   // Check 41 — p030 (Kelp Surf generic promo, gold=ambient) and p036 (Jordan-
@@ -628,16 +671,117 @@ async function main() {
     `(p030 agree=${cmpP030?.agreement}, p036 agree=${cmpP036?.agreement})`
   );
 
-  // Check 42 — Over-suppression landscape: at default settings, the engine
-  // disagrees with gold on EVERY voiced item the PO labeled. This is the
-  // "polite corpse" failure mode made concrete in the test suite.
-  const overSuppressed = ["p004", "p008", "p018", "p020", "p025"]
+  // Check 42 — Over-suppression landscape under v3 + Step 1.3 fitted
+  // thresholds. Before wiring: ALL 5 gold-voiced items (p004/p008/p018/
+  // p020/p025) classified as over_suppression — the "polite corpse"
+  // pattern. After wiring (v3 + doorway 0.100 + highlight 0.532, with
+  // ADR J3 utility deferred): p004 voices correctly under v3+doorway;
+  // p008/p018 stay suppressed UNDER MOCK only (mock magnitudes are crude
+  // — live meaning voices both, see formula-shape-test.ts); p020/p025
+  // stay ambient per ADR J3 (utility deferred, awaiting relevance).
+  // Asserts the partial fix lands and is correctly scoped.
+  const cmpP004Now = comparisonOf("p004");
+  const remainingMockSuppressed = ["p008", "p018"]
     .map(comparisonOf)
     .filter((c) => c && (c.mismatch === "over_suppression" || c.mismatch === "close_friend_over_suppression"));
+  const j3DeferredUtility = ["p020", "p025"]
+    .map(comparisonOf)
+    .filter((c) => c && c.engineBucket === "ambient");
   record(
-    "Check 42: All five gold-voiced items show as over_suppression at default settings",
-    overSuppressed.length === 5,
-    `(${overSuppressed.length}/5: p004/p008/p018/p020/p025 — flag for team formula discussion)`
+    "Check 42: v3 wiring fixes p004 doorway; mock-limited (p008/p018) and J3-deferred (p020/p025) stay suppressed",
+    cmpP004Now?.engineBucket === "voiced" &&
+      remainingMockSuppressed.length === 2 &&
+      j3DeferredUtility.length === 2,
+    `(p004 voices: ${cmpP004Now?.engineBucket === "voiced"}; mock-limited suppressed: ${remainingMockSuppressed.length}/2 [p008/p018]; J3 utility ambient: ${j3DeferredUtility.length}/2 [p020/p025])`
+  );
+
+  console.log("\n--- v3 wiring guards (Step 1.4) ---");
+
+  // Check 44 — Probe regression (ADR J1 global safety invariant).
+  // Migrated from playground/scripts/formula-shape-test.ts per the
+  // wiring task §7 so it runs on every bench commit. The high-magnitude
+  // / low-confidence probe must NOT out-voice any strong_candidate item
+  // — the failure mode the confidence damper exists to prevent. Probe:
+  // mag=0.85, conf=0.30, sens=medium, close=0.9 (close friend). Goes
+  // through the SAME engine (scoreBatch), classified into the SAME
+  // route system as real items.
+  const probeMeaning: ModelDerived = {
+    category: "synthetic-probe",
+    magnitude: 0.85,
+    sensitivity: "medium",
+    confidence: 0.30,
+    context_candidates: [],
+    connection_read: "synthetic high-mag low-conf probe",
+    rationale: {
+      category: "synthetic", magnitude: "synthetic", sensitivity: "synthetic",
+      confidence: "synthetic", context_candidates: "synthetic", connection_read: "synthetic",
+    },
+    allowed_claims: [],
+    forbidden_inferences: [],
+  };
+  const probeItem: IngestedItem = {
+    id: "__probe",
+    source_type: "friend",
+    source_name: "probe",
+    account_id: "mateo",    // close=0.9 in listener.closeness_map
+    audience_scope: "public",
+    timestamp: items[0]!.timestamp,
+    expires_at: null,
+    raw_text: "synthetic probe — should never out-voice a strong candidate",
+    entities: [],
+    location: null,
+    novelty_key: "__probe_unique_key",
+  };
+  const probeMeaningMap = new Map(meaningMap);
+  probeMeaningMap.set("__probe", probeMeaning);
+  const probeDecisions = scoreBatch([...items, probeItem], listener, probeMeaningMap, DEFAULT_SETTINGS);
+  const probeDec = probeDecisions.find((d) => d.item_id === "__probe");
+  const probeScore = probeDec?.score ?? 0;
+  // strong_candidate band = the gold-voiced items (per v0.3.1/v0.4.0
+  // labels). Use the decisions from the WITH-PROBE run so closeness/etc
+  // computed under the same listener apply.
+  const strongIds = ["p004", "p008", "p018"];
+  const strongScores = probeDecisions
+    .filter((d) => strongIds.includes(d.item_id))
+    .map((d) => d.score);
+  const strongMax = strongScores.length > 0 ? Math.max(...strongScores) : 0;
+  record(
+    "Check 44: Probe regression (ADR J1) — high-mag/low-conf must not out-voice strong_candidate band",
+    probeScore <= strongMax && strongScores.length === strongIds.length,
+    `(probe v3=${probeScore.toFixed(3)} ≤ strong_max=${strongMax.toFixed(3)} from {${strongIds.join(",")}}; n_strong=${strongScores.length}/${strongIds.length})`
+  );
+
+  // Check 45 — Structural eligibility / route classifier (wiring task §8).
+  // The classifier must be:
+  //   (a) deterministic — same item → same route every run
+  //   (b) structural — reads source_type / audience_scope / expires_at /
+  //       meaning.sensitivity, never the gold label, never a model
+  //       opinion at runtime
+  //   (c) fail-closed — items the classifier can't confidently place
+  //       fall through to "silent" (no voiced bar)
+  // Corpus fact: every seed item is audience_scope="public", so the
+  // consent gate (Checks 3/4/5) carries the scope enforcement; this
+  // check exercises the source_type / sensitivity / expiry signals.
+  const routeSampleItem = items.find((i) => i.id === "p018")!;
+  const routeSampleMeaning = meaningMap.get(routeSampleItem.id)!;
+  const route1 = classifyRoute(routeSampleItem, routeSampleMeaning);
+  const route2 = classifyRoute(routeSampleItem, routeSampleMeaning);
+  // Counter-example: creator source_type is parked per meta-spec — must
+  // fall through to silent (fail-closed default), regardless of other
+  // fields. Synthesize without mutating the corpus.
+  const ineligibleItem: IngestedItem = { ...routeSampleItem, source_type: "creator", id: "__ineligible" };
+  const ineligibleRoute = classifyRoute(ineligibleItem, routeSampleMeaning);
+  // Positive: p020 has near-term expiry + brand source → utility (per
+  // ADR J3 wiring — utility has no voiced bar; this check just asserts
+  // the structural route assignment).
+  const p020Route = classifyRoute(
+    items.find((i) => i.id === "p020")!,
+    meaningMap.get("p020")!
+  );
+  record(
+    "Check 45: Route classifier is deterministic, structural, and fail-closed (wiring task §8)",
+    route1 === route2 && ineligibleRoute === "silent" && p020Route === "utility",
+    `(determinism: ${route1}=${route2}; creator → ${ineligibleRoute} (fail-closed); p020 brand+expiry → ${p020Route})`
   );
 
   console.log("\n--- Corpus integrity guards ---");

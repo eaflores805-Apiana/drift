@@ -81,12 +81,21 @@ async function main(): Promise<void> {
   const decisions = scoreBatch(targetItems, listener, meaningMap, DEFAULT_SETTINGS);
   const decById = new Map(decisions.map((d) => [d.item_id, d]));
 
-  const voiceTh = DEFAULT_SETTINGS.voiceThreshold;
+  const thresholds = DEFAULT_SETTINGS.routeThresholds;
+  const thrSummary = Object.entries(thresholds)
+    .map(([r, v]) => `${r}=${v}`)
+    .join(", ");
+  // Legacy single-threshold reporting axis: the highlight route's fitted
+  // value. This script predates the per-route world (ADR J1 + Step 1.3).
+  // Per-item route-aware analysis now lives in `formula-shape-test.ts`;
+  // this packet keeps a single comparison axis for diff continuity with
+  // the earlier report runs.
+  const voiceTh = thresholds.highlight ?? 0.532;
 
   // === Header ===
   console.log("# CS Scoring Packet — Labeled Live Slice (Cached-Only)");
   console.log("");
-  console.log(`*Generated ${new Date().toISOString()} · gold labels v0.3.1 · prompt ${client.prompt_version} · model ${client.model_id} · voiceThreshold=${voiceTh}*`);
+  console.log(`*Generated ${new Date().toISOString()} · gold labels v0.3.1 · prompt ${client.prompt_version} · model ${client.model_id} · routeThresholds=[${thrSummary}] · legacy comparison axis voiceTh=${voiceTh}*`);
   console.log("");
   if (missing.length > 0) {
     console.log(`> **Cache miss:** ${missing.join(", ")} — these items have no cached real meaning. Re-run \`npm run meaning:live -- --items <ids>\` if needed.`);

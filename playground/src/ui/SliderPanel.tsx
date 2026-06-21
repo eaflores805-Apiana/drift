@@ -1,5 +1,6 @@
 import { type SourceType } from "../data/schemas";
 import { type ScoringSettings } from "../scoring/scoringEngine";
+import { ROUTES } from "../scoring/routes";
 
 type Props = {
   settings: ScoringSettings;
@@ -22,12 +23,20 @@ export function SliderPanel({ settings, onChange }: Props) {
   return (
     <div className="slider-panel">
       <div className="slider-group">
-        <SliderRow
-          label="Voice threshold"
-          value={settings.voiceThreshold}
-          min={0} max={1} step={0.01}
-          onChange={(v) => set({ voiceThreshold: v })}
-        />
+        <div className="slider-group-label">
+          Route thresholds <span className="hint">fitted per Step 1.3 · read-only</span>
+        </div>
+        {ROUTES.map((route) => {
+          const v = settings.routeThresholds[route];
+          return (
+            <div key={route} className="slider-row">
+              <span className="slider-label">{route}</span>
+              <div className="slider-value">
+                {v === undefined ? <em>no voiced bar</em> : v.toFixed(3)}
+              </div>
+            </div>
+          );
+        })}
         <SliderRow
           label="Expandable threshold"
           value={settings.expandableThreshold}
