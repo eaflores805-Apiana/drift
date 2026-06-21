@@ -11,7 +11,8 @@
     "smoke": "tsx scripts/smoke-test.ts",
     "meaning:live": "tsx scripts/meaning-live.ts",
     "persona:test": "tsx scripts/persona-center-test.ts",
-    "persona:stress": "tsx scripts/persona-stress-test.ts"
+    "persona:stress": "tsx scripts/persona-stress-test.ts",
+    "persona:stress2": "tsx scripts/persona-stress-test-pass-two.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.105.0",
