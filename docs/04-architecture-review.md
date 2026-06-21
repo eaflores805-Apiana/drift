@@ -1,6 +1,8 @@
 # Engineer 1 — Architecture Review: Promotion Playground v1
 *Reviewer: Engineer 1 (Senior Engineer). Reviewing: Engineer 2's Promotion Playground v1 plan. For: the v1 spec + CS Engineer's build.*
 
+> **STATUS: CANONICAL · v0.1.0** · 2026-06-19 · promoted from review-doc 2026-06-21 per the canonical reorganization (no content change; relabel only — content audit verified this is the **origin spec of the claim-grounding / output gate (R2b)** plus the hybrid-scoring (R1) and gold-first (R3) decisions). R1/R2/R3 to be extracted as a referenced ADR in `07-decision-log.md` (pending Eng1 draft per §1a of the reorg task).
+
 ## Sign-off
 I approve the milestone, the north star ("do the right things earn the microphone?"), the 6-step build order, and the scope discipline. The plan is buildable as written. Below are **three required changes** (architecture/risk — my lane) and a set of **schema refinements**. They don't expand scope; two of them make the bench faster and cheaper. Once the v1 spec reflects R1–R3, I'll sign off on it.
 

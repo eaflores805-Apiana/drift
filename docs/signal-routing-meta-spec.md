@@ -1,7 +1,7 @@
 # Drift — Signal Routing Meta-Spec
 ### Source kinds, routes, and the shared judgment spine
 
-> **v0.1.0 · 2026-06-20 · SUPPORT architecture — the unifying frame, not a build task.** This is the meta-spec the existing route docs are *instances* of. It **names what is already decided** (ADR J1 route-aware ranking, ADR J2 no-`W_community`, the v3 spine in `03-rules-and-format.md` Part 3, the four routes in `GoldRoute`, the commercial gate, the de-risk track) and connects them under one structure. It **invents no new mechanism** and it **does not move the build** — it makes future routes cheap and stops a recurring confusion at its root. **Do not build from this; build from the per-route specs it frames.** Ruled by TL 2026-06-20.
+> **STATUS: SUPPORTING · v0.1.0** · 2026-06-20 · SUPPORT architecture — the unifying frame, not a build task. Tiered SUPPORTING per the canonical reorganization (2026-06-21). This is the meta-spec the existing route docs are *instances* of. It **names what is already decided** (ADR J1 route-aware ranking, ADR J2 no-`W_community`, the v3 spine in `03-rules-and-format.md` Part 3, the four routes in `GoldRoute`, the commercial gate, the de-risk track) and connects them under one structure. It **invents no new mechanism** and it **does not move the build** — it makes future routes cheap and stops a recurring confusion at its root. **Do not build from this; build from the per-route specs it frames.** Ruled by TL 2026-06-20.
 
 ---
 

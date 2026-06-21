@@ -1,5 +1,5 @@
 # Drift — Where the Value Is (the asset & the moat)
-> **v0.2.0** · updated 2026-06-19 · captures Engineer 2's value analysis with Engineer 1's sharpening. Purpose: keep the team building and selling toward the thing that's actually valuable, not the thing that's easiest to see.
+> **STATUS: CANONICAL · v0.2.0** · updated 2026-06-19 · captures Engineer 2's value analysis with Engineer 1's sharpening. Purpose: keep the team building and selling toward the thing that's actually valuable, not the thing that's easiest to see.
 >
 > *v0.2.0 — added "The fuel: the social graph" (the data dependency and the strategy it forces).*
 

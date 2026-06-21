@@ -1,7 +1,9 @@
 # Drift DJ Persona — Built on the Eight Characteristics
 ### Eng1's build, for comparison
 
-> **2026-06-20 · Eng1.** This is the persona built *up from the foundation* — the eight characteristics are the spine, and every behavior, example, and never-rule below **traces back to one of them.** The persona is not a parallel document to the traits; it is the traits *expressed*. Read order: foundation → each trait as behavior + examples + its never-rule → the shape of a moment → how we grade it → what loads when → generate and listen.
+> **STATUS: SUPPORTING** · 2026-06-20 · Eng1. Tiered SUPPORTING per the canonical reorganization (2026-06-21) and ADR K1: this is **audit-and-grading material** — it teaches the persona to the team, grades generated output, and feeds the future output gate. It is **not** loaded into the model's runtime prompt at generation time (the runtime brief is the compact gravitational center; see K1).
+>
+> *(content note, unchanged)* The persona built *up from the foundation* — the eight characteristics are the spine, and every behavior, example, and never-rule below **traces back to one of them.** Read order: foundation → each trait as behavior + examples + its never-rule → the shape of a moment → how we grade it → what loads when → generate and listen.
 
 ---
 

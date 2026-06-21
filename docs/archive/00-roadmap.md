@@ -1,4 +1,7 @@
-# Drift — Roadmap (the map)
+# Drift — Roadmap (the map) — ARCHIVED
+
+> **STATUS: ARCHIVED — superseded by `build-map.md`** · 2026-06-21 · archived per the canonical reorganization (Q3 ruling). The forward-looking roadmap lives in `build-map.md`. This doc is kept as the historical record of the original Phase-A→Phase-G framing; its content is preserved elsewhere (Phase-A `[DONE]` decisions distributed across the canonical docs — product description, principles, decision log, design — and the Open-decisions list captured in `07-decision-log.md`). One sub-item worth flagging on archive: the "Private test" step (Phase E — 20-50 listeners as a distinct evidence step before launch) is not currently a build-map phase; if the team wants it as a build-map phase, promote separately.
+
 *The biggest steps, in order. Check here to see where we are and whether we're on task. The detail lives in the other docs (decision log, rules-and-format, architecture review); this is the overview.*
 
 **North star:** *Do the right things earn the microphone?* — i.e., can Drift make you feel connected to your world while your music plays.

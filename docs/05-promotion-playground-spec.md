@@ -1,5 +1,5 @@
 # Drift — Promotion Playground v1 Spec
-> **v0.1.0** · updated 2026-06-19 · the buildable spec for the CS Engineer. Built on the approved architecture (see `architecture-review`, R1–R3), the engine rules (see `rules-and-format`), the data model (see `seed-corpus.json`), and the eval approach (see `gold-labeling-guide`). This doc ties them into "build this" — it does not re-explain them.
+> **STATUS: CANONICAL · v0.1.0** · updated 2026-06-19 · the buildable spec for the CS Engineer. Built on the approved architecture (see `architecture-review`, R1–R3), the engine rules (see `rules-and-format`), the data model (see `seed-corpus.json`), and the eval approach (see `gold-labeling-guide`). This doc ties them into "build this" — it does not re-explain them.
 
 ## What this is
 A bench that takes a messy pile of social/local/news/product items and a defined listener, and decides — transparently and reproducibly — what gets **dropped**, what stays **ambient**, what gets **voiced**, and how the DJ says it. Then it measures those decisions against human gold labels.

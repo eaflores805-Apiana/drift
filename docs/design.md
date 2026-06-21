@@ -1,5 +1,7 @@
 # Drift — System Design & Strategic Assessment
-*Working name. A living radio station that renders the feeds you already receive — social posts, the orgs you follow, news — woven with your own calendar and notes, narrated by an editorially intelligent host you can interrupt and talk to, with a personal layer that's yours and a communal layer that's shared.*
+*A living radio station that renders the feeds you already receive — social posts, the orgs you follow, news — woven with your own calendar and notes, narrated by an editorially intelligent host you can interrupt and talk to, with a personal layer that's yours and a communal layer that's shared.*
+
+> **STATUS: CANONICAL (architecture & strategy) · v0.1.0** · 2026-06 · promoted from working-name 2026-06-21 per the canonical reorganization (no content change; relabel only — content audit verified this is the sole home of the full system architecture §5, the interaction gate / barge-in loop, the communal layer, the reciprocal opt-out, the hard-problems risk register §6, the buyer/sellability analysis §7, and the MVP wedge §8).
 
 ---
 

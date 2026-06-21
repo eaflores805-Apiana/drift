@@ -1,5 +1,5 @@
-# Drift — Tentative Rules & Format
-> **v0.2.0 · 2026-06-20.** Working draft; weights/thresholds still provisional and tuned on the bench. This governs the whole path: from a piece of content arriving, to whether it sits quietly, to whether the DJ says it out loud, to how it's said.
+# Drift — Rules & Format
+> **STATUS: CANONICAL · v0.2.0 · 2026-06-20.** The engine spec — the canonical source for how an item moves from arrival to the air. Weights/thresholds are fitted on the bench and tracked per ADR; the formula shape is ratified (J1 + J2). This governs the whole path: from a piece of content arriving, to whether it sits quietly, to whether the DJ says it out loud, to how it's said.
 >
 > *v0.2.0 — Part 3 promoted to the ratified **v3 additive-with-dampers** scoring formula (ADR J1 route-aware ranking + ADR J2 no-`W_community`). The former multiplicative formula is retired to "superseded" below. Per-route thresholds marked pending the Step 1.3 fit; confidence added to the Score schema (6.2) and the dials (7). The p045 sensitivity-damper interaction is flagged as an open, separate de-risk/treatment track.*
 

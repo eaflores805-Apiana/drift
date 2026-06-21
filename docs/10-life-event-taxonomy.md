@@ -1,7 +1,7 @@
 # Drift — Life-Event Taxonomy
 ### What kind of human moment is this, and what treatment does it require?
 
-> **v0.1.0** · 2026-06-19 · This is **engine material**, not a brainstorm. It makes the meaning pass's life-event recognition *explicit and gradeable* instead of implicit. It feeds: the meaning pass (recognizing event type), the gold labels (every life-event item labeled against it), magnitude calibration (the thing that was over-suppressing), and treatment/route selection. **What's decided:** the treatment zones, the five tags, the grave-doorway protocol, the governing rule. **What's a starting prior (confirmed by gold labels, not locked here):** the specific valence/treatment default for each event type — the taxonomy sets the prior; the labels set the truth for any specific post in any specific context.
+> **STATUS: CANONICAL · v0.1.0** · 2026-06-19 · This is **engine material**, not a brainstorm. It makes the meaning pass's life-event recognition *explicit and gradeable* instead of implicit. It feeds: the meaning pass (recognizing event type), the gold labels (every life-event item labeled against it), magnitude calibration (the thing that was over-suppressing), and treatment/route selection. **What's decided:** the treatment zones, the five tags, the grave-doorway protocol, the governing rule. **What's a starting prior (confirmed by gold labels, not locked here):** the specific valence/treatment default for each event type — the taxonomy sets the prior; the labels set the truth for any specific post in any specific context.
 
 ## The governing rule
 > **The more serious the event, the less the DJ gets to interpret.**

@@ -1,6 +1,6 @@
 # Drift — How the Scoring Works (v3), explained with the map
 
-> **v0.1.0 · 2026-06-20 · Companion explainer to `03-rules-and-format.md` Part 3** (the canonical spec). This doc is the *teaching* version: it states the equation, explains why it's shaped the way it is, and shows — on one figure — what it actually produces. Audience: anyone picking up Drift's Layer 1 who wants to understand how an item becomes a voice (or doesn't).
+> **STATUS: SUPPORTING · v0.1.0** · 2026-06-20 · Companion explainer to `03-rules-and-format.md` Part 3 (the canonical spec). Tiered SUPPORTING per the canonical reorganization (2026-06-21): a teaching artifact, not a spec built to. This doc is the *teaching* version: it states the equation, explains why it's shaped the way it is, and shows — on one figure — what it actually produces. Audience: anyone picking up Drift's Layer 1 who wants to understand how an item becomes a voice (or doesn't).
 
 ---
 

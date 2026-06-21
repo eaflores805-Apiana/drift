@@ -1,5 +1,7 @@
 # Drift — Record & Execution Plan
-*The single source of truth. Supersedes the earlier product-plan. Working draft, June 2026.*
+*The single source of truth for Drift's experience layer (UI / attention model / focus modes). Supersedes the earlier product-plan.*
+
+> **STATUS: CANONICAL (experience layer) · v0.1.0** · 2026-06 · promoted from working-draft 2026-06-21 per the canonical reorganization (no content change; relabel only — content audit verified this is the sole home of the attention ladder, the one-card layout, and focus-modes-as-threshold-reweighting).
 
 > **The promise:** Drift makes your world feel alive while your music plays.
 >

@@ -1,7 +1,7 @@
 # Drift — Product Description & Vision
 ### The team-alignment document
 
-> **v0.1.0** · 2026-06-19 · This is the single source of truth for *what Drift is, what it is for, how it works, and what we are actually building right now.* If you are on the team and you are unsure what we're making or why a decision was made, start here. It is written to be honest, not promotional — it states the vision, the realistic scope, and the open challenges with equal weight, because a team that shares only the dream and not the constraints will build the wrong thing.
+> **STATUS: CANONICAL · v0.1.0** · 2026-06-19 · This is the single source of truth for *what Drift is, what it is for, how it works, and what we are actually building right now.* If you are on the team and you are unsure what we're making or why a decision was made, start here. It is written to be honest, not promotional — it states the vision, the realistic scope, and the open challenges with equal weight, because a team that shares only the dream and not the constraints will build the wrong thing.
 
 ---
 

@@ -1,6 +1,6 @@
-# Drift DJ Persona v0 — Foundation Draft *(FROZEN)*
+# Drift DJ Persona — Foundation
 
-> **v0 · 2026-06-20 · FROZEN for Phase 2.** This is the single v1 Drift host. It is done when it is specific enough to generate one safe, grounded segment and listen for what breaks — and it has reached that bar. Further paper-polishing is productivity cosplay; the next move is generation. **The seven showcase segments (`drift-dj-segments-showcase.md`) are the worked gold standard; this persona is the host who produces them** — read the two together (persona = *who*, showcase = *what good looks like, end to end*).
+> **STATUS: CANONICAL · v0 FROZEN** · 2026-06-20 · FROZEN for Phase 2 (relabeled from "Draft" 2026-06-21 per the canonical reorganization — Q4 ruling). This is the single v1 Drift host. It is done when it is specific enough to generate one safe, grounded segment and listen for what breaks — and it has reached that bar. Further paper-polishing is productivity cosplay; the next move is generation. **The seven showcase segments (`drift-dj-segments-showcase.md`) are the worked gold standard; this persona is the host who produces them** — read the two together (persona = *who*, showcase = *what good looks like, end to end*).
 >
 > **Route-loaded constraints — important.** The grave-doorway tier in the never-list below is **canonical here but loaded only when the doorway route is active.** It is **not** part of the celebration/highlight prompt. A celebration segment must never carry the grief denylist and freshness gate, or it will deliver good news from inside a courthouse. Per the meta-spec: route-specific treatment loads per route.
 

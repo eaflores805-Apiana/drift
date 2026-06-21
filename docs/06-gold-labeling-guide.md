@@ -1,5 +1,7 @@
 # Drift — Gold Labeling Guide
-*The instrument for turning the team's taste into evaluation material. For the Product Owner + 1–2 reviewers. This is the canonical label spec — it supersedes the inline template in the seed corpus.*
+*The instrument for turning the team's taste into evaluation material. For the Product Owner + 1–2 reviewers. Supersedes the inline template in the seed corpus.*
+
+> **STATUS: SUPPORTING** · 2026-06 · tiered SUPPORTING per the canonical reorganization (Q5 ruling 2026-06-21): this is **methodology you consult to make labels**, not a spec you build to. Flaggable to CANONICAL-as-IP if the team decides the labeling discipline itself is asset-grade — single-word change.
 
 ## Why we do this first
 The gold labels are the **target the engine is built against and measured by** — not QA at the end. We are not tuning vibes in a vacuum; we are defining "what good looks like" so the bench can prove whether Drift's brain matches human taste. This labeled set is the asset.

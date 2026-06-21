@@ -1,9 +1,10 @@
 # Drift — The Build Map
 ### From here to the destination, organized by what blocks what
 
-> **v0.2.0** · 2026-06-19 · This is the route, not the wish-list. It exists to be **pressure-tested and approved as the goals.** It is built around one principle: *precise where we have knowledge, honest about fog where we don't.* The near phases are detailed because we can see them; the horizon is named-not-planned because detailing it now would be fiction. Every phase carries a **gate** (what must be true to start), a **done-condition** (how we know it's finished), and a tag — **[EVIDENCE]** (produces a finding that moves the project from hypothesis to fact) or **[SUPPORT]** (enables the evidence work). The spine is the **critical path**: the chain where each link genuinely blocks the next.
+> **STATUS: CANONICAL · v0.2.1** · last updated 2026-06-21 · This is the route, not the wish-list. It exists to be **pressure-tested and approved as the goals.** It is built around one principle: *precise where we have knowledge, honest about fog where we don't.* The near phases are detailed because we can see them; the horizon is named-not-planned because detailing it now would be fiction. Every phase carries a **gate** (what must be true to start), a **done-condition** (how we know it's finished), and a tag — **[EVIDENCE]** (produces a finding that moves the project from hypothesis to fact) or **[SUPPORT]** (enables the evidence work). The spine is the **critical path**: the chain where each link genuinely blocks the next.
 >
 > *v0.2.0 — added the DJ persona as a Foundation (build now, gates generation, threaded as a consistency requirement through Phases 2–5) and the app/voice as Parallel Track B (the body — mostly deferred, with rough voice/TTS pulled early because you can't tune what you can't hear).*
+> *v0.2.1 — "where we stand" + you-are-here markers updated to reflect ratified state: v3 formula chosen + wired (ADR J1/J2), Step 1.3 thresholds fit, ADR J3 utility deferred, persona Foundation built + frozen (`dj-persona-v0.md`), Phase 1 closed, persona-center + grave-rule validated (ADR K1/K2). The map structure is unchanged; only its self-location is updated.*
 
 ---
 
@@ -11,7 +12,7 @@
 
 **Destination:** an AI DJ that makes a listener feel connected to their world through grounded, tasteful, hosted moments woven into their music — *exceptional* enough that a listener looks forward to it, *safe* enough to be trustworthy, and *proven* enough that a graph-owning platform acquires it. The product is the DJ; music is the carrier.
 
-**Where we actually are:** Layer 1 judgment works (meaning pass, consent gate, cache, deterministic scorer). Gold labels locked for 8 items across 4 routes. The scoring formula is **not yet chosen** — the current multiplicative formula has a proven structural ceiling (over-suppression). Nothing in generation, hosting, or session programming exists yet; it is all designed, not built. **We are mid-Phase-1, at the formula decision.**
+**Where we actually are (updated 2026-06-21):** Layer 1 judgment is **closed**. The scoring formula is **chosen, ratified, and wired** — v3 additive-with-dampers (ADR J1 + J2), per-route thresholds fit on the bench (Step 1.3: doorway 0.100, highlight 0.532, with utility deferred per ADR J3 pending relevance computation in Step 3), the structural route classifier built (`playground/src/scoring/routeClassifier.ts`), the probe regression migrated into smoke. Under live meaning, 5/5 gold-voiced items in the fitted scope voice correctly. The persona Foundation is **built and frozen** (`dj-persona-v0.md`), and the persona/generation architecture is recorded as ADRs K1 (gravitational-center prompt as runtime brief) and K2 (Variant B grave-content rule, route-loaded). **We are mid-Phase-2, at the output gate** — the next [EVIDENCE] step both K1 and K2 point to. Generation has produced segments (clean-room + stress tests), but the grounding/denylist gate that mechanically holds them safe is unbuilt.
 
 ---
 
@@ -51,7 +52,7 @@ Each link below is gated on the one above it. **Almost everything we documented 
 
 ---
 
-## PHASE 1 — Prove the judgment *(we are here)*
+## PHASE 1 — Prove the judgment *(closed 2026-06-20: v3 wired, route classifier built, Step 1.3 thresholds fit; per ADRs J1/J2/J3)*
 
 **Goal:** the engine reliably decides what's worth surfacing and ranks candidates correctly *within each route*, matching the gold labels, with safety gates absolute. Over-suppression resolved; the junk floor holds.
 
@@ -82,7 +83,7 @@ Each link below is gated on the one above it. **Almost everything we documented 
 
 ---
 
-## PHASE 2 — Prove one safe spoken moment
+## PHASE 2 — Prove one safe spoken moment *(▶ YOU ARE HERE — at the output gate)*
 
 **Goal:** the engine generates **one** grounded, genuinely warm segment for the *safest* case (a low-risk celebration). This is the hard pivot — the first time the model *speaks* rather than *judges* — and the first real test of whether generation can be **safe AND alive.**
 

@@ -1,5 +1,7 @@
 # Drift — Decision Log & Discussion Record
-*The record of the founding discussion. Captures what we decided, why, what we rejected, what we deferred, and what still needs the team's sign-off. Written so anyone who wasn't in the room has the full context, not just the conclusions.*
+*The binding ADR record. Captures what we decided, why, what we rejected, what we deferred, and what still needs the team's sign-off. Written so anyone who wasn't in the room has the full context, not just the conclusions.*
+
+> **STATUS: CANONICAL** · last appended 2026-06-21 (section K — persona & generation). The ADR record: any decision-of-record (formula, route assignment, threshold scope, persona architecture, etc.) is recorded here, in the J/K-section house format, with status, scope, reason, evidence, and non-impact.
 
 ---
 

@@ -1,5 +1,5 @@
 # Drift — Product Principles
-> **v0.2.1** · updated 2026-06-19 · the guardrail against genericness. If a feature or a DJ line violates one of these, it's wrong — however clever it is. The failure mode we're guarding against: **Drift becoming "an AI that reads your feed out loud."**
+> **STATUS: CANONICAL · v0.2.1** · updated 2026-06-19 · the guardrail against genericness. If a feature or a DJ line violates one of these, it's wrong — however clever it is. The failure mode we're guarding against: **Drift becoming "an AI that reads your feed out loud."**
 >
 > *v0.2.0 — added "Why Drift exists" (the mission/grievance behind the principles). v0.2.1 — "creators and companies they chose to follow" (reinforces the commercial layer as requested signal).*
 
