@@ -264,3 +264,32 @@ No `W_community`. No asymmetric dampers.
 **Non-impact.** Does not change ADR J1 (route-aware ranking), the absolute safety gates, or the probe regression (the high-magnitude/low-confidence safety invariant), all of which stand unchanged.
 
 **Companion artifacts.** Formula now canonical in `docs/03-rules-and-format.md` Part 3 (v0.2.0); evidence in `docs/correspondence/cs-community-cluster-scoring-table-2026-06-20.md`; source ADR memo at `docs/correspondence/eng1-adr-j2-no-w-community-2026-06-20.md`; de-risk track (separate, open) at `docs/correspondence/eng1-tl-proposal-derisk-recalc-2026-06-20.md`.
+
+---
+
+### J3 — Utility-route threshold deferred; relevance is uncomputed `[ACCEPTED 2026-06-20]`
+
+**Status:** Accepted as a threshold-scope decision (companion to J1 + J2 under ADR J). **Decision class:** Class 2 (CS-owned scoping; the *reason* is recorded so the next person inherits the right question rather than the wrong threshold). **Scope:** Layer 1 utility route.
+**Diagnosed by:** Eng1 + CS jointly (after PO ratified Step 1.3's fitted scope of community + doorway). **Ratified by:** PO. **Concurrence:** Eng1.
+
+**Ruling.** **Utility deferred — under-served because relevance (its primary signal) is uncomputed (Step-3 dependency) and it lacks its own route threshold; revisit after relevance computation, with a real utility cluster.**
+
+**Reason (measured, grounded — not asserted).**
+
+- **Engine fact (code-of-record).** `playground/src/scoring/scoringEngine.ts:99` — `const relevance = settings.relevanceBaseline;` (line 30: `relevanceBaseline: 0.5`). Closeness is computed per item (line 97), timeliness is computed per item (line 98), magnitude comes from the meaning pass; **relevance alone is a flat 0.5 for every item.** Under the current multiplicative shape, relevance contributes via `(0.5 + 0.5·relevance)` → `0.75×` at the baseline. Under v3 (canonical), relevance becomes `+ 0.2·(rel − 0.5)` → 0 at the baseline. Either shape, the **input is a constant today**.
+- **Items affected (measured, session-F live batch judged 2026-06-19T22:30Z, cached locally):**
+  - **p020** Driftwood seasonal coffee drop: magnitude **0.30**, confidence 0.95, sensitivity low, closeness 0.30 (followed), timeliness 1.00 (expires today 18:00). v3 = **0.342**. Cache: `playground/.meaning-cache/729c3f7f6000bbbdad1d188c0e13f1f94af0ba997c6ef29de0fa0fc7578fc000.json` (gitignored).
+  - **p025** Ventura street fair: magnitude **0.35**, confidence 0.92, sensitivity low, closeness 0.30 (followed), timeliness 0.85 (expires tonight 22:00). v3 = **0.350**. Cache: `playground/.meaning-cache/c9db79b99e3787d81ab26b425edc71b6ddd38cef752bb7a77773c097b9f70e34.json` (gitignored).
+- **Gold's own `why` (locked v0.4.0) names the dependency.** p020: *"relevance (listener follows Driftwood, coffee is an interest) and timeliness (today) earn the mic."* p025: *"timely local texture: useful because it's local, happening tonight."* The labels themselves say utility's worth is **relevance + timeliness, not magnitude.**
+- **Meaning-pass architecture (measured, rationale blocks of both items) confirms the gap is in code by design.** Both meaning outputs explicitly hand the question over: *"desire and relevance are for code to weigh, not for the meaning read to assert."* Layer-1 code owns listener-relative judgment; that code half is currently unbuilt.
+- **Why not fit a utility threshold now.** It would be calibrating against a fake input — picking a constant to paper over the missing half of the signal. The score would land where it lands because relevance is a constant 0.5, not because the threshold is right. That trap should not be baked into the engine.
+
+**Step 1.3 implication.** Step 1.3's fitted scope was community + doorway by ruling, not oversight. Under v3 + the wiring task's per-route threshold map, **p020/p025 staying ambient is correct behavior, not over-suppression.** Smoke checks 35/36 (which currently assert over-suppression on multiplicative) should be rewritten to assert ambient-as-correct under the current relevance-as-constant, with a comment naming this ADR as the reason.
+
+**What unblocks the revisit.**
+1. **Relevance computation lands** (Phase B Step 3 — closeness exists, timeliness exists, relevance is the open one of the three).
+2. **A real utility cluster is authored** — p020/p025 are two points; per the same discipline that gated W_community (the pattern across a cluster, not the brackets of two single items), fitting a utility threshold needs a labeled cluster.
+
+**Non-impact.** Does not change ADR J1, ADR J2, the v3 formula shape, the community or doorway thresholds, the absolute safety gates, or the probe regression invariant.
+
+**Companion artifacts.** Source question filed at `docs/correspondence/eng1-cs-task-wire-v3-into-scoringengine-2026-06-20.md` §1c (which posed the utility-threshold decision this ruling answers); CS↔Eng1 diagnostic exchange (this turn, in-chat); engine line cited above (`playground/src/scoring/scoringEngine.ts:99`).
