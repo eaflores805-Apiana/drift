@@ -42,11 +42,13 @@ fail_closed_behavior       — what "uncertain" does on this route
 ```
 The routes (grounded in `GoldRoute`):
 ```
-highlight    doorway    utility    silent
-( + ambient as a footprint LEVEL within a route; + music_hosting for the carrier itself )
+highlight    doorway    utility    silent          ← the GoldRoute enum: the four editorial treatments
 ```
+*Two things often mistaken for routes but which are NOT:* **`music_hosting`** is **not part of `GoldRoute`** — it is a **carrier / hosting mode** for track-edge content (backsells, artist history), not a treatment of a surfaced signal. **`ambient`** is a **footprint level**, not a route (standalone rule below).
 
 **The rule that keeps them separate:** a `source_kind` is *interpreted first* (eligibility + magnitude), then *assigned to a route* (threshold + treatment). One kind can map to several routes depending on the item.
+
+> **Standalone rule — `ambient` is a footprint *level*, not a route.** Ambient answers *"how much surface"* (none / minimal / full), not *"what kind of treatment."* Commercial qualification maps to an *ambient footprint* — but ambient is not an editorial treatment by itself. A thing is *treated* as highlight / doorway / utility / silent, and *sized* as ambient-or-voiced within that. Footprint is an axis of **degree**; route is an axis of **kind**.
 
 ---
 
@@ -143,7 +145,9 @@ route: <name>
 
 Worked instances:
 ```
-highlight:  threshold 0.532 · treatment warm/bright celebration · overlay: group-level if minors
+highlight:  threshold 0.532 (fitted on the CURRENT community-pride cluster — a personal-celebration
+            highlight may not share this exact bar once more personal-highlight labels exist) ·
+            treatment warm/bright celebration · overlay: group-level if minors
 doorway:    threshold 0.100 (provisional) · treatment gentle→grave, restraint RISES with seriousness ·
             overlay: forbidden-vocabulary denylist, freshness gate, diagnosis-voices-once
 utility:    threshold deferred · treatment brief/actionable "go do this", never ad-like · overlay: no invented urgency
