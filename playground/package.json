@@ -10,7 +10,8 @@
     "typecheck": "tsc --noEmit",
     "smoke": "tsx scripts/smoke-test.ts",
     "meaning:live": "tsx scripts/meaning-live.ts",
-    "persona:test": "tsx scripts/persona-center-test.ts"
+    "persona:test": "tsx scripts/persona-center-test.ts",
+    "persona:stress": "tsx scripts/persona-stress-test.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.105.0",
