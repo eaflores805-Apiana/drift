@@ -12,7 +12,8 @@
     "meaning:live": "tsx scripts/meaning-live.ts",
     "persona:test": "tsx scripts/persona-center-test.ts",
     "persona:stress": "tsx scripts/persona-stress-test.ts",
-    "persona:stress2": "tsx scripts/persona-stress-test-pass-two.ts"
+    "persona:stress2": "tsx scripts/persona-stress-test-pass-two.ts",
+    "persona:pressure100": "tsx scripts/persona-pressure-100-ab.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.105.0",
