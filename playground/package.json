@@ -9,7 +9,8 @@
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
     "smoke": "tsx scripts/smoke-test.ts",
-    "meaning:live": "tsx scripts/meaning-live.ts"
+    "meaning:live": "tsx scripts/meaning-live.ts",
+    "persona:test": "tsx scripts/persona-center-test.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.105.0",
