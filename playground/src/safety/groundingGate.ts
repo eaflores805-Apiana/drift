@@ -54,13 +54,18 @@ export type GroundingResult =
  * Starter route-agnostic denylist (v0). Route-specific config is v1.
  * Each entry: a phrase fragment + the policy id it violates.
  */
-const DENYLIST: { id: string; needle: RegExp }[] = [
+const DENYLIST: { id: string; needle: RegExp; sourceException?: RegExp }[] = [
   // commercial urgency the source didn't state
   { id: "commercial_urgency", needle: /\b(selling fast|you need this|perfect for you|don't miss out|act now|while supplies last)\b/i },
   // listener-state claims (claiming to know the listener's feelings)
   { id: "listener_state", needle: /\b(this must be hitting you|i know you('| a)re|you must be (feeling|so)|you're probably|i can tell you)\b/i },
-  // relationship invention
-  { id: "relationship_invention", needle: /\b(your best friend|always been there for you|one of your people|she knows you're|in your corner)\b/i },
+  // relationship invention — but not when the source itself stated the relationship
+  // (Bug C: a DJ echoing the poster's own "my best friend" is grounded, not invented).
+  {
+    id: "relationship_invention",
+    needle: /\b(your best friend|always been there for you|one of your people|she knows you're|in your corner)\b/i,
+    sourceException: /\b(best friend|always been there|one of (my|your) people|in (my|your) corner)\b/i,
+  },
   // smuggled-fact warmth (presupposition-bearing adjectives applied as fact)
   { id: "smuggled_fact", needle: /\b(dream job|worked so hard|hard-earned|they deserve|bravely (fighting|battling)|after everything (you|they)'ve been through)\b/i },
 ];
@@ -100,8 +105,10 @@ export function groundingGate(line: string, source: GroundingSource): GroundingR
     }
   }
 
-  // 4. Denylist.
-  for (const { id, needle } of DENYLIST) {
+  // 4. Denylist (skip an entry when the source itself stated the phrase).
+  const sourceText = `${source.post} ${source.who}`;
+  for (const { id, needle, sourceException } of DENYLIST) {
+    if (sourceException && sourceException.test(sourceText)) continue;
     const m = line.match(needle);
     if (m) violations.push({ rule: `denylist:${id}`, span: m[0], detail: `route/policy denylist (${id})` });
   }

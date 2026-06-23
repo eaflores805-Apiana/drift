@@ -49,7 +49,10 @@ const PHRASE_CONNECTORS = new Set(["of", "on", "the", "at", "and", "&", "de", "l
 
 /** Normalize a token for set-membership: lowercase, drop possessive 's, keep $ % & and digits. */
 export function normalizeToken(t: string): string {
-  return t.toLowerCase().replace(/[’'`]s\b/g, "").replace(/[^a-z0-9$%&]/g, "");
+  // Strip possessive 's AND common contraction tails so "Sarah's"→"sarah" and
+  // "I've"/"I'll"/"I'm"/"I'd"/"I're"→"i". (Bug B: capital-I contractions were
+  // read as invented proper nouns because "ive"/"ill" aren't in GENERIC_CAPS.)
+  return t.toLowerCase().replace(/[’'`](s|ve|ll|d|m|re)\b/g, "").replace(/[^a-z0-9$%&]/g, "");
 }
 
 /** Map a single word to its digit form if it is a number word, else itself. */
@@ -102,13 +105,20 @@ export function extractProperNouns(line: string): { phrase: string; tokens: stri
     run = [];
   };
 
-  // A capitalized word is a proper-noun candidate only when it is NOT at the
-  // start of a sentence (capitalized by grammar there, not because it's a name),
-  // not a number word ("Twelve"→12), and not generic vocabulary. This trades a
-  // rare missed sentence-initial name (acceptable for v0) for killing the
-  // false-positive flood that otherwise bricks yield.
+  // A capitalized word is a proper-noun candidate when it is not a number word
+  // ("Twelve"→12) and not generic vocabulary. MID-sentence, any such capital is
+  // a candidate. At a SENTENCE START a capital is usually just grammar ("The",
+  // "He"), so we only treat it as a name when it carries a name-signal: it is
+  // possessive ("Sarah's mom") or it is immediately followed by another
+  // capitalized non-generic word ("Grandpa Joe"). This closes Bug A — invented
+  // sentence-initial names like "Sarah's" / "Doris's" used to slip through
+  // entirely — without reviving the false-positive flood on ordinary openers
+  // ("Grief", "Months", "Full"). A bare sentence-initial invented name with no
+  // signal ("Doris just…") is still missed; the source-name contract closes that
+  // by making real provided names grounded.
   let sentenceStart = true;
-  for (const w of words) {
+  for (let idx = 0; idx < words.length; idx++) {
+    const w = words[idx];
     const norm = normalizeToken(w);
     const bare = w.toLowerCase().replace(/[^a-z]/g, "");
     const isCap = /^[("'“]*[A-Z]/.test(w) && !!norm;
@@ -116,7 +126,15 @@ export function extractProperNouns(line: string): { phrase: string; tokens: stri
     const isNumberWord = bare in NUMBER_WORDS;
     const endsSentence = /[.!?…]["'”')\]]*$/.test(w);
 
-    const candidate = isCap && !sentenceStart && !isNumberWord && !GENERIC_CAPS.has(norm);
+    const isPossessive = /[’'`]s?[.,!?;:]*$/.test(w);
+    const next = words[idx + 1];
+    const nextIsName = !!next && /^[("'“]*[A-Z]/.test(next)
+      && !GENERIC_CAPS.has(normalizeToken(next))
+      && !(next.toLowerCase().replace(/[^a-z]/g, "") in NUMBER_WORDS);
+    const nameSignal = isPossessive || nextIsName;
+
+    const baseCand = isCap && !isNumberWord && !GENERIC_CAPS.has(norm);
+    const candidate = baseCand && (!sentenceStart || nameSignal);
     if (candidate) {
       run.push(w);
     } else if (isConnector && run.length) {
