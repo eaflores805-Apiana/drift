@@ -53,6 +53,9 @@
 | `README.md` (docs + root) | — | Navigation. |
 | `drift-current-state-flowchart.png` | — | Project flowchart (figure). |
 | `drift-v3-score-map.svg` | — | v3 scoring figure (referenced by `scoring-explained.md`). |
+| `grounding-gate-spec.md` | v0.1.0 | The buildable Box 8 output-grounding-gate spec (decompose→classify→verdict). Implements R2b / ADR L2; sibling to `05-promotion-playground-spec.md`. Next critical-path build (Phase 2.2). |
+| `drift-brain-pipeline.svg` / `.png` | — | Radio-brain pipeline figure (full flow). |
+| `drift-pipeline-figure-v1.1.1.svg` / `.png` | — | Pipeline figure v1.1.1 (supersedes the v1.0.0 svg, retained as provenance). |
 
 ---
 
