@@ -33,6 +33,13 @@ const GENERIC_CAPS = new Set(
     "i", "a", "an", "the", "and", "but", "so", "or", "if", "this", "that",
     "these", "those", "here", "there", "they", "their", "them", "he", "she",
     "we", "you", "your", "it", "its", "his", "her", "our",
+    // indefinite pronouns — never proper nouns even sentence-initial or
+    // possessive ("Someone's dad died" must not read as an invented name).
+    // Possessive forms normalize to these bases, so the bare word covers them.
+    "someone", "somebody", "something", "somewhere", "someday",
+    "anyone", "anybody", "anything", "anywhere",
+    "everyone", "everybody", "everything", "everywhere",
+    "nobody", "nothing", "nowhere", "none", "one",
     // common sentence-openers seen in DJ copy
     "get", "go", "come", "stay", "say", "take", "make", "bring", "don", "let",
     "first", "new", "now", "today", "tonight", "tomorrow", "yesterday",
