@@ -361,6 +361,31 @@ This rule is **route-loaded** — it loads only when the doorway route is active
 
 **Companion artifacts.** Grave-doorway protocol (canonical source): `docs/10-life-event-taxonomy.md`. Stress-test tasks + results: `docs/correspondence/eng1-cs-task-persona-center-stress-test-11-items-2026-06-20.md`, `eng1-cs-task-persona-stress-test-pass-two-grave-rule-ab-2026-06-21.md`, `cs-persona-stress-test-pass-one-results-2026-06-21.md`, `cs-persona-stress-test-pass-two-results-2026-06-21.md`. Frozen grave tier: `dj-persona-v0.md` (grave-doorway tier, route-loaded).
 
+#### K2 — Amendment: Variant B confirmed as the current prompt (100-item PO scoring) `[CONFIRMED 2026-06-21]`
+
+> *Appended 2026-06-21 per Eng1 → CS. Does not rewrite K2 above; records the decisive large-scale confirmation and upgrades B from "v0 starting point" to **current prompt** — refinement deferred to the gate and tuning, not the prompt.*
+
+**What changed.** K2 was accepted on the 11-item pass-two probe (30 runs). The 100-item full-range pressure test (`docs/correspondence/cs-persona-pressure-100-ab-results-2026-06-21.md`, 200 outputs, base center + grave rule, "stay quiet" allowed) has now been **scored cold by the PO** against the keys. **Variant B wins, and is the settled current prompt.** (The full verbatim text of both A and B is in K2 above; B is the chosen prompt, A is retained there because the run produced 100 A-outputs that are read against A's actual text.)
+
+**The evidence — PO scoring, all 100 posts, both prompts:**
+
+| Prompt | Clean | Cosmetic | Overstep | Catastrophic |
+|---|---:|---:|---:|---:|
+| **A** | 44 | 1 | 51 | 4 |
+| **B** | 53 | 3 | 41 | 3 |
+
+**B is cleaner on every axis that matters** — more clean, fewer oversteps, fewer catastrophic. This is the **third independent pass** to favor B, all pointing the same direction: (1) the 11-item pass-two probe (B cleaner on the secondary axis), (2) the grave-slice scoring (A overstepped 5/18, B 1/18), (3) the PO's full cold scoring of all 200 outputs (above). Scored by the PO, not the author — no contamination. **The current prompt is Variant B.**
+
+**The central finding — bigger than A-vs-B.** The dominant failure source is **not grave material.** B handles somber content well; the catastrophic/overstep mass is **grounding drift across *all* categories** — invented business names ("followed coffee shop" → "The Anchor on Fifth" / "The Roost"), invented next songs (hallucinated handoffs), invented locations, and listener-feeling claims. This is the ~10% claims-beyond-source the clean-room run predicted (K1), now confirmed at scale and in the wild. **The everyday hallucination, not the grave edge, is the main risk.**
+
+**What this settles, and what it doesn't.**
+- **Settled:** the runtime prompt is **Variant B**. Prompt-level refinement of the grave rule is **closed** — further prompt tweaking is not where the remaining error lives.
+- **Not settled (and not a prompt problem):** the grounding drift. Neither prompt fixes it because it isn't a prompt issue — it's the absence of a mechanical output check. This makes the **claim-grounding / output gate (ADR L2b) non-negotiable**, and it is the next build (Phase 2.2). The center creates a usable host; the gate is what makes it safe.
+
+**The gate's regression suite is now populated.** Every catastrophic and overstep case from this run is a required test case for L2b: invented business names, unsupported music handoffs, listener-feeling claims, the minors/privacy cases, crisis-mobilization. The pressure test generated the gate's spec.
+
+**Companion artifacts.** Raw run: `docs/correspondence/cs-persona-pressure-100-ab-results-2026-06-21.md`. PO scoring: the scored A/B spreadsheet (PO-held). Prior evidence: the pass-one/pass-two probe results (cited in K2). The gate this points to: ADR L2(b).
+
 ---
 
 ## What this section banks
