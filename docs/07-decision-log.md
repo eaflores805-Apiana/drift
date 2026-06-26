@@ -503,6 +503,13 @@ Source-type and content are **weak proxies**; *affinity* is the real metric. A h
 - the two architecture memos — `world-generation-spec.md` §1 closeness reconciliation (proximity ladder vs. derived source-band) and the `design.md` §5 two-authority question;
 - the final CS passdown (it forks on the verdict; written with the answer as its opening line).
 
+**Staged repair (git-ignored — VERIFY AT SESSION START).** The pre-staged repair lives **only** in the working tree at `playground/runs/_staging/` (git-ignored, invisible to a fresh git checkout) — three files:
+- `cs-world-ventura-v0-sighted-prereview-2026-06-24.md` — CS sighted/contaminated read (directional "conditional yes"; do not anchor the blind read with it)
+- `producer-fix-v2-patch.md` — ready-to-apply, **not applied** (coffee de-density/de-template + the positive moments; applying re-baselines all numbers)
+- `public-events.json` — 3 new public surface-worthy moments (new material, not private arcs)
+
+**At the start of any session continuing this work, check `playground/runs/_staging/` for these three files before acting** — they will not appear in a git checkout. They are withheld from commit to avoid anchoring the blind read; **commit them only after the verdict lands.** *(Note on the record: memory is disabled in this context — this committed §N entry and the working chat note are the durable handoff; do not rely on memory for the staged-work pointer.)*
+
 **Non-impact.** Changes no ADR, formula, route, or safety gate. Pure build-sequencing.
 
 — CS Engineer, 2026-06-26
