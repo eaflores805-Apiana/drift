@@ -461,3 +461,29 @@ The scoring function is a transparent deterministic combiner over those fields (
 ## What this section banks — and what it points at
 
 L records the **architecture foundations** the rest of the engine stands on: scoring is deterministic code over cached meaning (L1), safety is two fail-closed checkpoints (L2), and the engine is measured against gold labels (L3). **L1 and L3 are realized. The one unbuilt piece — L2(b), the claim-grounding gate — is now specified in the ADR record and is the next [EVIDENCE] step**: the output-side guard that K1 and K2 both depend on, with its first regression set already collected from the persona tests. The hygiene arc closes here; the build resumes at the gate.
+
+---
+
+## M — Classification & data-model decisions (the data-problem session)
+
+*Source: the 2026-06-25 data-and-classification session (`docs/data-and-classification-findings.md`). Banks the session's load-bearing structural finding into the ADR record. Scope: Layer 1 (the affinity/listener model) + the corpus track. The other three findings of that session are recorded in the findings doc; this ADR formalizes the one that is a binding contract.*
+
+---
+
+### M1 — Classification is listener-relative; value = affinity × significance `[PROPOSED 2026-06-25 — for TL/PO ratification]`
+
+**Status:** Proposed as the classification contract; formalizes an existing principle (`00-product-description.md` §5, *"connection, not importance"*) into a computable form. **Decision class:** `ESCALATE-IF-CHANGED` (it is the metric the whole engine optimizes). **Scope:** Layer 1 (affinity/listener model). **Proposed by:** CS (data session). **Ratified by:** PENDING (TL/PO).
+
+**Ruling.** An item's value is **not a property of the item.** It is listener-relative:
+
+> **value ≈ (this listener's affinity for the subject) × (the item's genuine significance)**
+
+Source-type and content are **weak proxies**; *affinity* is the real metric. A high-affinity brand/creator drop is **gold**; a low-affinity friend post is **noise**. The affinity/listener model is therefore a first-class engine component, not a closeness footnote — currently a crude follow+interest lookup (`closeness.ts`), with the rich revealed-preference model **under-built** and named as the foundational gap.
+
+**Reason.** Without this, the engine classifies on item-intrinsic signals (source type, content drama) and gets the same post wrong for half its listeners. The proxies that are cheap to read (who posted, what words) are precisely the ones that don't carry the listener-relative value, which is why the engine over-suppressed followed sources and why a signal-dense corpus misleads (see findings doc §2).
+
+**Why it's load-bearing.** It is the metric the v3 scorer is *supposed* to approximate; it reframes the closeness term from "proximity tie-breaker" to "the core variable," and it makes the affinity model the next foundational build after the gate. The `world-generation-spec.md` §1 closeness reconciliation (proximity vs. source-band) is the operational sub-decision this contract depends on.
+
+**Non-impact.** Does not change the v3 formula shape, the route thresholds, the safety gates, or the consent gate. It names what the formula is *for*; it does not re-tune it.
+
+**Companion artifacts.** `docs/data-and-classification-findings.md` (the four findings); `playground/src/scoring/closeness.ts` (the crude current model); `docs/world-generation-spec.md` §1 (the closeness reconciliation, also proposed for ratification).

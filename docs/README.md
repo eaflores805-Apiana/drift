@@ -5,11 +5,13 @@ If you read these in order you should walk away knowing what Drift is, where we 
 
 **The one rule:** for any new idea — *"Later. Does it help prove the brain?"* If not, it waits.
 
+> **New here? Start with [`00-canonical-index.md`](00-canonical-index.md)** — the v2.0.0 status map that groups every doc by function and shows what's built, what's tested, and on what data. That is the single entry point; this file is the reading-order companion.
+
 ## Reading order (the numbered docs)
 
 | # | File | What it is |
 |---|---|---|
-| **start** | **`00-product-description.md`** | **Team-alignment doc — "what Drift is, what it is for, how it works, and what we are actually building right now."** Single source of truth; explicitly the start-here doc per its own §0. v0.1.0, 2026-06-19. |
+| **start** | **`00-product-description.md`** | **Team-alignment doc — "what Drift is, what it is for, how it works, and what we are actually building right now."** Single source of truth; explicitly the start-here doc per its own §0. v0.2.0, 2026-06-22. |
 | 0 | `00-roadmap.md` | The map — phases A–G, where we are now, exit criteria. Operational sibling to the product description. |
 | 1 | `01-product-principles.md` | The product principles distilled — the guardrail against "an AI that reads your feed out loud" (subsumed by 00-product-description §6–7; retained as the longer treatment) |
 | 2 | `02-record-and-plan.md` | Clean record + original phased plan (Phase 0/1/2/3+ numbering predates the roadmap's A–G; substantially subsumed by 00-product-description) |
@@ -33,6 +35,7 @@ If you read these in order you should walk away knowing what Drift is, where we 
 
 - `correspondence/` — dated memos, reviews, letters from Engineer 1, the team, or CS (not canonical decisions; kept out of the decision log to keep it clean). Notable as of 2026-06-19: the eligible-audience consent-gate ruling, the roles-and-authority v0.1.1 memo, Step 3A acceptance, and the **Step 3B live meaning-pass proposal** (`cs-step3b-meaning-pass-proposal-2026-06-19.md`) awaiting team sign-off before any live API call.
 - `passdowns/` — chronological CS Engineer session letters; latest date = current state
+- `pitch/` — the sell: POC vignettes ("The Handoff", "The Drop"), the cinematic commercial script, and the session showcase. Warm/easy register only; see `pitch/README.md`.
 
 ## The bench (`playground/`)
 

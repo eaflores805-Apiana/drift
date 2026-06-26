@@ -1,9 +1,13 @@
 /**
  * Gold packets for the 50-post diagnostic run (Run Spec v0.1.0, Step 2).
  *
- * Human-authored, frozen. The 5 gold packets are verbatim from the run spec;
- * #6 is the implied-grave companion the PO required in the dry run. The
- * remaining 44 (route mix, Step 3) are authored AFTER the dry run clears.
+ * Provenance: Claude-authored (Eng1 seed ×5 from the run spec; CS-extended ×45
+ * to pattern). review status: unconfirmed. Frozen. NOT human-curated gold —
+ * see docs/00-canonical-index.md §"What's tested, and on what data."
+ * (#6 is the implied-grave companion the PO required in the dry run.)
+ *
+ * Note: the per-packet `provenance: "subject_authored"` field is the IN-WORLD
+ * claim (the subject wrote their own post); it is unrelated to fixture authorship.
  *
  * `audit_raw_post` is AUDIT-ONLY — it is never serialized into the model
  * message (see renderPacketForModel) and never enters an allow-set.

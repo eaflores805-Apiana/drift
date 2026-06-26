@@ -1,15 +1,13 @@
 # Drift — Product Description & Vision
 ### The team-alignment document
 
-> **STATUS: CANONICAL · v0.2.0** · 2026-06-22 · *Revs v0.1.0 (does not replace it).* This is the single source of truth for *what Drift is, what it is for, how it works, and what we are actually building right now.* If you are on the team and unsure what we're making or why a decision was made, start here. It is written to be honest, not promotional — vision, realistic scope, and open challenges with equal weight, because a team that shares only the dream and not the constraints will build the wrong thing.
->
-> *v0.2.0 — sharpens four things the team clarified after v0.1.0: (1) **scarcity is the strategy, not a limitation** — the withholding is what makes the sharing valuable; (2) **the music and the personal moments are peers** — equal halves of the value, and the product is their *fusion*, correcting v0.1.0's "the value was never the playlist"; (3) **scarcity and safety are the same lever** — fewer spoken moments means a smaller surface for mistakes; (4) **no-noise is structural, not a policy** — the format has no room for ads/memes/suggestions. §3 is brought onto the sets-and-units session currency, and §11 (current state) is updated to the real committed state. Source: team session 2026-06-22.*
+> **STATUS: CANONICAL · v0.1.0** · 2026-06-19 · This is the single source of truth for *what Drift is, what it is for, how it works, and what we are actually building right now.* If you are on the team and you are unsure what we're making or why a decision was made, start here. It is written to be honest, not promotional — it states the vision, the realistic scope, and the open challenges with equal weight, because a team that shares only the dream and not the constraints will build the wrong thing.
 
 ---
 
 ## 0. The one-paragraph version
 
-Drift is a music-first personal radio station with an AI DJ that makes you feel connected to your own world — your friends, family, local life, the teams and creators and companies you chose to follow — by weaving grounded, tasteful moments from that world into the music you're already listening to. It is not a feed and not a chatbot. It speaks rarely — only a few minutes an hour — and when it speaks it earns the interruption. **The music and the moments from your world are equal halves of the value, and the product is the *weave* of the two:** the song carries you, the moment connects you, and the seam where one becomes the other is the thing nobody else has. That scarcity is not a limit — it *is* the strategy: a handful of carefully chosen moments stay precious, where a feed that shows you everything turns connection back into noise. The defensible core underneath is the calibrated editorial judgment of what's worth saying, when, and what must never be said. The goal, stated as plainly as it can be: *the listener should look forward to the DJ coming in.* That is the gold. Everything else serves it.
+Drift is a music-first personal radio station with an AI DJ that makes you feel connected to your own world — your friends, family, local life, the teams and creators and companies you chose to follow — by weaving grounded, tasteful moments from that world into the music you're already listening to. It is not a feed and not a chatbot. It speaks rarely, and when it speaks it earns the interruption. **The music is the carrier; the DJ is the product.** The thing of value — the thing nobody has — is the calibrated editorial judgment of what's worth saying, when, and what must never be said. The goal, stated as plainly as it can be: *the listener should look forward to the DJ coming in.* That is the gold. Everything else serves it.
 
 ---
 
@@ -29,9 +27,9 @@ That is why **"doorway, not destination"** matters: surface the moment, then poi
 
 ## 2. What Drift actually is — and what it is not
 
-**Drift is a music station whose host knows your world.** You put on music the way you always do. Between songs — the way real radio has always worked — a warm, sharp, human-feeling DJ comes in: a quick word about the track, a genuine moment about someone or something you care about, the time and the weather, the vibe, and back to the music. Sometimes it's a single line. Sometimes, a couple of times an hour, it's a longer hosted stretch. It is always brief enough to stay special and substantial enough to feel worth waiting for.
+**Drift is a music station whose host knows your world.** You put on music the way you always do. Between songs — the way real radio has always worked — a warm, sharp, human-feeling DJ comes in: a quick word about the track, a genuine moment about someone or something you care about, the time and the weather, the vibe, and back to the music. Sometimes it's a single line. Sometimes, at the top of the hour, it's a longer hosted stretch. It is always brief enough to stay special and substantial enough to feel worth waiting for.
 
-**The central reframe the whole team must internalize:** the music and the personal moments are not ranked — they are **peers**, equal halves of the value, and the product is the **fusion** of the two. The music alone is every other player; your world alone is a feed; *woven together* — your friend's news arriving in your ear, in a trusted voice, while you're inside your own listening — is the thing that exists nowhere else. The song would have played anywhere. The connection only happens here. Neither is merely "the carrier" and neither is "the real product"; the **seam where one becomes the other is the product.** (v0.1.0 said "the value was never the playlist" — that under-sold the music. The truer statement: both together is the value.)
+**The central reframe the whole team must internalize:** the music is a *plus* — it's the comfortable, familiar carrier that makes Drift feel like radio instead of an app. But the *product*, the meaningful thing, is **the personal experience the DJ offers you.** The value was never the playlist. It's the moment the DJ makes you feel seen.
 
 What Drift is **not**:
 
@@ -40,25 +38,21 @@ What Drift is **not**:
 - **Not a notification reader.** A five-second "Quick shoutout to Buena, CIF-bound, next track" is efficient and *worthless* — it's a notification with a voice. Drift speaks in *hosted moments* with shape and care, not alerts.
 - **Not "AI that reads your feed out loud."** That is the failure mode we guard against in every decision.
 
-**Why the noise is gone — and why it can't come back.** A feed has infinite room, so its incentive is to fill it: suggested strangers, memes, ads, rage bait. Drift has only a few minutes of non-music airtime an hour. There is no room for filler, and that is not a policy we enforce — it is the *physics of the format*. Every second spent on a meme or a "people you may know" is a second stolen from the one thing that's actually valuable, so noise doesn't get cut for virtue; it gets **crowded out**. The scarcity that makes the personal moments precious is the same scarcity that has no space for anything else: **no suggestions, no memes, no ads, no bs** — not by prohibition, by format.
-
 ---
 
 ## 3. What a session feels like
 
-This is the experience we are building toward. **The hour is mostly music** — counted in *sets* (runs of songs) and *breaks* (the seams between them), never on a clock, because the music keeps the clock. Across a whole hour the DJ's personal airtime totals only about **five or six minutes**. Most of what's happening in your world that hour never airs at all; the engine spends your scarce attention on the few things worth it.
+This is the experience we are building toward. A music break flows as one continuous, warm piece — not disconnected blurbs:
 
-Two kinds of break carry it. **Brief breaks** drop a single touch into a seam — one worthwhile thing, then back to the music. **Anchor breaks** — a couple of times an hour — are richer: the roundup of your people, the through-line a single beat can't draw, in one efficient pass. An anchor break flows as one continuous, warm piece, not disconnected blurbs:
-
-> *"...that was the new one from Khruangbin — something about that bassline on a slow afternoon. Hope the mix is hitting right. Now — huge congratulations to Jake Chambers, who just got into UCLA's grad program. That's no small thing. Late nights and a lot of coffee ahead, but worth every one of them — all the best to him. And closer to home: Buena High girls wrestling just made CIF. Months of 6am practices turning into a real moment — that's the kind of thing that slips right past the feed, but it matters here. Ventura's got something to cheer for. It's 4:50 on a fine Saturday, sun's out, 78 degrees in SoCal — let's keep the energy up. Here's the latest from Bruno Mars..."*
+> *"...that was the new one from Khruangbin — something about that bassline on a slow afternoon. Hope the mix is hitting right. Now — huge congratulations to Jake Chambers, who just got into UCLA's grad program. That's no small thing. He's in good company, and UCLA's research programs are no joke. Late nights and a lot of coffee ahead, but worth every one of them — all the best to him. And closer to home: Buena High girls wrestling just made CIF. Months of 6am practices turning into a real moment — that's the kind of thing that slips right past the feed, but it matters here. Ventura's got something to cheer for. It's 4:50 on a fine Saturday, sun's out, 78 degrees in SoCal — let's keep the energy up. Here's the latest from Bruno Mars..."*
 
 Notice the anatomy, because it's the whole product in miniature:
 
 - **Most of it is safe by construction** — the artist note, the check-in, the warmth, the time, the weather, the handoff. This is the connective tissue that makes it feel like radio, and none of it touches a risk surface.
-- **The personal moments** (Jake, Buena) are the *meaningful* part — and they're grounded: Jake's news, Buena's championship, both traceable to their sources, neither inventing anything about a person's inner life. (Note "that's no small thing" — *generic warmth*, free — where an earlier draft reached for a specific prestige claim that would have to be grounded or dropped; see §6.)
-- **The dangerous instinct lives in exactly two places**, and they're nameable (see §5 and §7): the *specific factual flourish* and the *handoff into a sensitive beat*. Everything else is safe.
+- **The personal moments** (Jake, Buena) are the *meaningful* part — and they're grounded: Jake's news, Buena's championship, both traceable to their sources, neither inventing anything about a person's inner life.
+- **The dangerous instinct lives in exactly two places**, and they're nameable (see §5 and §7): the *specific factual flourish* (e.g. an unverified sports stat) and the *handoff into a sensitive beat*. Everything else is safe.
 
-The session is **sparse by design — and the sparseness is the point**, not a discipline that holds the host back but the thing that makes each moment land. Long runs of songs with no host at all are the resting state, not dead air. The listener should think *"oh, the DJ's coming in — what's it got?"* — never *"why is my app talking again?"* And the same scarcity does double duty: a host that speaks only a few minutes an hour is also a host with only a few minutes in which to get something wrong — which is where safety begins (see §7).
+The session is **sparse**: a 30-minute session has only a few DJ moments, not a constant chirp. The listener should think *"oh, the DJ's coming in — what's it got?"* — never *"why is my app talking again?"*
 
 ---
 
@@ -67,13 +61,13 @@ The session is **sparse by design — and the sparseness is the point**, not a d
 Drift is best understood as three distinct layers. Keeping them separate is what keeps the system tractable and safe. **A failure to separate them is the most common way the design goes wrong.**
 
 ### Layer 1 — Item judgment (per item)
-For every incoming item: *Can it enter? What route does it serve? How strong is it within that route? What treatment is safe?* This is where the **judgment engine** lives, and it is the part that is built and working today.
+For every incoming item: *Can it enter? What route does it serve? How strong is it within that route? What treatment is safe?* This is where the **judgment engine** lives, and it is the part that is largely built and working today.
 
 ### Layer 2 — Session programming (per listening window)
-For the session: *How much DJ time is available? What kinds of moments should happen? Which candidates best fit those moments? Should we stay silent and let the music breathe?* This is the **airtime budget** — radio has slots, not infinite interruptions, and the budget is measured in *units of listener load*, not seconds. The hour is counted in *sets and breaks*, not minutes (the music owns the clock). **This layer is designed but deliberately not yet built** (it can't be, until Layer 1 reliably ranks candidates).
+For the session: *How much DJ time is available? What kinds of moments should happen? Which candidates best fit those moments? Should we stay silent and let the music breathe?* This is the **airtime budget** — radio has slots, not infinite interruptions. **This layer is designed but deliberately not yet built** (it can't be, until Layer 1 reliably ranks candidates).
 
 ### Layer 3 — On-air execution (per spoken moment)
-For the selected moment: generate/vet the segment, ground the aired line, choose pre-vetted phrasing, speak. This is where the **safety queue and grounding gates** do their final work — Box 8 (the output grounding gate) is the first piece of this layer to be built.
+For the selected moment: generate/vet the segment card, choose pre-vetted phrasing, speak. This is where the **safety queue and grounding gates** do their final work. Also designed, not yet built.
 
 A crucial consequence of this structure: **"voiced" is not a property an item *has* — it's the outcome of a competition for scarce airtime.** An item being "voice-worthy" (Layer 1) does not mean it airs (Layer 2). Several items can be voice-worthy in a session while only the best one or two actually air. *Not voiced does not mean silenced — it means another moment was more worth interrupting the music for. That is curation, not censorship.*
 
@@ -81,7 +75,7 @@ A crucial consequence of this structure: **"voiced" is not a property an item *h
 
 ## 5. The judgment engine (Layer 1, in detail)
 
-This is the core asset that Drift builds and defends. It decides *what's worth surfacing and how to treat it.*
+This is the core asset. It decides *what's worth surfacing and how to treat it.*
 
 **The metric is connection, not importance.** The question is never "is this objectively important?" — it's *"would hearing this make the listener feel more connected to their world?"* A neighbor's local win can beat a national headline. A close friend's quiet hard moment can beat a louder distant event.
 
@@ -94,7 +88,7 @@ This is the core asset that Drift builds and defends. It decides *what's worth s
 - **Utility** — followed/commercial or local-civic content with a timeliness or relevance hook. *(A coffee drop today, a street fair tonight.)*
 - **Silent** — *drop* (not eligible to exist, or high-sensitivity-low-connection) and *ambient* (eligible, present, but no airtime-worthy moment right now).
 
-**The over-suppression finding, and its resolution (now closed).** The original scoring formula multiplied its factors, which let a single low factor *veto* everything else — closeness 0.3 on a followed source mathematically capped the score below the voice bar no matter how significant the item, leaving the engine too restrained ("safe, but under-speaking"). We diagnosed this as the formula's *shape*, not its constants, and chose the fix against the locked gold labels: a **route-aware additive model** (events start heavy; relationship, relevance, and timeliness personalize but don't erase the hierarchy), with confidence and sensitivity retained as *multiplicative dampers* so the engine never over-voices something it's unsure about or something sensitive. **This is built and wired — Phase 1 (judgment) is closed.**
+**A known engineering finding (current, real):** the original scoring formula multiplied its factors, which let a single low factor *veto* everything else — closeness 0.3 on a followed source mathematically capped the score below the voice bar no matter how significant the item. The result is *over-suppression*: the engine is currently too restrained — safe, but under-speaking. We diagnosed this precisely (it's the formula's *shape*, not its constants), and the fix is being chosen against the locked gold labels right now. The candidate direction is a **hierarchy-first additive model** (events start heavy; relationship, relevance, and timeliness personalize but don't erase the hierarchy), with confidence and sensitivity likely retained as *multiplicative dampers* so the engine never over-voices something it's unsure about or something sensitive. **This is the single most active open engineering question.**
 
 ---
 
@@ -103,7 +97,7 @@ This is the core asset that Drift builds and defends. It decides *what's worth s
 This is the part that makes Drift *worth looking forward to*, and the part that is hardest to make safe. The two are inseparable: everything that makes the DJ alive is also where the risk lives.
 
 ### Hosted moments, not stingers
-DJ time is scarce but **not tiny** within a break. If Drift speaks, it earns the interruption with a *complete hosted moment* — warmth, rhythm, a real observation, care. The unit is a meaningful break, not a short alert. A gentle note about a friend's hard week especially *needs* room to breathe — gentleness has a tempo, and rushing it makes it cold.
+DJ time is scarce but **not tiny**. If Drift speaks, it earns the interruption with a *complete hosted moment* — warmth, rhythm, a real observation, care. The unit is a meaningful break, not a short alert. A gentle note about a friend's hard week especially *needs* room to breathe — gentleness has a tempo, and rushing it makes it cold.
 
 ### Three registers of factual content (in order of cost and risk)
 1. **Generic warmth** — no search, always safe. *"Great school, he's in good company."* **This is the default.**
@@ -137,13 +131,11 @@ Safety is not a feature that trades off against others. It is the **floor** the 
 
 - **Texture about the world, never invention about the soul.** The DJ may color the public setting (a city, a championship, a weekend) and must never invent a person's interior — their motives, private states, or the *cause* of anything. *("Mark's in DC this weekend" — yes. "Mark's in DC for the big game" — no, the reason was never stated.)*
 - **Published-only, fail-closed consent gate at ingest.** Public/published/eligible-audience content passes; private/unknown/blank is dropped *before scoring even runs*. Audience scope travels with the item for all downstream safety.
-- **Grounding validates the *aired line*, not just the plan.** Whatever the DJ actually says — including enrichment and live-realized phrasing — is traced to approved source material before the listener hears it. The gate binds the *output*, every time, because a fluent natural sentence can slip an unapproved claim back in. *(This is Box 8, the output grounding gate — see §11.)*
+- **Grounding validates the *aired line*, not just the plan.** Whatever the DJ actually says — including enrichment and live-realized phrasing — is traced to approved source material before the listener hears it. The gate binds the *output*, every time, because a fluent natural sentence can slip an unapproved claim back in.
 - **Generate ahead. Vet the boundaries. Vet the aired line. Then speak.** No line airs in the same step it's generated. Candidate content sits in a short rolling safety queue and is vetted while the current song plays; failed lines regenerate safer or die silently, and the listener simply hears music.
 - **Programmed first, interactive second — a closed input surface.** The listener cannot free-prompt the DJ about their social world. Interaction is bounded (tell me more, less like this, mute, save, open source, message the friend). This removes the *entire category* of attack — "guess why Mark went," "say it like gossip" — that a chatbot must defend against on every turn. The "tell me more" path inherits the item's sensitivity: low-sensitivity items may expand on grounded public context; sensitive items mostly *decline* and route you toward the person.
 - **Child safety.** Public youth-team achievements are celebrated at the *team* level only — never naming, centering, or detailing a minor. Minors' private struggles are suppressed.
 - **Modes change prioritization, never truth or permission.** Any future channel or focus mode may reweight *what surfaces*; none may relax grounding, consent, or the safety floor. (A "livelier mode" that loosens the rules is forbidden no matter how it's framed.)
-
-**Scarcity is a safety property, not only an editorial one.** The same restraint that makes the personal moments precious *shrinks the surface where a mistake can happen*: a few minutes of speech an hour is a few minutes of risk surface, not sixty. Every spoken moment is a chance to hallucinate, misattribute, or overstep — so the fewer the moments, the smaller the surface, and the more each one can be individually grounded and gated. **Scarcity and safety are the same lever pulled once:** the format that makes Drift feel premium is the format that makes it safe. The corollary is a *raised* bar, not a lowered one — with no filler to hide behind, every aired moment is high-stakes. A feed can bury a bad item under ten others; Drift cannot. "No noise" means the few things that *do* air must be the right things, said cleanly.
 
 **Grading discipline:** the judgment axes (eligibility, voice-worthiness, treatment) are *graded* and may improve over time. The safety gates (consent, allowed-claims, forbidden-inferences, grounding) are *absolute* pass/fail — never averaged into a score, never traded against good tone. An engine with great tone and one high-sensitivity false-voice is *failing*, not high-scoring. **Judgment axes are graded; safety gates are absolute.**
 
@@ -167,13 +159,13 @@ Safety is not a feature that trades off against others. It is the **floor** the 
 
 Staying in reality, with no dream-selling:
 
-**In hand (the hard, valuable, *differentiating* part is built):** the judgment engine reads items correctly and refuses to invent the soul of a sensitive post; the consent gate works and fails closed; the cache is proven cheap; the deterministic scorer runs with the chosen route-aware formula; the gold labels are locked for the first cluster; the DJ persona is defined and frozen; the output grounding gate (Box 8) has a working deterministic v0; the governance and reporting discipline are real.
+**In hand (the hard, valuable, *differentiating* part is mostly built):** the judgment engine reads items correctly and refuses to invent the soul of a sensitive post; the consent gate works and fails closed; the cache is proven cheap; the deterministic scorer runs; the gold labels are locked for the first cluster; the safety architecture is designed; the governance and reporting discipline are real.
 
-**Build-it-now (known problems, known methods, just effort):** hardening Box 8 and resolving its open decisions; wiring generation into the pipeline so a *single safe hosted moment* runs end to end; then the session programmer (Layer 2).
+**Build-it-now (known problems, known methods, just effort):** choosing the scoring formula (we have the data, the diagnosis, and the labels to judge against); the within-route ranking objective; then the line-generation layer that produces a *single safe hosted moment*; then the session programmer.
 
 **The real challenge — the genuine unknowns:**
 1. **A hosted, engaging beat that is *simultaneously* alive and safe.** "Sharp, warm, smooth" and "invent nothing, ground every claim" pull in opposite directions. It is not yet proven you can have both at length. This is the ceiling on how good Drift can be, and it's a real research question, not just engineering.
-2. **The safety floor holding under *generation*, at scale, on *real* oblique data.** Everything proven so far is on judgment and a clean corpus, plus a deterministic gate on existing outputs. A single tactless spoken line about a real person is unrecoverable, and "architected against" is not yet "proven to hold." This is the existential bar — higher than "is it good." It's "is it trustworthy enough to ship."
+2. **The safety floor holding under *generation*, at scale, on *real* oblique data.** Everything proven so far is on judgment and a clean simulated corpus. A single tactless spoken line about a real person is unrecoverable, and "architected against" is not yet "proven to hold." This is the existential bar — and it's a higher bar than "is it good." It's "is it trustworthy enough to ship."
 3. **The fuel.** Drift runs on a permissioned social graph we cannot legally extract at scale. This isn't solved by working harder — it's a *strategic* constraint (see §10).
 
 **The honest one-sentence summary:** the part that's in hand is the part that makes Drift *defensible*; the part that's unproven is the part that makes Drift *magical*; and the project lives or dies on whether the magical part can be built without breaking the safety floor that makes the defensible part trustworthy.
@@ -182,7 +174,7 @@ Staying in reality, with no dream-selling:
 
 ## 10. Strategic context — the moat and the fuel
 
-**The most valuable thing Drift builds is the calibrated decision of what to say, when, and what not to say** — a tested editorial judgment system for turning a messy social graph into radio. The *listener* experiences value as the **fusion** of their music and their world (§0, §2); the value Drift *uniquely adds and can defend* is the judgment that makes the world-half worth hearing — the music itself is licensed carrier, not Drift's IP.
+**The most valuable thing is the calibrated decision of what to say, when, and what not to say** — a tested editorial judgment system for turning a messy social graph into radio. Everything else (the app, the voice, the music) supports it.
 
 Two different questions about value, with two different answers:
 - **What creates the value** (makes the product good): the *judgment engine* is #1.
@@ -197,18 +189,18 @@ It's a **stack, not a flat list**: safety is the floor (a precondition — if it
 ## 11. Where we actually are (current state)
 
 - Foundational architecture, governance, safety design, and repo: **done.**
-- **Phase 1 (judgment) — closed.** Consent gate, meaning pass (cached, proven cheap on re-runs), the v3 route-aware scoring formula, and the route classifier are built, committed, and verified. The over-suppression problem is resolved (formula *shape* fixed against the gold labels; see §5).
-- **The DJ persona — built and frozen** as the runtime brief; the grave-content generation rule was tested and decided.
-- **Box 8, the output grounding gate — a working v0 deterministic floor, on a review branch (not yet merged).** It catches invented names/numbers and stage directions, blanket-blocks grave/sensitive content to template-or-silence, runs a starter inference denylist, and fails closed. It has known, fixable bugs (a salvage step that can air a broken fragment; a privacy-request block that isn't yet load-bearing on all routes) and several decisions pending team sign-off before it hardens. **No model sits in the gate yet** — it is pure deterministic checking.
-- **Layer 2 (session programming) and the on-air/voice layer — designed, not built.** They come after the gate and single-segment generation are proven.
-- **Honest headline:** the judgment half is real and committed; generation has its first safety net built but not hardened; the hosted *session* — the thing the experience ultimately is — does not exist yet. The written record and the actual build are being reconciled as current cleanup.
+- Consent gate + deterministic scorer (Steps 1–2): **built, committed, verified.** Cache proven (zero-cost re-runs).
+- First live meaning passes: **successful** — the model read sensitive, family, and youth-team items correctly, including protecting minors unprompted.
+- First gold-label cluster (8 items across all four routes): **locked.**
+- Headline finding: at default settings, the engine **over-suppresses** voice-worthy items — too restrained, "safe but under-speaking." Diagnosed as the formula's *shape* (multiplicative veto), not its constants. **The formula decision is the active next step**, being chosen against the locked labels.
+- The DJ / hosting layer (line generation, enrichment, bridges, news, the session programmer): **designed in this document, not yet built.** It comes after Layer 1 judgment is proven.
 
 ---
 
 ## 12. The throughline
 
-The product is the **weave of your music and your world**: the DJ making the personal moments feel meaningful, the music making them feel like radio instead of an app, and the two together — equal, fused, scarce enough to stay precious — the thing of value. The safety is what makes that possible without it being creepy or annoying. We prove the judgment first, then prove a single hosted moment can be both alive and safe on the *easy* case, then extend that warmth into harder territory and richer hosting. The vision is big and it's the right target — *the listener should look forward to the DJ coming in* — and none of it is true until the bench shows the judgment underneath it is real.
+The product is the DJ feeling personal and meaningful; the music and the safety are what make that possible without it being creepy or annoying. We prove the judgment first, then prove a single hosted moment can be both alive and safe on the *easy* case, then extend that warmth into harder territory and richer hosting. The vision is big and it's the right target — *the listener should look forward to the DJ coming in* — and none of it is true until the bench shows the judgment underneath it is real.
 
-**Speak rarely enough to stay special. Long enough to feel worth waiting for. Ground everything. Invent nothing about the soul. And make people feel like their world is alive while their music plays** — the rarity is the strategy, not the apology.
+**Speak rarely enough to stay special. Long enough to feel worth waiting for. Ground everything. Invent nothing about the soul. And make people feel like their world is alive while their music plays.**
 
 That's Drift.
