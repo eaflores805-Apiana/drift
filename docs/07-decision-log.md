@@ -487,3 +487,22 @@ Source-type and content are **weak proxies**; *affinity* is the real metric. A h
 **Non-impact.** Does not change the v3 formula shape, the route thresholds, the safety gates, or the consent gate. It names what the formula is *for*; it does not re-tune it.
 
 **Companion artifacts.** `docs/data-and-classification-findings.md` (the four findings); `playground/src/scoring/closeness.ts` (the crude current model); `docs/world-generation-spec.md` §1 (the closeness reconciliation, also proposed for ratification).
+
+---
+
+## N — ventura-v0 verdict fork (build-sequencing, gated)
+
+*Added 2026-06-26. Not an architectural ADR — a gating record so the next move is instant once the `world-ventura-v0` synthetic-world **blind team read** returns. Neutral by design: it states the fork, not a verdict. (The CS sighted pre-review and the staged producer patch are withheld in CS's working tree until the blind read lands, so they cannot anchor reviewers — `docs/correspondence/` is the same folder reviewers browse to find the packet, so "don't link it" is insufficient; it stays out entirely until anchoring is impossible.)*
+
+**The gate.** No downstream build proceeds until the team's blind realism verdict on `world-ventura-v0` is in. On that verdict:
+
+- **(A) Real enough →** run the generation chain in sequence: candidate selection → `identity_policy` / `voice_payload` → packets → Production C v0.3.2 → Box 8 grounding gate → voice scoring → rough TTS.
+- **(B) Not real enough →** apply the pre-staged producer revision (coffee de-density / de-template + 2–3 genuine low-risk positive moments, **private-arc firewall preserved**), regenerate **once**, run a fresh blind read, then re-enter at (A).
+
+**Also gated on the verdict (do not start before it lands):**
+- the two architecture memos — `world-generation-spec.md` §1 closeness reconciliation (proximity ladder vs. derived source-band) and the `design.md` §5 two-authority question;
+- the final CS passdown (it forks on the verdict; written with the answer as its opening line).
+
+**Non-impact.** Changes no ADR, formula, route, or safety gate. Pure build-sequencing.
+
+— CS Engineer, 2026-06-26
