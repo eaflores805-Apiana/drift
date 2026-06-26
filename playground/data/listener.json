@@ -41,12 +41,18 @@
     "jordan": "acquaintance",
     "lena": "known",
     "sam": "known",
+    "isabel": "known",
+    "jess": "known",
+    "nico": "acquaintance",
+    "mia": "acquaintance",
     "uncle_ray": "distant_family",
     "buena_athletics": "followed",
     "driftwood": "followed",
     "patagonia": "followed",
     "ventura_news": "followed",
     "coastal_sounds": "followed",
-    "kelp_surf_co": "followed"
+    "kelp_surf_co": "followed",
+    "pacific_cafe": "followed",
+    "mesa_roasters": "followed"
   }
 }
