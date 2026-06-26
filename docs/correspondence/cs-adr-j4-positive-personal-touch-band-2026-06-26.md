@@ -94,10 +94,21 @@ The two previously mis-voiced items (Dana cross-country, Sam corrupted files) ar
 
 Preserved. The rerun reads only the public feed; `runs/world-bible/hidden-arcs.json` and the answer key remain git-ignored and were never read. Cache reuse made the rerun free and changed no meaning judgments (the calibration is entirely Layer-1 scoring, downstream of meaning).
 
-## 6. Open items for Eng1 / Eng2
+## 6. Ratification ask (Eng1 / Eng2)
 
-- **Ratify J4** as the route/treatment taxonomy, or amend the band boundaries.
-- **Closeness-as-second-gate** (PO refinement #1): if the team wants medium-sensitivity *close-tie* posts to escalate to doorway, that is a deliberate second closeness gate — decide explicitly before coding.
-- **Re-derivation**: all three J4 constants must be re-fit on a human/realistic corpus before any real-feed use. They are demo scaffolding by stamp.
+**PO has placed a HOLD: no six-candidate generation and no downstream demo evidence are to be built on J4 until this is ratified.** J4 changes what becomes eligible for voice — Layer-1 behavior, not a tuning change — so it stops here by design.
+
+**The one question to rule on (architecture, not examples):**
+
+> Does `positive_personal_touch` belong as a **highlight-family treatment band over the unchanged route vocabulary**, with `everyday_texture` and `mild_stress` as **ambient/exclusion bands**, while **closeness remains a score term rather than a second gate**?
+
+**Please do NOT litigate** whether Nico / Lena / Sam are exactly the right six. The thresholds are World-Ventura scaffolding, explicitly invalid for production (§3 stamps). The taxonomy is the point.
+
+Also for the team, but not blockers to the core ruling:
+- **Closeness-as-second-gate** (PO refinement #1): if you want medium-sensitivity *close-tie* posts to escalate to doorway, that is a deliberate second closeness gate — decide explicitly before it's coded.
+- **Re-derivation**: all three J4 constants must be re-fit on a human/realistic corpus before any real-feed use.
+
+**On ratification (J4 accepted), the held pipeline resumes:**
+take the six `positive_personal_touch` candidates → build packets → Production C → Box 8 grounding gate → voice-quality scoring → rough TTS. Until then, hold.
 
 — CS Engineer, 2026-06-26
