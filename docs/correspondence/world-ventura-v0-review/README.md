@@ -39,8 +39,37 @@ are firewalled — if Drift's brain or a blind realism judge ever sees them, the
 rigged. They're available for human review on request; just don't wire them into
 anything.
 
-## The questions we actually need answered
-1. **Is it real enough to build on?** (the call)
+## How to review — read `FEED.md` first, then answer these nine
+All nine are **gut-read** questions. Not one is answerable from the JSON or the
+scorecard — that's the point. The thing we're validating (does this feel like a real
+week of real people's lives) is exactly the thing a metric can't see. So read the feed
+like a person scrolling, *then* answer:
+
+1. **Would these posts exist if Drift never existed?** (the core test)
+2. **Voice** — do the people sound like distinct humans, or like one writer?
+3. **Relationships** — do they feel *implied* by the posts (replies, in-jokes, shared
+   context) rather than announced?
+4. **A real week** — does life feel like it's *continuing*, or is every post a "moment"?
+5. **Texture** — is there enough ordinary, boring noise to feel alive? (a real feed is
+   mostly noise)
+6. **Repetition** — does anything feel over-represented enough to break the spell?
+   (e.g. coffee / Driftwood)
+7. **Ignorable junk** — are there posts Drift *should* ignore? You're judging whether the
+   **world contains** realistic noise — **not** whether Drift ignored it.
+8. **Surface-worthy signal** — are there posts Drift *should* surface? Again: whether the
+   **world gives** clear signal — **not** whether Drift caught it.
+9. **DJ-bait** — does anything read as written *for the DJ* (inspirational, ad-like,
+   every post a tidy "moment")?
+
+> **You are judging the world, not the engine.** The question is whether the world hands
+> Drift the right raw material — realistic noise, clear signal, ignorable junk. Whether
+> Drift *handles* it is the **next** test, and it's gated behind this one (the answer key
+> and Drift's actual picks are firewalled out on purpose). Keep the two separate or the
+> review blurs "is the world good" into "is the engine good" — different questions,
+> different firewalls.
+
+## Decisions we need from you
+1. **Is it real enough to build on?** (the call — this gates everything downstream)
 2. **Coverage:** fixing the over-telegraphing means the *heavy private* storylines now
    produce **no public signal** — correct *safe* behavior, but it leaves us light on
    positive "Drift *should* surface this" moments. Add more genuine surface-this cases

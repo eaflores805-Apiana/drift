@@ -34,6 +34,15 @@ density 33%, 0 clichés, firewall PASS). Numbers are a proxy — please read the
 
 ---
 
+## How to review
+Read the feed first, then answer the **nine gut-read questions** in
+`docs/correspondence/world-ventura-v0-review/README.md` — none of them are answerable
+from the JSON or scorecard, by design. The one rule that keeps the review honest:
+**you are judging the world, not the engine** — whether the world hands Drift the right
+raw material (realistic noise, clear signal, ignorable junk), *not* whether Drift handled
+it. The handling is the next test, gated behind this one (answer key + Drift's picks
+firewalled out).
+
 ## Open questions for the team
 1. **Is this realistic enough to build the brain on?** (the core call)
 2. **Coverage gap:** fixing the over-telegraphing made the *heavy private* arcs (Priya,
