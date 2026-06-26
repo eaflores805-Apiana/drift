@@ -127,9 +127,18 @@ async function main(): Promise<void> {
 
   const byBucket: Record<string, number> = {};
   const byRoute: Record<string, number> = {};
+  const byBand: Record<string, number> = {};
+  // band → how many of that band's items cleared a voiced bar
+  const bandVoiced: Record<string, number> = {};
   for (const d of decisions) {
     byBucket[d.bucket] = (byBucket[d.bucket] ?? 0) + 1;
     if (d.route) byRoute[d.route] = (byRoute[d.route] ?? 0) + 1;
+    if (d.band) {
+      byBand[d.band] = (byBand[d.band] ?? 0) + 1;
+      if (d.bucket === "voiced" || d.bucket === "expandable") {
+        bandVoiced[d.band] = (bandVoiced[d.band] ?? 0) + 1;
+      }
+    }
   }
 
   const voiced = ranked.filter((d) => d.bucket === "voiced" || d.bucket === "expandable");
@@ -139,7 +148,7 @@ async function main(): Promise<void> {
     const mag = d.score_breakdown.magnitude?.toFixed(2) ?? "—";
     const close = d.score_breakdown.closeness?.toFixed(2) ?? "—";
     console.log(
-      `  [${d.bucket.toUpperCase()}] ${d.score.toFixed(3)}  ${d.route?.padEnd(9)} ` +
+      `  [${d.bucket.toUpperCase()}] ${d.score.toFixed(3)}  ${(d.band ?? d.route ?? "?").padEnd(24)} ` +
         `${it.source_name} (mag ${mag}, close ${close})`
     );
     console.log(`        "${it.raw_text.slice(0, 92)}${it.raw_text.length > 92 ? "…" : ""}"`);
@@ -148,6 +157,8 @@ async function main(): Promise<void> {
   console.log(`\n${SEP}`);
   console.log(`buckets: ${JSON.stringify(byBucket)}`);
   console.log(`routes:  ${JSON.stringify(byRoute)}`);
+  console.log(`bands:   ${JSON.stringify(byBand)}`);
+  console.log(`band→voiced: ${JSON.stringify(bandVoiced)}  (ADR J4: voiced should be positive_personal_touch / doorway_sensitive only)`);
   console.log(SEP);
 
   // --- persist decisions (runs/ is git-ignored; safe, no hidden context) ---

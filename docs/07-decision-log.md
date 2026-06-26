@@ -533,3 +533,23 @@ Rationale accepted by PO: (1) the CS sighted read already identified the real cr
 **Firewall status:** preserved throughout. `runs/world-bible/hidden-arcs.json` and the answer key (`runs/post-writer/answer-key-ventura-v2.json`) remain git-ignored, uncommitted, and were never fed to a judge.
 
 — CS Engineer, 2026-06-26
+
+---
+
+### ADR J4 — Positive Personal Touch band + exclusion bands (2026-06-26)
+
+**Decision class: ESCALATE-IF-CHANGED / Class 1** (changes what may be voiced). Implemented on `box8-grounding-gate`; Eng1/Eng2 ratification pending. Full memo: `docs/correspondence/cs-adr-j4-positive-personal-touch-band-2026-06-26.md`.
+
+**Prompt:** the first brain run on the realistic `ventura-v2` friend-feed voiced 2/57 — and the *wrong* two: it aired routine venting (Dana's kid logistics, Sam's "files corrupted") while staying silent on genuine good news (Nico's first podium 0.528 vs the community-pride bar 0.532; Lena's opening 0.527; Sam's cert pass; Mark's pitch). **Root cause = route-taxonomy gap, not a generation bug or a threshold nudge:** the old classifier dumped all low-sensitivity personal posts into `highlight` (gated by the 0.532 community-pride bar, fitted on the old seed corpus and non-transferable to a friends-feed) and all medium-sensitivity personal posts into `doorway` (bar 0.100, which over-voiced mild stress). Net inversion.
+
+**Ruling (TL direction + PO refinements):** add a treatment-band layer over the unchanged 4-value route vocabulary. New bands: `positive_personal_touch` (highlight-family, own bar 0.30), `mild_stress` + `everyday_texture` (ambient exclusion). `community_highlight` keeps 0.532; `doorway_sensitive` keeps 0.100. **PO refinements honored:** (1) closeness is NOT a second gate — it stays in the score; band escalation `mild_stress→doorway_sensitive` is keyed on magnitude (substance), not closeness; a closeness gate needs team sign-off. (2) all band thresholds stamped in-code `FITTED ON WORLD VENTURA ONLY — INVALID FOR PRODUCTION`. (3) success is structural (7 criteria), not "tune until six examples match."
+
+**Implementation:** new `playground/src/scoring/bands.ts` (`classifyBand`, `BAND_ROUTE`, `DEFAULT_BAND_THRESHOLDS`); `scoringEngine.ts` resolves the bar band-first (`bandThresholds[band] ?? routeThresholds[route]`); `Decision.band` added (free-form string, no enum coupling). `classifyRoute` untouched.
+
+**Verification:** bench smoke **53/53 PASS**, typecheck clean (p004 still voices; mismatch checks 39/40/45 preserved — the mismatch classifier never keyed on route). World-Ventura rerun (cached meaning, 0 API calls): voiced **6/57, all `positive_personal_touch`**; `band→voiced = {positive_personal_touch: 6}`; mild_stress 5/0-voiced, everyday_texture 22/0-voiced. **All 7 success criteria met.** Firewall preserved (rerun reads only the public feed).
+
+**NOT done (deliberately, per ruling):** did NOT generate DJ lines for the old 2 candidates; did NOT reroute positive wins into doorway; did NOT drop the global 0.532 bar.
+
+**Open for Eng1/Eng2:** ratify the taxonomy; rule on closeness-as-second-gate if wanted; re-derive all three J4 constants on a human corpus before real-feed use.
+
+— CS Engineer, 2026-06-26

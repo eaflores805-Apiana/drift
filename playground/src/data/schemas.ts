@@ -86,6 +86,9 @@ export const DecisionSchema = z.object({
   score: z.number(),
   score_breakdown: z.record(z.string(), z.number()),
   route: RouteSchema.optional(),
+  // ADR J4 treatment band (free-form string to avoid enum coupling with the
+  // 4-value gold Route vocabulary). Present when the engine scored the item.
+  band: z.string().optional(),
   reason: z.string(),
   lines: DecisionLinesSchema.optional(),
   allowed_claims: z.array(z.string()).default([]),

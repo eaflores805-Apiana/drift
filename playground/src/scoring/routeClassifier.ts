@@ -80,7 +80,7 @@ export function classifyRoute(
  * Tunable in principle; 48h chosen as a structural prior, not fitted —
  * see ADR J3 for what fitting utility would actually require.
  */
-function hasNearTermExpiry(item: IngestedItem): boolean {
+export function hasNearTermExpiry(item: IngestedItem): boolean {
   if (!item.expires_at) return false;
   const start = Date.parse(item.timestamp);
   const end = Date.parse(item.expires_at);

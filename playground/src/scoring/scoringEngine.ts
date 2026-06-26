@@ -14,8 +14,14 @@ import {
   focusBoost,
   type FocusWeights,
 } from "./focusWeights";
-import { classifyRoute } from "./routeClassifier";
 import { type Route } from "./routes";
+import {
+  type Band,
+  type BandThresholds,
+  BAND_ROUTE,
+  classifyBand,
+  DEFAULT_BAND_THRESHOLDS,
+} from "./bands";
 
 export type RouteThresholds = Partial<Record<Route, number>>;
 
@@ -29,6 +35,15 @@ export type ScoringSettings = {
    * across routes").
    */
   routeThresholds: RouteThresholds;
+  /**
+   * Per-BAND voiced threshold override (ADR J4). A band present here uses
+   * this value; a band absent falls back to `routeThresholds[BAND_ROUTE[band]]`.
+   * Lets `positive_personal_touch` carry its own bar (0.30) while sharing the
+   * "highlight" treatment route with community-pride items (bar 0.532).
+   * ⚠ The default values are World-Ventura-only demo scaffolding — see
+   * `bands.ts` DEFAULT_BAND_THRESHOLDS. Re-derive on a realistic corpus.
+   */
+  bandThresholds: BandThresholds;
   /**
    * Voiced → expandable boundary. Currently global (Step 1.3 fit voiced
    * thresholds only; per-route expandables are a future fit per the
@@ -69,6 +84,7 @@ export const DEFAULT_ROUTE_THRESHOLDS: RouteThresholds = {
 
 export const DEFAULT_SETTINGS: ScoringSettings = {
   routeThresholds: DEFAULT_ROUTE_THRESHOLDS,
+  bandThresholds: DEFAULT_BAND_THRESHOLDS,
   expandableThreshold: 0.65,
   relevanceBaseline: 0.5,
   timelinessBaseline: 0.5,
@@ -167,8 +183,13 @@ function scoreOne(
   // Focus stays as a SEPARATE post-multiplier (not in the additive base).
   const effective = value * focus;
 
-  const route = classifyRoute(item, meaning);
-  const threshold = settings.routeThresholds[route];
+  // ADR J4: classify the treatment BAND, derive the structural route from it,
+  // and resolve the voiced bar band-first (so positive_personal_touch carries
+  // its own 0.30 bar while sharing the highlight route with community pride at
+  // 0.532). Band absent from bandThresholds ⇒ fall back to the route threshold.
+  const band = classifyBand(item, meaning);
+  const route = BAND_ROUTE[band];
+  const threshold = settings.bandThresholds[band] ?? settings.routeThresholds[route];
 
   let bucket: Bucket;
   if (!novel) {
@@ -203,9 +224,10 @@ function scoreOne(
     score: effective,
     score_breakdown: breakdown,
     route,
+    band,
     reason: buildReason({
       meaning, close, time, focus, base, value, effective,
-      route, threshold, settings, novel, bucket,
+      route, band, threshold, settings, novel, bucket,
     }),
     allowed_claims: meaning.allowed_claims,
     forbidden_inferences: meaning.forbidden_inferences,
@@ -252,6 +274,7 @@ function buildReason(ctx: {
   value: number;
   effective: number;
   route: Route;
+  band: Band;
   threshold: number | undefined;
   settings: ScoringSettings;
   novel: boolean;
@@ -273,6 +296,6 @@ function buildReason(ctx: {
     `× conf ${ctx.meaning.confidence.toFixed(2)} × sens_damper ${SENSITIVITY_DAMPER[ctx.meaning.sensitivity].toFixed(2)} ` +
     `= value ${ctx.value.toFixed(3)}, ` +
     `× focus(${ctx.focus.toFixed(2)}) = ${ctx.effective.toFixed(3)} ` +
-    `[route=${ctx.route}, ${thresholdStr}] → ${ctx.bucket}`
+    `[band=${ctx.band}, route=${ctx.route}, ${thresholdStr}] → ${ctx.bucket}`
   );
 }
