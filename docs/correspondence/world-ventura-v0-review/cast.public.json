@@ -1,0 +1,369 @@
+{
+  "world_tag": "ventura-v1",
+  "anchored_to": "listener_001",
+  "generated_by": "grok",
+  "review_status": "unconfirmed",
+  "local_world": "Ventura is a classic laid-back California beach town in early summer. The old wooden pier draws fishermen at dawn and tourists by midday. Driftwood Roasters is the unofficial morning meeting spot for surfers, remote workers, and creatives. Buena High fields run youth camps while school is out. Warm days, foggy mornings, strong indie music and coffee culture keep things relaxed and creative.",
+  "accounts": [
+    {
+      "id": "mark",
+      "display_name": "Mark Delgado",
+      "account_type": "person",
+      "bio": "Product manager and dedicated surfer who travels for work but always comes back to the waves.",
+      "voice": "energetic but self-deprecating, mixes work wins with surf conditions and gym updates, uses a few emojis",
+      "interests": ["product design", "surfing", "basketball", "indie pop"],
+      "location": "Ventura, CA",
+      "relationship_to_listener": {
+        "closeness": "close",
+        "how": "college roommate, still surfs the same break with Alex most mornings"
+      },
+      "posting_style": {
+        "frequency": "high",
+        "disclosure_style": "earnest",
+        "typical_surfaces": ["feed", "story", "comment"]
+      }
+    },
+    {
+      "id": "mateo",
+      "display_name": "Mateo Singh",
+      "account_type": "person",
+      "bio": "Quiet surfer and hiker who mostly keeps to himself.",
+      "voice": "spare, gentle, short posts or single photos with one or two words, rarely long text",
+      "interests": ["surfing", "hiking"],
+      "location": "Ventura, CA",
+      "relationship_to_listener": {
+        "closeness": "close",
+        "how": "surfs the same break as Alex, occasional hiking buddy"
+      },
+      "posting_style": {
+        "frequency": "low",
+        "disclosure_style": "private",
+        "typical_surfaces": ["feed", "story"]
+      }
+    },
+    {
+      "id": "priya",
+      "display_name": "Priya Patel",
+      "account_type": "person",
+      "bio": "ER nurse who loves trivia nights and local coffee but keeps her personal life very private.",
+      "voice": "understated and wry, short sentences, light emoji use, often posts about work shifts or coffee",
+      "interests": ["local food", "specialty coffee", "hiking"],
+      "location": "Ventura, CA",
+      "relationship_to_listener": {
+        "closeness": "close",
+        "how": "close friend and regular trivia partner with Alex on Tuesdays"
+      },
+      "posting_style": {
+        "frequency": "medium",
+        "disclosure_style": "private",
+        "typical_surfaces": ["feed", "comment"]
+      }
+    },
+    {
+      "id": "dana",
+      "display_name": "Dana Rivera",
+      "account_type": "person",
+      "bio": "Alex's younger sister, mom of two young kids, works part time and posts a lot about daily chaos.",
+      "voice": "casual and emoji-heavy, overshares small frustrations and wins with lots of laughing faces",
+      "interests": ["local food", "family", "basketball"],
+      "location": "Ventura, CA",
+      "relationship_to_listener": {
+        "closeness": "close",
+        "how": "younger sister, lives nearby, they text and see each other weekly"
+      },
+      "posting_style": {
+        "frequency": "high",
+        "disclosure_style": "oversharer",
+        "typical_surfaces": ["feed", "story", "comment"]
+      }
+    },
+    {
+      "id": "jordan",
+      "display_name": "Jordan Hale",
+      "account_type": "person",
+      "bio": "Acquaintance from the local maker and surf scene.",
+      "voice": "dry and a bit vague, posts occasional surf and design updates",
+      "interests": ["surfing", "product design"],
+      "location": "Ventura, CA",
+      "relationship_to_listener": {
+        "closeness": "acquaintance",
+        "how": "occasional surf sessions and overlapping friend circles"
+      },
+      "posting_style": {
+        "frequency": "low",
+        "disclosure_style": "dry",
+        "typical_surfaces": ["feed", "comment"]
+      }
+    },
+    {
+      "id": "lena",
+      "display_name": "Lena Voss",
+      "account_type": "person",
+      "bio": "Ceramic artist and small-batch maker known in the local creative community.",
+      "voice": "warm and self-deprecating, mixes honest nerves about her work with real life details",
+      "interests": ["product design", "local food", "indie pop"],
+      "location": "Ventura, CA",
+      "relationship_to_listener": {
+        "closeness": "known",
+        "how": "met through local maker events and shared surf-adjacent friends"
+      },
+      "posting_style": {
+        "frequency": "medium",
+        "disclosure_style": "earnest",
+        "typical_surfaces": ["feed", "story", "repost"]
+      }
+    },
+    {
+      "id": "sam",
+      "display_name": "Sam Torres",
+      "account_type": "person",
+      "bio": "Coworker at the design studio, posts a mix of work and life but keeps it surface level.",
+      "voice": "casual, uses work slang and gym updates, sometimes vague dramatic posts",
+      "interests": ["product design", "basketball"],
+      "location": "Ventura, CA",
+      "relationship_to_listener": {
+        "closeness": "known",
+        "how": "coworker at the same product design studio"
+      },
+      "posting_style": {
+        "frequency": "medium",
+        "disclosure_style": "dry",
+        "typical_surfaces": ["feed", "comment"]
+      }
+    },
+    {
+      "id": "uncle_ray",
+      "display_name": "Ray Rivera",
+      "account_type": "person",
+      "bio": "Alex's uncle who lives nearby and posts about fishing, family, and occasional rants.",
+      "voice": "straightforward, older guy style, short fishing reports and family mentions",
+      "interests": ["local food", "hiking"],
+      "location": "Ventura, CA",
+      "relationship_to_listener": {
+        "closeness": "distant_family",
+        "how": "Alex's uncle on dad's side, occasional family gatherings"
+      },
+      "posting_style": {
+        "frequency": "low",
+        "disclosure_style": "private",
+        "typical_surfaces": ["feed"]
+      }
+    },
+    {
+      "id": "isabel",
+      "display_name": "Isabel Cruz",
+      "account_type": "person",
+      "bio": "Friend from the extended surf and hiking crowd, works in local food scene.",
+      "voice": "earnest and warm, posts about food experiments and weekend adventures",
+      "interests": ["local food", "surfing", "hiking"],
+      "location": "Ventura, CA",
+      "relationship_to_listener": {
+        "closeness": "known",
+        "how": "friend of friends in the surf scene, occasional group hangs"
+      },
+      "posting_style": {
+        "frequency": "medium",
+        "disclosure_style": "earnest",
+        "typical_surfaces": ["feed", "story"]
+      }
+    },
+    {
+      "id": "nico",
+      "display_name": "Nico Patel",
+      "account_type": "person",
+      "bio": "Gamer and occasional surfer, part of the broader friend group.",
+      "voice": "gamer shorthand mixed with surf talk, posts clips and short updates in bursts",
+      "interests": ["surfing", "basketball"],
+      "location": "Ventura, CA",
+      "relationship_to_listener": {
+        "closeness": "acquaintance",
+        "how": "friend of mateo and mark from surf and gaming overlap"
+      },
+      "posting_style": {
+        "frequency": "medium",
+        "disclosure_style": "dry",
+        "typical_surfaces": ["feed", "story", "comment"]
+      }
+    },
+    {
+      "id": "mia",
+      "display_name": "Mia Chen",
+      "account_type": "person",
+      "bio": "Neighbor and casual acquaintance who works at a local bookstore.",
+      "voice": "friendly but low volume, posts about books and neighborhood finds",
+      "interests": ["local food", "hiking"],
+      "location": "Ventura, CA",
+      "relationship_to_listener": {
+        "closeness": "acquaintance",
+        "how": "lives a few blocks away, waves and occasional chats"
+      },
+      "posting_style": {
+        "frequency": "low",
+        "disclosure_style": "private",
+        "typical_surfaces": ["feed"]
+      }
+    },
+    {
+      "id": "jess",
+      "display_name": "Jess Rivera",
+      "account_type": "person",
+      "bio": "Distant cousin and coworker in the broader design world.",
+      "voice": "practical, posts work tips and weekend plans without much drama",
+      "interests": ["product design", "basketball"],
+      "location": "Ventura, CA",
+      "relationship_to_listener": {
+        "closeness": "known",
+        "how": "distant family and occasional overlap at work events"
+      },
+      "posting_style": {
+        "frequency": "medium",
+        "disclosure_style": "dry",
+        "typical_surfaces": ["feed", "comment"]
+      }
+    },
+    {
+      "id": "driftwood",
+      "display_name": "Driftwood Roasters",
+      "account_type": "local_business",
+      "bio": "Local Ventura coffee roaster and hub for surfers and creatives.",
+      "voice": "friendly, short updates on new blends, events, and daily specials",
+      "interests": ["specialty coffee"],
+      "location": "Ventura, CA",
+      "posting_style": {
+        "frequency": "high",
+        "disclosure_style": "hype",
+        "typical_surfaces": ["feed", "story"]
+      }
+    },
+    {
+      "id": "buena_athletics",
+      "display_name": "Buena High Athletics",
+      "account_type": "civic",
+      "bio": "Local high school sports program running summer camps and teams.",
+      "voice": "enthusiastic team updates, event reminders, pride in local kids",
+      "interests": ["basketball"],
+      "location": "Ventura, CA",
+      "posting_style": {
+        "frequency": "medium",
+        "disclosure_style": "hype",
+        "typical_surfaces": ["feed", "event"]
+      }
+    },
+    {
+      "id": "patagonia",
+      "display_name": "Patagonia",
+      "account_type": "brand",
+      "bio": "Outdoor clothing and gear brand focused on environmental causes.",
+      "voice": "values-driven updates, product drops, environmental stories",
+      "interests": ["surfing", "hiking"],
+      "location": "national",
+      "posting_style": {
+        "frequency": "medium",
+        "disclosure_style": "earnest",
+        "typical_surfaces": ["feed", "repost"]
+      }
+    },
+    {
+      "id": "ventura_news",
+      "display_name": "Ventura County News",
+      "account_type": "civic",
+      "bio": "Local news covering Ventura and surrounding areas.",
+      "voice": "straight news and alerts, occasional community spotlights",
+      "interests": ["local food"],
+      "location": "Ventura, CA",
+      "posting_style": {
+        "frequency": "high",
+        "disclosure_style": "dry",
+        "typical_surfaces": ["feed"]
+      }
+    },
+    {
+      "id": "coastal_sounds",
+      "display_name": "Coastal Sounds",
+      "account_type": "creator",
+      "bio": "Local musician and event organizer in the indie scene.",
+      "voice": "casual music shares, gig announcements, behind-the-scenes",
+      "interests": ["indie pop"],
+      "location": "Ventura, CA",
+      "posting_style": {
+        "frequency": "medium",
+        "disclosure_style": "earnest",
+        "typical_surfaces": ["feed", "story", "repost"]
+      }
+    },
+    {
+      "id": "kelp_surf_co",
+      "display_name": "Kelp Surf Co.",
+      "account_type": "local_business",
+      "bio": "Local surf shop selling gear and apparel with a coastal vibe.",
+      "voice": "chill product drops, surf conditions, shop events",
+      "interests": ["surfing"],
+      "location": "Ventura, CA",
+      "posting_style": {
+        "frequency": "medium",
+        "disclosure_style": "hype",
+        "typical_surfaces": ["feed", "story"]
+      }
+    },
+    {
+      "id": "mesa_roasters",
+      "display_name": "Mesa Roasters",
+      "account_type": "local_business",
+      "bio": "Small batch coffee roaster with a focus on single origin beans.",
+      "voice": "nerdy coffee talk, roast updates, tasting notes",
+      "interests": ["specialty coffee"],
+      "location": "Ventura, CA",
+      "posting_style": {
+        "frequency": "medium",
+        "disclosure_style": "earnest",
+        "typical_surfaces": ["feed"]
+      }
+    },
+    {
+      "id": "pacific_cafe",
+      "display_name": "Pacific Pier Cafe",
+      "account_type": "local_business",
+      "bio": "Casual cafe right by the pier serving breakfast and strong coffee.",
+      "voice": "simple daily specials and pier life photos",
+      "interests": ["local food"],
+      "location": "Ventura, CA",
+      "posting_style": {
+        "frequency": "high",
+        "disclosure_style": "hype",
+        "typical_surfaces": ["feed", "story"]
+      }
+    }
+  ],
+  "relationships": [
+    { "from": "mark", "to": "mateo", "type": "close_friends", "visible_publicly": true },
+    { "from": "mark", "to": "jordan", "type": "acquaintances", "visible_publicly": false },
+    { "from": "mateo", "to": "nico", "type": "close_friends", "visible_publicly": true },
+    { "from": "priya", "to": "dana", "type": "close_friends", "visible_publicly": true },
+    { "from": "priya", "to": "isabel", "type": "friends", "visible_publicly": true },
+    { "from": "dana", "to": "jess", "type": "family", "visible_publicly": false },
+    { "from": "lena", "to": "isabel", "type": "close_friends", "visible_publicly": true },
+    { "from": "sam", "to": "jess", "type": "coworkers", "visible_publicly": true },
+    { "from": "uncle_ray", "to": "dana", "type": "family", "visible_publicly": false },
+    { "from": "jordan", "to": "mia", "type": "neighbors", "visible_publicly": true }
+  ],
+  "groups": [
+    {
+      "id": "dawn_patrol",
+      "name": "Dawn Patrol",
+      "kind": "close_friends_chat",
+      "members": ["mark", "mateo", "nico", "alex"]
+    },
+    {
+      "id": "trivia_tuesdays",
+      "name": "Trivia Tuesdays",
+      "kind": "friends_group",
+      "members": ["priya", "dana", "isabel", "alex"]
+    },
+    {
+      "id": "surf_and_design",
+      "name": "Surf & Design Crew",
+      "kind": "mixed_friends",
+      "members": ["mark", "lena", "jordan", "sam"]
+    }
+  ]
+}

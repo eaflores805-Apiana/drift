@@ -1,0 +1,66 @@
+{
+  "rater": "grok",
+  "overall_realism_0_10": 7,
+  "one_line_verdict": "Strong voice matching and natural interactions for most authors, but several posts feel slightly too polished or conveniently observational, reading like they were crafted to be relatable rather than just happen.",
+  "least_realistic": [
+    {
+      "post_id": "mark-d4-m",
+      "why": "Too neatly self-aware about the pitch outcome and 'processing' — matches the voice but feels like it's setting up emotional context too cleanly for a story."
+    },
+    {
+      "post_id": "lena-d4-e",
+      "why": "The 'still kind of in shock... genuinely means everything' phrasing is a bit too earnest and writerly; her voice in cast is warm/self-deprecating but this borders on inspirational."
+    },
+    {
+      "post_id": "jordan-d2-e",
+      "why": "Vague 'thinking about some stuff... yeah' feels like a placeholder for hidden drama rather than how a real dry/vague person would post; too on-the-nose for obliqueness."
+    },
+    {
+      "post_id": "dana-d4-m",
+      "why": "The way it references driftwood and 'mark you're out here validating' is chatty and good, but the whole chain feels a little too neatly connected for the feed."
+    }
+  ],
+  "most_realistic": [
+    {
+      "post_id": "mateo-d1-m",
+      "why": "Perfect spare style: 'early one' with no extra — exactly matches 'short posts or single photos with one or two words'."
+    },
+    {
+      "post_id": "dana-d1-m",
+      "why": "Classic dana: emoji-heavy, oversharing small kid chaos with '😅' and 'coffee number three incoming' — feels like a real exhausted mom venting."
+    },
+    {
+      "post_id": "nico-d1-e",
+      "why": "Casual gamer/surf shorthand calling out mark — 'why does his life sound more chaotic than mine rn' — very natural burst reply."
+    },
+    {
+      "post_id": "priya-d2-e",
+      "why": "Understated work reality: '12 hour shift hit different when you haven't slept right. coffee #3 and still moving like i'm underwater' — wry, short, coffee-focused per her voice."
+    },
+    {
+      "post_id": "mark-d1-m",
+      "why": "Self-deprecating mix of work stress and missing waves: 'dc coffee is somehow worse than airport coffee... missing the waves already' — energetic but honest."
+    }
+  ],
+  "voice_drift": [
+    {
+      "author_id": "mark",
+      "note": "Early posts nail the self-deprecating work+surf mix, but later ones get a touch more reflective and 'tbh' than his high-energy voice description."
+    },
+    {
+      "author_id": "lena",
+      "note": "Some posts lean a bit too 'honestly' introspective and grateful; her cast voice is warm but this occasionally drifts into slightly polished artist-share territory."
+    },
+    {
+      "author_id": "jordan",
+      "note": "Vague posts are good, but the 'thinking about some stuff' one feels more like setup than his usual dry occasional updates."
+    }
+  ],
+  "anything_that_reads_as_DJ_bait": [
+    "mark-d4-m",
+    "jordan-d2-e",
+    "lena-d4-e",
+    "mark-d3-m (pitch reflection feels too neatly 'now just trying to not spiral')",
+    "dana-d2-e (the 'everyone suddenly at the harbor' feels like setting a scene)"
+  ]
+}

@@ -1,0 +1,11 @@
+# Firewall: answer keys / hidden truth NEVER get committed.
+# Drift's brain and the judge must be graded against text they could actually
+# see — never against the secret storylines that produced it.
+runs/
+!runs/.gitkeep
+world-bible/*.hidden.json
+
+# local env + caches
+.env
+.meaning-cache/
+.DS_Store

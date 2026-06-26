@@ -1,0 +1,42 @@
+{
+  "tag": "ventura-v1",
+  "generated_at": "2026-06-26T06:34:36.644Z",
+  "model": "claude-haiku-4-5",
+  "seed": 1234,
+  "totals": {
+    "posts_total": 75,
+    "person_posts": 34,
+    "org_posts": 41,
+    "model_calls": 106
+  },
+  "firewall_check": {
+    "result": "PASS",
+    "leaks": []
+  },
+  "checks": {
+    "specificity": {
+      "measured": "71%",
+      "formula": "person posts with >=1 number/@mention/known-name ÷ person posts",
+      "target": ">=70%",
+      "value": "24/34"
+    },
+    "variety": {
+      "length_stdev_chars": 53.3,
+      "duplicate_posts": 0,
+      "type_token_ratio": 0.421,
+      "note": "low stdev + low TTR + dupes>0 ⇒ mode collapse"
+    },
+    "mundanity": {
+      "measured": "33%",
+      "formula": "arc-driven (signal) posts ÷ all posts",
+      "target": "<35% (a real feed is mostly texture)",
+      "value": "25/75"
+    },
+    "cliche": {
+      "count": 0,
+      "target": "0",
+      "offenders": []
+    },
+    "voice_consistency": "NOT auto-scored — goes to the blind read + Grok second-opinion (a model judging a model is circular; see data-and-classification-findings #4)"
+  }
+}
