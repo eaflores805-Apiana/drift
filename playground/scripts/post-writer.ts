@@ -122,6 +122,11 @@ interface KeyEntry {
 const cast: Cast = JSON.parse(readFileSync(resolve(ROOT, "world-bible/cast.public.json"), "utf-8"));
 const hidden: Hidden = JSON.parse(readFileSync(resolve(ROOT, "runs/world-bible/hidden-arcs.json"), "utf-8"));
 const listener = JSON.parse(readFileSync(resolve(ROOT, "data/listener.json"), "utf-8"));
+interface PublicEvent { person_id: string; day: number; event: string }
+const publicEventsPath = resolve(ROOT, "world-bible/public-events.json");
+const publicEvents: PublicEvent[] = existsSync(publicEventsPath)
+  ? (JSON.parse(readFileSync(publicEventsPath, "utf-8")).events ?? [])
+  : [];
 const LISTENER_NAME: string = listener.name ?? "Alex Rivera";
 const LISTENER_FIRST = LISTENER_NAME.split(" ")[0];
 
@@ -148,6 +153,10 @@ function hiddenForDay(id: string, day: number): ArcStage | null {
   // the most recent stage on or before `day` (a state persists until the next stage)
   const elig = arc.stages.filter((s) => s.day <= day).sort((a, b) => b.day - a.day);
   return elig[0] ?? null;
+}
+
+function publicEventForDay(id: string, day: number): PublicEvent | null {
+  return publicEvents.find((e) => e.person_id === id && e.day === day) ?? null;
 }
 
 function dateForDay(day: number, phase: "morning" | "evening"): string {
@@ -209,10 +218,14 @@ Rules of realism:
 - NEVER sound inspirational, motivational, or like an advertisement. No "blessed", no "life is a journey", no "grateful", no "means everything".
 - If something private is going on, you do NOT gesture at it. BANNED: "thinking about some stuff", "processing", "some changes", "big things coming", "a lot on my mind", "trying not to spiral". Hinting at a secret is itself a tell. Real people either post about something totally ordinary, or post nothing — they don't drop vague hints.
 - It's fine to name specific people, places, or things you'd really mention.
+- Don't default to coffee or the cafe as your subject. Once in a while is fine, but a real town isn't all coffee — reach for the specific texture of THIS person's actual interests and day.
 Output ONLY a JSON object, nothing else.`;
 
-async function writePost(p: Account, day: number, phase: "morning" | "evening", recent: FeedPost[]): Promise<{ post: FeedPost; key: KeyEntry } | null> {
+async function writePost(p: Account, day: number, phase: "morning" | "evening", recent: FeedPost[], surfacePublic: boolean): Promise<{ post: FeedPost; key: KeyEntry } | null> {
   const stage = hiddenForDay(p.id, day);
+  // surface a public event AT MOST ONCE (the caller gates this) — otherwise a person
+  // re-announces the same good news every phase they post that day (a synthetic tell).
+  const pubEvent = surfacePublic ? publicEventForDay(p.id, day) : null;
   const shape = pick(SHAPES);
   const names = mentionable(p.id);
   const recentTxt = recent.slice(-5).map((e) => `  - ${e.author_name} (${e.surface}, post ${e.id}): ${e.text}`).join("\n") || "  (the feed is quiet)";
@@ -220,6 +233,10 @@ async function writePost(p: Account, day: number, phase: "morning" | "evening", 
   const privateBlock = stage
     ? `WHAT'S GOING ON FOR YOU (PRIVATE context — only you know the full picture):\n  ${stage.hidden_state}\n  How to handle it: if this is genuinely something you'd announce in public (a real event, plain good or bad news you'd actually share), you may post it — but flatly, in your OWN normal voice, never earnest or writerly. If it's private or heavy, you do NOT post about it and you do NOT hint at it: post about something totally ordinary, or post nothing. Never gesture at a secret.`
     : `WHAT'S GOING ON FOR YOU: an ordinary day, nothing notable.`;
+
+  const publicBlock = pubEvent
+    ? `GOOD NEWS TODAY (genuinely public — you'd actually share this; it is NOT a secret): ${pubEvent.event}\n  Share it plainly in your own voice. Don't inflate it, don't make it inspirational — just say the real thing the way you'd say it.`
+    : "";
 
   const user = `WHO YOU ARE:
   ${p.display_name} — ${p.bio}
@@ -235,6 +252,7 @@ WHAT YOU'VE SEEN ON THE FEED RECENTLY:
 ${recentTxt}
 
 ${privateBlock}
+${publicBlock}
 
 If you post, aim loosely for: ${shape}.
 
@@ -254,17 +272,21 @@ Reply with ONLY this JSON:
   };
   const key: KeyEntry = {
     post_id: id, author_id: p.id, day, surface: a.surface,
-    driven_by: stage ? stage.hidden_state : null,
+    driven_by: pubEvent ? `[public] ${pubEvent.event}` : (stage ? stage.hidden_state : null),
     life_arc: stage ? (arcOf.get(p.id)?.life_arc ?? null) : null,
-    klass: stage ? "signal" : "texture",
+    klass: (pubEvent || stage) ? "signal" : "texture",
   };
   return { post, key };
 }
 
-async function writeOrgPost(o: Account, day: number): Promise<FeedPost | null> {
-  if (rng() > (POST_PROB[o.posting_style.frequency] ?? 0.4)) return null;
+async function writeOrgPost(o: Account, day: number, ownRecent: string[], probDamp: number): Promise<FeedPost | null> {
+  if (rng() > (POST_PROB[o.posting_style.frequency] ?? 0.4) * probDamp) return null;
+  const recentTxt = ownRecent.slice(-3).map((t) => `  - ${t}`).join("\n") || "  (none yet)";
   const user = `You run the account "${o.display_name}" (${o.account_type}) in Ventura, CA. ${o.bio}
-Voice: ${o.voice}. Write ONE short, on-brand post for today — a special, an event, an update, or a drop. One or two sentences. Realistic, not salesy hype. Output ONLY: {"text":"..."}`;
+Voice: ${o.voice}. Write ONE short, on-brand post for today — a special, an event, an update, or a drop. One or two sentences. Realistic, not salesy hype.
+YOUR RECENT POSTS (do NOT reuse their shape or phrasing — vary the angle; never repeat a tasting-note formula like "wild [fruit] thing going on" or sign-offs like "grab a bag before we run out" / "hitting different"):
+${recentTxt}
+Output ONLY: {"text":"..."}`;
   const fb = `{"text":"[dry-run ${o.id} d${day}]"}`;
   const raw = await llm("You write short, realistic posts for local businesses and orgs. No hashtag spam, no fake enthusiasm.", user, fb);
   let text = "";
@@ -281,6 +303,7 @@ async function main(): Promise<void> {
   console.log(`[post-writer] tag=${TAG} model=${DRY ? "DRY" : MODEL} days=${DAYS} seed=${SEED}`);
   const feed: FeedPost[] = [];
   const key: KeyEntry[] = [];
+  const publicSurfaced = new Set<string>(); // `${person}:${day}` once a public event has been posted
 
   for (let day = 1; day <= DAYS; day++) {
     for (const phase of ["morning", "evening"] as const) {
@@ -288,18 +311,40 @@ async function main(): Promise<void> {
       const order = [...people].sort(() => rng() - 0.5);
       for (const p of order) {
         const stage = hiddenForDay(p.id, day);
+        const pe = publicEventForDay(p.id, day);
         // arc days are NOT nudged up — over-posting on a hard day produced reflective/writerly
         // posts (the v1 weak spot). Let silence happen; signal should be a minority of the feed.
-        const prob = (POST_PROB[p.posting_style.frequency] ?? 0.4) * (phase === "evening" ? 0.7 : 1);
+        let prob = (POST_PROB[p.posting_style.frequency] ?? 0.4) * (phase === "evening" ? 0.7 : 1);
+        // a genuine public "today this happened" moment should reliably appear ONCE (morning),
+        // never re-announced in a later phase the same day.
+        const pubKey = `${p.id}:${day}`;
+        const surfacePublic = !!pe && phase === "morning" && !publicSurfaced.has(pubKey);
+        if (surfacePublic) prob = Math.max(prob, 0.92);
         if (rng() > prob) continue;
-        const r = await writePost(p, day, phase, feed);
-        if (r) { feed.push(r.post); key.push(r.key); process.stdout.write("."); }
+        const r = await writePost(p, day, phase, feed, surfacePublic);
+        if (r) { feed.push(r.post); key.push(r.key); if (surfacePublic) publicSurfaced.add(pubKey); process.stdout.write("."); }
       }
     }
-    // an org or two posts each day
-    for (const o of orgs) {
-      const op = await writeOrgPost(o, day);
-      if (op) { feed.push(op); key.push({ post_id: op.id, author_id: o.id, day, surface: "feed", driven_by: null, life_arc: null, klass: "texture" }); process.stdout.write("o"); }
+    // an org or two posts each day — capped per category so one category can't flood the day
+    const ORG_CATEGORY: Record<string, string> = {
+      driftwood: "coffee", mesa_roasters: "coffee", pacific_cafe: "coffee",
+      patagonia: "apparel", kelp_surf_co: "surf", coastal_sounds: "music",
+      buena_athletics: "sports", ventura_news: "news",
+    };
+    const CATEGORY_DAILY_CAP: Record<string, number> = { coffee: 1 };   // <=1 coffee/roaster post per day
+    const CATEGORY_PROB_DAMP: Record<string, number> = { coffee: 0.5 }; // coffee orgs post less often
+    const catCountToday: Record<string, number> = {};
+    for (const o of [...orgs].sort(() => rng() - 0.5)) {
+      const cat = ORG_CATEGORY[o.id] ?? "other";
+      if ((catCountToday[cat] ?? 0) >= (CATEGORY_DAILY_CAP[cat] ?? 99)) continue;
+      const ownRecent = feed.filter((f) => f.author_id === o.id).map((f) => f.text);
+      const op = await writeOrgPost(o, day, ownRecent, CATEGORY_PROB_DAMP[cat] ?? 1);
+      if (op) {
+        feed.push(op);
+        key.push({ post_id: op.id, author_id: o.id, day, surface: "feed", driven_by: null, life_arc: null, klass: "texture" });
+        catCountToday[cat] = (catCountToday[cat] ?? 0) + 1;
+        process.stdout.write("o");
+      }
     }
   }
   console.log(`\n[post-writer] generated ${feed.length} posts in ${CALLS} model calls`);

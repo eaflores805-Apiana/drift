@@ -513,3 +513,23 @@ Source-type and content are **weak proxies**; *affinity* is the real metric. A h
 **Non-impact.** Changes no ADR, formula, route, or safety gate. Pure build-sequencing.
 
 — CS Engineer, 2026-06-26
+
+---
+
+### N-RESOLUTION (2026-06-26)
+
+**The gate was resolved by PO decision, not by a team blind read.** The Acting Manager / Product owner (Elias) elected to **proceed on the PO's own read plus the CS sighted read**, rather than wait on the team blind realism verdict. Recorded plainly so the record matches what happened: the blind-read gate in §N above was **superseded by PO call**, not satisfied.
+
+Rationale accepted by PO: (1) the CS sighted read already identified the real cracks (coffee over-representation; thin positive person-level signal); (2) a model judging model-tweaked model-data is circular — the Grok second opinion is a blind-spot catcher, not a quality score, and it had already done its job catching v1 over-telegraphing; only humans break the circle, and the PO is a human in the loop. PO chose to spend the cycle building rather than re-grading.
+
+**Resolved to fork (B) → apply staged producer fix → regenerate → re-enter (A):**
+- Staged patch **applied** to `playground/scripts/post-writer.ts` (Edits 1–6 from `producer-fix-v2-patch.md`); `public-events.json` moved to `playground/world-bible/` (shareable, non-secret by construction).
+- **One bug found and fixed during regeneration:** the public-event injection re-announced the same good news every phase a person posted that day (a synthetic tell — Mia/Sam each double-posted). Fixed: public events now surface **once per person/day** (`publicSurfaced` set; `surfacePublic` gate on `writePost`).
+- Feed regenerated as **`ventura-v2`** (re-baselined; ventura-v1 numbers retired). Scorecard: **firewall PASS**, specificity 73% (≥70% ✓), 0 clichés ✓, 1 dupe, signal density 44% (over the <35% target — but that metric over-counts: it flags *any* post by a person-with-a-secret as "signal" regardless of content). Coffee/cafe mentions down to **13/57 (23%)** from the v1 over-representation. The three good-news moments (Nico podium d4, Mia author reading d5, Sam cert d6) land once each, in plain voice.
+- `docs/correspondence/world-ventura-v0-review/FEED.md` re-rendered to v2 (supersedes-note in the header). The review packet remains as a historical artifact; the team blind read was **not run**.
+
+**Next:** re-enter at fork (A) — build Drift's brain on the `ventura-v2` feed (candidate selection → `identity_policy`/`voice_payload` → packets → Production C v0.3.2 → Box 8 grounding gate → voice scoring → rough TTS).
+
+**Firewall status:** preserved throughout. `runs/world-bible/hidden-arcs.json` and the answer key (`runs/post-writer/answer-key-ventura-v2.json`) remain git-ignored, uncommitted, and were never fed to a judge.
+
+— CS Engineer, 2026-06-26

@@ -1,0 +1,21 @@
+{
+  "_README": "PUBLIC, announceable positive moments — given to the producer so the feed carries surface-worthy person-level signal (so the brain test measures perception, not just restraint). These are NOT secrets and NOT private arcs; they are meant to be posted plainly in the person's own voice. FIREWALL: nothing here surfaces any private arc — the sealed arcs in runs/world-bible/hidden-arcs.json are untouched.",
+  "world_tag": "ventura-v2",
+  "events": [
+    {
+      "person_id": "nico",
+      "day": 4,
+      "event": "placed 3rd in a local surf heat at C Street this weekend — first time on the podium."
+    },
+    {
+      "person_id": "mia",
+      "day": 5,
+      "event": "the bookstore is hosting a local author's first-ever reading this Saturday; you organized it."
+    },
+    {
+      "person_id": "sam",
+      "day": 6,
+      "event": "passed the certification exam you've been studying for after work for weeks."
+    }
+  ]
+}

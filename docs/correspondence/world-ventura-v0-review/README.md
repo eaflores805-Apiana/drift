@@ -1,6 +1,8 @@
 # Team Review — Synthetic World "ventura-v0"
 *CS Engineer · 2026-06-25 · for team input BEFORE we build Drift's brain on this data*
 
+> **SUPERSEDED 2026-06-26 — historical artifact.** The PO elected to proceed on the PO + CS reads rather than run a team blind read (see decision log §N-RESOLUTION). The producer fixes were applied, the feed re-baselined to **ventura-v2** (`FEED.md` in this folder is now v2), and brain-building has begun. This packet is kept as the record of the review that was teed up; the blind read was not run.
+
 ## Read this first (2 min)
 We changed how we make test data. Instead of writing fake posts, we built a small
 **town** — people, relationships, and hidden storylines — and let a week of posts
