@@ -1,6 +1,7 @@
 # Ratification packet — J4 taxonomy + Decision→Packet handoff contract
 
 **Date:** 2026-06-27
+**Revised:** 2026-06-27 — narrow refresh of §5/§6 + new §6a delta after seam-hardening #5A–#5D (no J4 change, no lines, freeze intact).
 **Author:** CS Engineer
 **For:** Eng1, Eng2 (ratification) · PO (already directed)
 **Decision class:** Class 1 — bounded sign-off requested
@@ -21,7 +22,7 @@
 **Being ratified (yes/no/narrow on each):**
 1. **J4 taxonomy** — the `positive_personal_touch` treatment band + the exclusion bands, as a layer over the unchanged 4-value route vocabulary.
 2. **§5 handoff mappings** — band→category, route confirmation, gold-derived block/treatment, source_type→provenance, fail-closed defaults.
-3. **Name policy** — whether/how a source name may ever reach generation (currently **ungated** — see §6.1).
+3. **Name policy** — whether/how a source name may ever reach generation. The **deny direction is now machine-enforced** (#5A, §6a); what remains for ratification is the **allow** policy only (see §6.1).
 4. **First-line generation under restrictions** — permission to generate exactly **one** line under §8 conditions.
 
 **Explicitly NOT being ratified here:**
@@ -91,29 +92,47 @@ The fixture suite stresses the lanes the run never produced (sensitive±quiet, g
 
 | layer | machine-enforced? | covers |
 |---|---|---|
-| **preflight (deterministic)** | ✅ yes | claims-non-empty · grave-fact ⊆ claims · block⟷route(treatment) · provenance×sensitivity (third-party-or-omit) · boundary capture · source_name format · payload ≤ cap |
+| **preflight (deterministic)** | ✅ yes | claims-non-empty · grave-fact ⊆ claims · block⟷route(treatment) · provenance×sensitivity (third-party-or-omit) · boundary capture · source_name format · payload ≤ cap · **name disclosure (deny direction, #5A)** |
 | **gate-structural** (routeGate tier cap, no line) | ✅ yes | sensitive/grave/minor → `safe_template`; quiet → `silence`; freeform never airs on a serious tier |
-| **gate-on-line** | ❌ **FROZEN — not proven** | ambiguous valence guard; motive/deanon/mobilize; lexical grounding (Box 8a) — all need the generated line |
+| **line validator** (`validateLine`, #5B/#5C) | ✅ **built; tested on hand-authored lines, not yet on a real generated one** | invented emotion/significance · raw-post echo · name leak · over-length · co-item overflow · grave-implied→explicit leak · + orchestrates Box 8a grounding & Box 8b route deny-rules (valence/motive/deanon/mobilize). Still requires a real line post-unfreeze to exercise end-to-end. |
 | **upstream-scoring** | n/a here | stale-serious → silence (novelty/recency); never reaches preflight |
-| **unratified / held** | ❌ **no gate exists** | name disclosure (identity_policy) — see §6.1 |
+| **unratified / held** | ❌ **policy only** | name disclosure **allow** policy (`identity_policy.*_allowed`) — the *deny* is now mechanical; only authorizing a name awaits ratification (§6.1) |
 | **by-construction** | ❌ no machine check | "no invented urgency" (utility); "no paid priority" (commercial); minor-not-named-in-claims |
 
-**Proven with teeth:** grave-fact grounding (F04 passes only because the fact is in claims; M02 rejects when it isn't), third-party-or-omit (F07 high → REJECT; F08 low → PASS), treatment caps (F01/F03/F04/F09 → template; F02 → silence), and all six fail-closed rules (M01/M02/M03/M05/M06/M07).
+**Proven with teeth:** grave-fact grounding (F04 passes only because the fact is in claims; M02 rejects when it isn't), third-party-or-omit (F07 high → REJECT; F08 low → PASS), treatment caps (F01/F03/F04/F09 → template; F02 → silence), all fail-closed preflight rules incl. the new name gate (M01/M02/M03/M05/M06/M07; F06b now REJECT; identity-gate truth table 12/12), and the line validator on hand-authored traps (14/14 + 9/9 valence/grave). **Note the shift:** what §5 (first issue) listed as a single "gate-on-line — FROZEN, not proven" row is now a *built and unit-tested* validator; what is still missing is one real generated line to run through it, which is exactly what §8 gates.
 
-## 6. Open seams — explicitly NOT machine-enforced
+## 6. Open seams — current state (machine / policy / line / upstream)
 
-1. **Name disclosure is ungated. ← close before any name-bearing generation.** Fixture **F06b** hands preflight a packet with `source_name:"Alex"` and it **PASSES**. Nothing in the machine today stops a name from reaching the generator. So either `identity_policy` is ratified and made mechanical first, **or** first-line generation runs **name-withheld only**.
-2. **Ambiguous valence is line-level, not packet-level.** F05's structural gate returns `air` on a clean probe; the "don't assume good/bad" protection lives in content deny-rules that need the generated line. Requires line-level validation after unfreeze.
-3. **Grave-implied → explicit leak needs a downstream backstop.** Preflight only catches it when claims and serious-fact disagree (M02). If construction wrongly upgrades "hard day" → "mother died" *consistently*, preflight won't see it; Box 8a line-grounding must.
-4. **Stale-serious is upstream.** Correct that it's not a preflight concern — but the packet should eventually **carry freshness metadata** so a downstream reviewer can see *why* a grave item is still eligible.
-5. **Minor cap may be over-conservative** (F09: a happy robotics win → `safe_template`). Good v0 default; flag to revisit, not fix now.
+*Refreshed after #5A–#5D. Three of the five seams moved; see §6a for the delta.*
+
+1. **Name disclosure — deny direction now MACHINE-ENFORCED (#5A); only the *allow* policy remains unratified.** Preflight rule #8 is fail-closed: a `source_name` other than `"none"` **REJECTS** unless an explicit `identity_policy` authorizes it (F06b flipped PASS→REJECT; truth table 12/12). What is *not* yet ratified is the **allow** side — the shape and authority of `name_allowed` / `entity_name_allowed`. Until that is ratified, names stay withheld by construction, so first-line generation can proceed **name-withheld** without waiting on it.
+2. **Ambiguous valence — line-level coverage for OBVIOUS cases (#5C); subtle paraphrase is a KNOWN GAP.** `validateLine` + the route valence guard now block resolved valence ("congrats", "hard goodbye", "sorry to hear") and a restrained note still airs (V01–V04). **Residual:** subtler paraphrase that resolves valence without a flagged word ("things are really looking up for them") **still airs** (V08). Closing it needs a v1 model/judge — or an Eng decision to keep ambiguous on `safe_template` regardless. Keyword guards have a ceiling; this is it.
+3. **Grave-implied / grave-explicit — line-level coverage added (#5B/#5C); keep two distinctions.** `validateLine` flags a `grave_implied_explicit_leak` when a line makes the implied loss explicit (V05). And — the honest v0 finding — even a **clean, grounded, policy-respecting grave-EXPLICIT** line does **not** air freeform: the grave tier caps it to `safe_template` (V07). So distinguish:
+   - **blocked-by-content** — a violation fired; the line is unsafe (V05).
+   - **blocked-by-policy** — a clean line capped by the grave/sensitive tier (V06, V07); violations empty. v0 caps; v1 *may* relax once trusted.
+   Residual: the leak-detector's explicit vocabulary is finite (V09: "lost someone" isn't listed), but the tier cap still blocks structurally — defense in depth, not a hole.
+4. **Stale-serious is upstream.** Not a preflight concern — but the packet should eventually **carry freshness metadata** so a downstream reviewer can see *why* a grave item is still eligible. Unchanged.
+5. **Minor cap may be over-conservative** (F09: a happy robotics win → `safe_template`). Good v0 default; flag to revisit, not fix now. Unchanged.
+
+## 6a. Delta since first issue — seam-hardening #5A–#5D (2026-06-27)
+
+Built while blocked on this ratification; all inside the freeze (no lines generated, no J4 thresholds touched, firewall clean). Each is unit-tested with **pre-registered** expectations.
+
+| # | What | Effect on the decision | Verify |
+|---|---|---|---|
+| **#5A** | Fail-closed identity/name-disclosure preflight gate (rule #8) | Seam §6.1 **deny direction closed** — a name now rejects without explicit policy. Only the *allow* policy stays unratified. | `identity-gate-fixtures.ts` 12/12; F06b PASS→REJECT |
+| **#5B** | `validateLine()` — line-level cage (orchestrates Box 8a/8b + adds 7 new checks) | Seam §6.2/§6.3 — the "line-level validation after unfreeze" those seams demanded now **exists and is unit-tested** (on hand-authored lines, not yet a real one). | `line-validator-fixtures.ts` 14/14 |
+| **#5C** | Ambiguous-valence + grave-implied/explicit line fixtures | Hardened the valence guard (obvious paraphrases); **named the residual gap** (V08) and the blocked-by-content vs blocked-by-policy distinction (V07). | `line-valence-grave-fixtures.ts` 9/9 |
+| **#5D** | Positive-touch packet diversity (preflight only) | Answers §4's monoculture finding: the handoff contract now **proven across 10 varied low-risk relational packets** (6 relationships / 8 registers / 5 source_kinds / 3 provenances), with 2 must-reject cases proving it still bites. | `positive-touch-packet-diversity.ts` 12/12 |
+
+**What this does and does not change for ratification.** It does **not** advance the freeze or pre-decide anything: J4 behavior is unchanged, no line was generated, the *allow* policy is still yours to rule on. It **does** mean that when you approve §7.4, the first line drops into a real validation cage (machine name-deny + a unit-tested line validator + tier caps) instead of a vibes tunnel — and it narrows what's left to "policy-only" and "one real line."
 
 ## 7. Ratification decision requested
 
 Please rule on each (approve / reject / narrow):
 1. **Approve J4 taxonomy** (§2) — `positive_personal_touch` as a highlight-family band over the unchanged route vocabulary, exclusion bands as ambient, closeness as a score term not a second gate?
 2. **Approve §5 mappings** (§3) — especially band→category (3.1) and source_type→provenance (3.4), World-Ventura-provisional, re-derive on a human corpus?
-3. **Name policy** (§6.1) — either (a) ratify `identity_policy` + require it be made mechanical before any name-bearing line, or (b) mandate **name-withheld** first-line generation. (CS recommends (b) for the first line.)
+3. **Name policy** (§6.1, §6a) — the *deny* is already mechanical (#5A). Decision: either (a) ratify the `identity_policy` **allow** shape (`name_allowed` / `entity_name_allowed` — who sets it, under what tier rules) to enable name-bearing lines later, or (b) leave it unratified, in which case names stay withheld by construction. Either way the first line runs **name-withheld** — (b) does not block §7.4. (CS recommends deferring the allow policy and proceeding name-withheld.)
 4. **Approve first-line generation** under the §8 conditions?
 
 ## 8. Conditions for the first generated line (if §7.4 approved)
@@ -123,7 +142,7 @@ The first line should test the **narrowest meaningful thing**: *can the mouth tu
 - **one** candidate only, from the six low-sensitivity `positive_personal_touch` items;
 - **name withheld** (unless §6.1(a) is ratified and gated);
 - **permitted spans empty**; **raw post withheld**; **standard / cap1 / short**;
-- generated line must **pass Box 8a grounding + Box 8b route gate**;
+- generated line must **pass `validateLine` (#5B) — which runs Box 8a grounding + Box 8b route gate + the added line checks**;
 - **human read required**, against: no invented emotion · no source-name leak · no raw-post echo · no cheesy generic-bulletin tone · has a doorway/landing · sounds like a host, not a notification;
 - **no audio, no demo packaging.**
 
