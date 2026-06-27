@@ -40,6 +40,26 @@ export type Provenance =
   | "subject_authored" | "household_family" | "official_source" | "third_party" | "unclear";
 export type Sensitivity = "low" | "medium" | "high" | "extreme";
 
+/**
+ * Identity disclosure policy (CS #5A, 2026-06-27).
+ *
+ * FAIL-CLOSED: absent ⇒ no name may be disclosed. A name in a packet sails to
+ * the model ungated otherwise (Box-8 fixture F06b proved preflight let "Alex"
+ * through). The DENY direction is ratification-independent — it only ever makes
+ * the default safer. The ALLOW flags are a Class-1 proposal: nothing in any
+ * production path sets them, and first-line generation runs name-withheld.
+ *
+ *   name_allowed        — disclose a PERSONAL subject's name (subject_authored /
+ *                         household_family) on a low-tier celebratory packet ONLY.
+ *                         Never honored on sensitive/grave/minor tiers in v0.
+ *   entity_name_allowed — disclose a PUBLIC entity / org / civic account name
+ *                         (provenance official_source), e.g. "the corner bakery".
+ */
+export interface IdentityPolicy {
+  name_allowed?: boolean;
+  entity_name_allowed?: boolean;
+}
+
 export interface Packet {
   item_id: string;
   /** celebration | utility | commercial | everyday | ambiguous | sensitive | grave | grave_implied | minor */
@@ -63,6 +83,8 @@ export interface Packet {
   boundaries: string;
   sensitivity: Sensitivity;
   provenance: Provenance;
+  /** Name-disclosure authorization. Absent ⇒ fail-closed (no name may appear). */
+  identity_policy?: IdentityPolicy;
   music_context: MusicContext;
   /** items already aired, or "none" */
   recently_aired: string;
@@ -169,6 +191,32 @@ export function preflight(p: Packet): PreflightResult {
   const payloads = p.voiced ? 1 : 0;
   if (payloads > p.block_contract.payload_cap) {
     rejects.push(`payload count ${payloads} exceeds payload_cap ${p.block_contract.payload_cap}`);
+  }
+
+  // 8. NAME DISCLOSURE (CS #5A) — FAIL-CLOSED. A source_name other than "none"
+  //    may pass only when an explicit identity_policy authorizes it. Closes the
+  //    F06b hole (a name used to reach the model ungated). Three lanes:
+  //      official_source  → a PUBLIC entity; needs entity_name_allowed=true.
+  //      third_party/unclear → a non-subject person; NEVER named in v0.
+  //      personal subject → low celebratory tier + name_allowed=true ONLY;
+  //                         never on sensitive/grave/minor tiers.
+  if (p.source_name !== "none") {
+    const pol = p.identity_policy;
+    const tier = tierOf(p);
+    if (p.provenance === "official_source") {
+      if (pol?.entity_name_allowed !== true) {
+        rejects.push(`entity source_name "${p.source_name}" present without identity_policy.entity_name_allowed=true (name withheld by default)`);
+      }
+    } else if (p.provenance === "third_party" || p.provenance === "unclear") {
+      rejects.push(`source_name "${p.source_name}" present with ${p.provenance} provenance — non-subject persons are never named (v0)`);
+    } else {
+      // personal subject (subject_authored | household_family)
+      if (tier === "sensitive" || tier === "grave" || tier === "minor") {
+        rejects.push(`personal source_name "${p.source_name}" present on ${tier} tier — name disclosure not permitted for sensitive/grave/minor subjects (v0)`);
+      } else if (pol?.name_allowed !== true) {
+        rejects.push(`personal source_name "${p.source_name}" present without identity_policy.name_allowed=true (name withheld by default)`);
+      }
+    }
   }
 
   return { pass: rejects.length === 0, rejects };

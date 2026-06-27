@@ -132,8 +132,8 @@ const FIXTURES: Fixture[] = [
     expect: { preflight: "PASS", disposition: "air" },
   },
   {
-    id: "F06b", lane: "name PRESENT (structural probe)", property: "preflight does NOT decide name-disclosure policy",
-    enforcedBy: "unratified", // preflight permits a real name structurally; whether it MAY appear is identity_policy
+    id: "F06b", lane: "name PRESENT, no policy", property: "name without identity_policy → REJECT (#5A closed this hole)",
+    enforcedBy: "preflight", // was "unratified"/PASS until CS #5A added preflight rule #8 (fail-closed name gate)
     packet: { ...base(), item_id: "F06b", category: "celebration", route: "highlight",
       block: "standard", block_contract: C_STD, source_kind: "close friend", relationship: "close",
       source_name: "Alex",
@@ -141,7 +141,7 @@ const FIXTURES: Fixture[] = [
       allowed_claims: ["it's their birthday", "they're turning 30"],
       forbidden_inferences: ["do not invent plans or feelings beyond the post"],
       sensitivity: "low", provenance: "subject_authored", voiced: true },
-    expect: { preflight: "PASS", disposition: "air" }, // PASSES — flags that nothing blocks a name reaching the mouth
+    expect: { preflight: "REJECT", rejectContains: "name_allowed=true" }, // hole closed: a name now needs explicit policy
   },
   {
     id: "F07", lane: "third-party + HIGH sensitivity", property: "third-party serious news must NOT voice",
@@ -318,7 +318,7 @@ console.log("- **preflight (deterministic):** claims-non-empty · grave-fact⊆c
 console.log("- **gate-structural (no line needed):** sensitive/grave/minor → safe_template|silence cap; quiet→silence.");
 console.log("- **gate-on-line (FROZEN — not proven here):** ambiguous valence guard, motive/deanon/mobilize content rules, lexical grounding (Box 8a).");
 console.log("- **upstream-scoring (not a preflight concern):** stale-serious → silence (novelty/recency).");
-console.log("- **unratified (held):** name disclosure (identity_policy) — note F06b PASSES preflight, so nothing today blocks a name reaching the generator; that decision is policy, not preflight.");
+console.log("- **preflight name gate (CS #5A):** name-disclosure is now FAIL-CLOSED — a source_name other than \"none\" REJECTS unless identity_policy authorizes it (F06b now REJECTs; full matrix in identity-gate-fixtures.ts). The ALLOW flags remain a Class-1 proposal.");
 console.log("- **by-construction (no machine check yet):** 'no invented urgency' (utility), 'no paid priority' (commercial), minor-not-named in claims — authored correctly, enforced at generation/scoring.");
 
 process.exitCode = matched === FIXTURES.length ? 0 : 1;
