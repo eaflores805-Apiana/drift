@@ -78,10 +78,17 @@ const BATTLE: Rule[] = [
   },
 ];
 
-/** Resolving an explicitly ambiguous valence into "good"/"bad". */
+/**
+ * Resolving an explicitly ambiguous valence into "good"/"bad".
+ * NOTE (CS #5C, 2026-06-27): valence vocabulary widened to catch the obvious
+ * paraphrases the keyword guard used to miss ("hard goodbye", "sorry to hear").
+ * Proposed hardening — additive/fail-safer, flagged for Eng review. It remains
+ * keyword-based: subtler paraphrase ("things are looking up for them") still
+ * slips and needs a v1 model/judge. See line-valence-grave-fixtures.ts known gaps.
+ */
 const VALENCE: Rule[] = [
-  { id: "valence_congrats", needle: /\b(congrats|congratulations|so happy for|amazing news|great news)\b/i },
-  { id: "valence_sorry", needle: /\b(so sorry|condolences|that's awful|heartbreaking)\b/i },
+  { id: "valence_congrats", needle: /\b(congrats|congratulations|so happy for|amazing news|great news|big congrats|so excited for (them|her|him)|what (great|wonderful) news)\b/i },
+  { id: "valence_sorry", needle: /\b(so sorry|condolences|that's awful|heartbreaking|(hard|tough|sad) goodbye|sorry to hear|so sad to see|thinking of (them|her|him) (in this|during this))\b/i },
 ];
 
 function fire(rules: Rule[], line: string, source: string): { id: string; span: string }[] {
