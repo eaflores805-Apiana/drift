@@ -9,6 +9,8 @@
 
 ## 0. The one-paragraph version
 
+> **The governing trade.** Listeners get meaningful connection without losing their day; platforms get time and trust they currently lose. The reason this matters is the part that almost never happens in this industry: the thing that's good for the user and the thing that's good for the platform are, for once, the same thing. Being good to the user can be the growth, not its cost. Everything below serves that trade.
+
 Drift is a music-first personal radio station with an AI DJ that makes you feel connected to your own world — your friends, family, local life, the teams and creators and companies you chose to follow — by weaving grounded, tasteful moments from that world into the music you're already listening to. It is not a feed and not a chatbot. It speaks rarely — only a few minutes an hour — and when it speaks it earns the interruption. **The music and the moments from your world are equal halves of the value, and the product is the *weave* of the two:** the song carries you, the moment connects you, and the seam where one becomes the other is the thing nobody else has. That scarcity is not a limit — it *is* the strategy: a handful of carefully chosen moments stay precious, where a feed that shows you everything turns connection back into noise. The defensible core underneath is the calibrated editorial judgment of what's worth saying, when, and what must never be said. The goal, stated as plainly as it can be: *the listener should look forward to the DJ coming in.* That is the gold. Everything else serves it.
 
 ---
@@ -23,7 +25,7 @@ The noise isn't an accident of the feed — it's the *business model* of the fee
 
 That is why **"doorway, not destination"** matters: surface the moment, then point the listener back to life — text the friend, go to the show, support the team, catch the drop. Drift is something you *pass through* on the way back to your life, not a place that traps you.
 
-**An honest caveat we hold internally (not a marketing line):** a real grievance is necessary but not sufficient. People hate the feed and still open it constantly, because the noisy feed is engineered to be habitual and a calm alternative isn't. Drift only wins if the music makes the higher-signal version habitual enough to compete. The grievance is the *opening*, not the *win*.
+**An honest caveat we hold internally (not a marketing line):** a real grievance is necessary but not sufficient. People are tired of the feed but still open it, because the noisy feed is engineered to be habitual. Drift does **not** need to win users *away* from the feed — it is a complement, a layer over the world they already follow, reaching them in the hours the feed never had. What it does need is for the music to make that higher-signal layer something people *keep on*. Whether Drift ultimately sits beside the feed, or grows into something larger, is not a question this document settles — it's the question a partnership resolves. The grievance is the *opening*; the trade is the *bet*; the shape is *open*.
 
 ---
 

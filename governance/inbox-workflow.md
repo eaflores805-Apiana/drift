@@ -9,6 +9,7 @@
 4. **File** — `git mv _INBOX/<filename> <destination>/<final-name>.md`. Rename to match destination conventions if needed.
 5. **Commit** — single commit per sweep; message describes what landed and where.
 6. **Push** — `git push origin main`.
+   > **Temporary branch-policy override (PO, 2026-06-27):** active cage/grounding/governance work — the ratification packet, degradation suite, Cage Architecture Reference, and Stop-Authority Charter — stays on **`box8-grounding-gate`**, not `main`. The docs describe mechanisms and evidence that live on that branch; landing them on `main` first would make `main` claim safety architecture it does not yet contain. Merge to `main` as one reviewed unit after Eng2/PO sign-off. Until then, CS pushes this workstream to `box8-grounding-gate`.
 7. **Verify** — `git ls-remote origin -h refs/heads/main | awk '{print $1}'` and confirm it matches local `HEAD`.
 8. **Report** — in the turn summary, list each file that moved (`source → destination`) and the post-push remote HEAD.
 

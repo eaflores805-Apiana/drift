@@ -130,6 +130,7 @@ For a trust-dependent product the asymmetry is fatal; lead so hard with the cons
 3. **Scoring weights & thresholds.** To be tuned empirically via the bench, not decided on paper. `[OPEN — resolved by Phase 1]`
 4. **Hardest open engineering problems:** (a) relevance-to-you computation; (b) inferring magnitude for friend posts that are life events without saying so. `[OPEN — research]`
 5. **Owned-network thesis** as a real product direction (vs. just the sim constraint). `[OPEN — own conversation]`
+6. **Positioning (complement vs. replacement)** is held as an open question posed to partners, not a ruling. The trade is the fixed point; the shape is deliberately not declared. See doc 00 §0 governing line. `[OPEN — posed to partners, on purpose]`
 
 ---
 
