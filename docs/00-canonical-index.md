@@ -58,6 +58,7 @@ Each group has a one-line purpose and a `README.md` in its directory (see §"Sub
 | `01-product-principles.md` | Binding principles: station-not-chatbot, restraint, dead-air-over-fake-significance, adds-to-social. | Doc · ratified |
 | `08-value-and-moat.md` | Strategic thesis: the two-axis moat, build-to-acquire. | Doc · ratified |
 | `design.md` | Full system architecture (§5), risk register (§6), buyer analysis (§7), MVP wedge (§8). | Doc · ratified |
+| `alignment-thesis.md` **v1.3** | The category thesis: meaningful connection without attention extraction; constraint-forward, deployment-honest. External-circulation candidate. (v0.1–v1.2 archived.) | Doc · supporting |
 
 ### 2 · The judgment engine — the brain
 *How Drift decides what's worth surfacing and ranks it for this listener. **This is the moat and the thing that's built.***
@@ -86,6 +87,8 @@ Each group has a one-line purpose and a `README.md` in its directory (see §"Sub
 | `dj-persona-built-on-eight.md` | Persona audit/grading material (not loaded at runtime). | Doc · supporting |
 | `grounding-gate-spec.md` | The claim-grounding (Box 8a) spec. | Doc · supporting |
 | `drift-editorial-restraint-changeset` **v0.1.1** | Next-cycle change set: validation-tic + declined-valence. Demoted prompt rules (null result), gate+packet-field are load-bearing, §5 semantic coverage elevated. | Doc · TL-signed-off |
+| `cage-architecture-reference.md` **v0.4** | The cage containment architecture: steel/judge/governance materials, non-compensatory risk floor, the §11 build-status matrix, grave template ladder. | Doc · DRAFT (pending Eng2) |
+| `what-good-means-success-criteria.md` **v0.1** | Asymmetric lane-certification pass/fail criteria; companion to the cage reference §9. | Doc · DRAFT (pending Eng2/CS) |
 | *Box 8 gate code* (8a grounding, 8b treatment, denylists, fallback) | The output gate. | **Built / Synthetic** ⚠ |
 | *Generation across routes* (celebratory → doorway → utility → enrichment → bridges) | The actual line-generation pipeline. | **Partial / Synthetic** ⚠ — *runs in eval harnesses only (the 50-post & 168-gen A/B runs exist because of it); not productionized into the app — see CS correction* |
 
@@ -127,6 +130,10 @@ Each group has a one-line purpose and a `README.md` in its directory (see §"Sub
 | `drift-poc-the-drop` **v1.1.0** | POC "The Drop" — a gamer gets the pre-order in-ear, becomes the source to his squad. Your **interests, in time** / right-away + social proof. | Doc · concept (`pitch/`) |
 | `drift-commercial-the-handoff` **v1.0.0** | Full cinematic script for The Handoff. | Doc · script (`pitch/`) |
 | `pitch/drift-session-showcase` **v1.0.0** | The seven gold DJ segments (lengthy-session showcase). | Doc · supporting |
+| `pitch/drift-two-sided-case` | The two-sided trade: what listeners get, what platforms get, and the honest counter-case each side would raise. | Doc · concept |
+| `pitch/drift-vision-poc-package` **v0.1** | Self-pitching vision + POC package for partners/stakeholders. | Doc · draft |
+| `pitch/drift-essence` **v3** / **-full** | The "future of radio isn't louder — it's listening" manifesto (short v3 + long cut). | Doc · concept |
+| `pitch/production/` | Commercial production assets: scene storyboards + Veo video prompts (scenes 1, 3). | Doc · concept |
 
 > **POC/production note:** AI video (Veo) tested for the spots — renders the *look* and even a restrained performance well; **audio is post-only** (no music/host-voice from the model). Solitary scenes mean **no lip-sync**, so the path is AI-picture + real-VO/music/duck in post — *but reaching premium quality is uncertain.* A premium film is a later, possibly real-production, decision. The **scripts stand alone as the sell** for now.
 
@@ -139,6 +146,8 @@ Each group has a one-line purpose and a `README.md` in its directory (see §"Sub
 | `02-record-and-plan.md` | Record + the experience/UI model (attention ladder, one-card layout). | Doc · canonical |
 | `build-map.md` | The phase plan of record (see §"What's built vs. air"). | Doc · canonical |
 | `passdowns/` | Session passdowns. | Correspondence |
+| `governance/stop-authority-charter.md` | Stop-authority charter: who blocks/approves lanes, generation, naming; no date over a red bar; implementer can't self-ratify. | Doc · DRAFT (pending Eng2/PO) |
+| `governance/` (`roles.md`, `inbox-workflow.md`, `reporting-standards.md`) | Engine/safety governance process: roles, the CS inbox sweep, reporting standards. | Doc · process |
 
 ---
 
@@ -201,3 +210,18 @@ Filed by the CS Engineer per Eng1's "make-the-repo-self-explaining" instruction.
 **Open items carried forward:** `world-generation-spec.md` §1 proposes a **closeness reconciliation** (split proximity from source-band) *for TL ratification* — not yet an ADR. `docs/airtime-budget.md` and `docs/layer0-pool-acquisition.md` are present but not yet indexed (pre-existing; flag for next pass).
 
 — CS Engineer, 2026-06-25
+
+## CS execution note — inbox sweep *(2026-06-28)*
+
+Swept `_INBOX/` (≈22 files) per the inbox workflow; `_INBOX/` now holds only its own `README.md`. Tier=folder conventions applied ("newest version canonical, older → archive"):
+
+- **Alignment thesis** — 13 versions collapsed: latest **v1.3 → `docs/alignment-thesis.md`** (canonical, version in masthead); v0.1–v1.2 → `docs/archive/` (filenames keep their versions). The `v0.2 copy` differed from `v0.2`, so it was archived as `alignment_thesis_v0.2-variant.md`, not discarded.
+- **Pitch sell artifacts** → `docs/pitch/` (local convention keeps version in filename): `drift-two-sided-case`, `drift-vision-poc-package-v0.1`, `drift-essence-v3` + `drift-essence-full`.
+- **Commercial production assets** → new `docs/pitch/production/` subtree: scene-1 storyboard, scene-1 + scene-3 Veo video prompts.
+- **Concept image** → `prototypes/reference-images/drift-concept-2026-06-26.png` (per README png routing; not opened/classified by content — flag if it belongs elsewhere).
+- **`what-good-means-success-criteria.md`** (lane-cert criteria, cage companion) → `docs/`.
+- Index rows added for all of the above plus last session's `cage-architecture-reference.md` v0.4 and `governance/stop-authority-charter.md` (filed but not previously indexed).
+
+**Judgment calls flagged for redirect (all cheap to `git mv`):** essence kept as two files (short v3 + long full) rather than archiving one — unsure if they're versions or distinct cuts; `drift-two-sided-case` placed in `pitch/` (sell-for-partners) rather than `docs/` strategy; the `.png` routed by extension without viewing its content. All on `box8-grounding-gate` per the active branch-policy override.
+
+— CS Engineer, 2026-06-28
